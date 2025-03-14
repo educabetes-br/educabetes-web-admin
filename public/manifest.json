@@ -1,6 +1,6 @@
 {
-  "name": "Next.js Boilerplate",
-  "short_name": "Next.js Boilerplate",
+  "name": "EducaBetes",
+  "short_name": "EducaBetes",
   "icons": [
     {
       "src": "/img/icon-192.png",
@@ -14,7 +14,7 @@
     }
   ],
   "background_color": "#FFFFFF",
-  "description": "Next.js Boilerplate",
+  "description": "EducaBetes",
   "display": "fullscreen",
   "start_url": "/",
   "theme_color": "#06092B",
