@@ -52,7 +52,12 @@ module.exports = {
           foreground: 'hsl(var(--card-foreground))'
         },
         blue: '#404AA0',
+        lightBlue: '#8D8BC1',
         dark: '#111111'
+      },
+      fontFamily: {
+        firaSans: ['Fira Sans'],
+        firaSansCondensed: ['Fira Sans Condensed']
       },
       borderRadius: {
         lg: 'var(--radius)',
