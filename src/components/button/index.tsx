@@ -8,7 +8,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: 'bg-blue text-[#DFE0FF] hover:shadow-md hover:opacity-90',
-        transparent: 'text-blue hover:bg-[#DFE0FF]'
+        transparent: 'text-blue hover:bg-[#e7e8fa]'
       }
     },
     defaultVariants: {
