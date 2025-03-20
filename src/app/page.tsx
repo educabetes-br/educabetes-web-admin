@@ -1,5 +1,4 @@
 'use client';
-import DeleteModelCard from "components/ModelList/DeleteModel";
 
 export default function Home() {
   //const session = useSession();
@@ -9,9 +8,9 @@ export default function Home() {
   // }
 
   return (
-    <div className="flex flex-1 flex-col h-full justify-around items-center bg-teal-400">
+    <div className="flex flex-1 flex-col h-full justify-around items-center bg-[#404AA0]">
       <div className="flex flex-col justify-center items-center">
-        <DeleteModelCard />
+        <h1 className="text-white text-4xl font-bold">EducaBetes</h1>
         
       </div>
     </div>

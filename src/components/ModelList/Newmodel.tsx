@@ -12,7 +12,7 @@ import {
   DialogClose,
 } from "../ui/dialog";
 
-const NewModelCard: React.FC = () => {
+const NewModelDialog: React.FC = () => {
   const {
     register,
     handleSubmit,
@@ -184,4 +184,4 @@ const NewModelCard: React.FC = () => {
   );
 };
 
-export default NewModelCard;
+export default NewModelDialog;
