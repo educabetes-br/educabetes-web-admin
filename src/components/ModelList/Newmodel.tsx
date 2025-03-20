@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
-import { eye, download, unchecked, checked, plusIcon } from "../assets/index";
+import { eye, download, unchecked, checked, plusIcon } from "../../assets/index";
 import {
   Dialog,
   DialogContent,
@@ -10,7 +10,7 @@ import {
   DialogFooter,
   DialogTrigger,
   DialogClose,
-} from "./ui/dialog";
+} from "../ui/dialog";
 
 const NewModelCard: React.FC = () => {
   const {

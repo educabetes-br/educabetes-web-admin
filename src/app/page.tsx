@@ -1,5 +1,5 @@
 'use client';
-import NewModelCard from "components/Newmodel";
+import DeleteModelCard from "components/ModelList/DeleteModel";
 
 export default function Home() {
   //const session = useSession();
@@ -9,9 +9,9 @@ export default function Home() {
   // }
 
   return (
-    <div className="flex flex-1 flex-col h-full justify-around items-center bg-slate-600">
+    <div className="flex flex-1 flex-col h-full justify-around items-center bg-teal-400">
       <div className="flex flex-col justify-center items-center">
-        <NewModelCard />
+        <DeleteModelCard />
         
       </div>
     </div>

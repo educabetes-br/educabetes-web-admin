@@ -4,6 +4,8 @@ import download from './ModelList/download.svg';
 import unchecked from './ModelList/unchecked.svg';
 import checked from './ModelList/checked.svg';
 import plusIcon from './ModelList/plusIcon.svg';
+import trash from './ModelList/trash.svg';
+import redTrash from './ModelList/redTrash.svg';
 
 
 export { 
@@ -13,4 +15,6 @@ export {
   unchecked,
   checked,
   plusIcon,
+  trash,
+  redTrash,
  };
