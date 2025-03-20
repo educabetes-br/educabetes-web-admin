@@ -6,6 +6,7 @@ import checked from './ModelList/checked.svg';
 import plusIcon from './ModelList/plusIcon.svg';
 import trash from './ModelList/trash.svg';
 import redTrash from './ModelList/redTrash.svg';
+import pencil from './ModelList/pencil.svg';
 
 
 export { 
@@ -17,4 +18,5 @@ export {
   plusIcon,
   trash,
   redTrash,
+  pencil,
  };
