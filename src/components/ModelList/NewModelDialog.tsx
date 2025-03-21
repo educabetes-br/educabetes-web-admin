@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
 import { eye, download, unchecked, checked, plusIcon } from "../../assets/index";
+import { Report, addReport } from "services/Reports/PostReport";
 import {
   Dialog,
   DialogContent,
@@ -23,7 +24,7 @@ const NewModelDialog: React.FC = () => {
 
   const [selectedModel, setSelectedModel] = useState<string | null>(null);
 
-  const handleRadioClick = (value: string) => {
+  const handleRadioClick = (value: 'Receita' | 'Laudo') => {
     if (selectedModel === value) {
       // Se o mesmo valor for clicado novamente, desmarque
       setSelectedModel(null);
@@ -39,12 +40,37 @@ const NewModelDialog: React.FC = () => {
     window.open(watch("linkpdf"), "_blank");
   };
 
-  const onSubmit = (data: { linkpdf: string; tipo: string; titulo: string }) => {
-    console.log("Novo modelo de relatório:", data);
+  const onSubmit = async (data: { linkpdf: string; tipo: string; titulo: string }) => {
     if (!data.tipo) {
       alert("Selecione um tipo de modelo!");
-    } else {
+      return;
+    }
+
+    // Garante que o tipo seja 'Receita' ou 'Laudo'
+    if (data.tipo !== 'Receita' && data.tipo !== 'Laudo') {
+      alert("Tipo de modelo inválido!");
+      return;
+    }
+
+    const report: Report = {
+      titulo: data.titulo,
+      linkpdf: data.linkpdf,
+      tipo: data.tipo as 'Receita' | 'Laudo',
+    };
+
+    const urlPattern = /^(ftp|http|https):\/\/[^ "]+$/;
+    if (!urlPattern.test(data.linkpdf)) {
+      alert("Link do modelo inválido! \nPor favor, insira um link válido (ftp|http|https)");
+      return;
+    }
+
+    try {
+      const response = await addReport(report);
       alert("Modelo de relatório adicionado com sucesso!");
+      console.log("Resposta da API:", response);
+    } catch (error) {
+      console.error("Erro ao adicionar relatório:", error);
+      alert("Erro ao adicionar relatório. Por favor, tente novamente.");
     }
   };
 

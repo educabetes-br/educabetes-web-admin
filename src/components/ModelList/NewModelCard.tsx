@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
 import { eye, download, unchecked, checked } from "../../assets/index";
+import { Report, addReport } from "services/Reports/PostReport";
 
 const NewModelCard: React.FC = () => {
   const {
@@ -14,17 +15,15 @@ const NewModelCard: React.FC = () => {
   } = useForm<{ linkpdf: string; tipo: string; titulo: string }>();
 
   const [selectedModel, setSelectedModel] = useState<string | null>(null);
-  const [isOpen, setIsOpen] = useState(true); // Estado para controlar a visibilidade do card
+  const [isOpen, setIsOpen] = useState(true);
 
-  const handleRadioClick = (value: string) => {
+  const handleRadioClick = (value: 'Receita' | 'Laudo') => {
     if (selectedModel === value) {
-      // Se o mesmo valor for clicado novamente, desmarque
       setSelectedModel(null);
-      setValue("tipo", ""); // Limpa o valor no formulário
+      setValue("tipo", "");
     } else {
-      // Caso contrário, selecione o novo valor
       setSelectedModel(value);
-      setValue("tipo", value); // Define o valor no formulário
+      setValue("tipo", value);
     }
   };
 
@@ -32,47 +31,62 @@ const NewModelCard: React.FC = () => {
     window.open(watch("linkpdf"), "_blank");
   };
 
-  const onSubmit = (data: { linkpdf: string; tipo: string; titulo: string }) => {
-    console.log("Novo modelo de relatório:", data);
+  const onSubmit = async (data: { linkpdf: string; tipo: string; titulo: string }) => {
     if (!data.tipo) {
       alert("Selecione um tipo de modelo!");
-    } else {
+      return;
+    }
+
+    if (data.tipo !== 'Receita' && data.tipo !== 'Laudo') {
+      alert("Tipo de modelo inválido!");
+      return;
+    }
+
+    const urlPattern = /^(ftp|http|https):\/\/[^ "]+$/;
+    if (!urlPattern.test(data.linkpdf)) {
+      alert("Link do modelo inválido! \nPor favor, insira um link válido (ftp|http|https)");
+      return;
+    }
+
+    const report: Report = {
+      titulo: data.titulo,
+      linkpdf: data.linkpdf,
+      tipo: data.tipo as 'Receita' | 'Laudo',
+    };
+
+    try {
+      await addReport(report);
       alert("Modelo de relatório adicionado com sucesso!");
-      reset(); // Reseta o formulário após o envio
-      setIsOpen(false); // Fecha o card após o envio
+      reset();
+      setIsOpen(false);
+    } catch (error) {
+      console.error("Erro ao adicionar relatório:", error);
+      alert("Erro ao adicionar relatório. Por favor, tente novamente.");
     }
   };
 
   const handleClose = () => {
-    setIsOpen(false); // Fecha o card ao clicar em "Cancelar"
+    setIsOpen(false);
   };
 
-  // Se o card não estiver aberto, não renderiza nada
   if (!isOpen) return null;
 
   return (
     <>
-      {/* Overlay com blur */}
       <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-50 flex items-center justify-center">
-        {/* Card */}
         <div className="w-[560px] bg-white rounded-[28px] shadow-lg">
-          {/* Titulo */}
           <header className="flex w-full bg-[#ECE6F0] rounded-t-[28px] pt-6 px-6 pb-2">
             <h1 className="text-[24px] text-[#1A1847] leading-8">Novo modelo</h1>
           </header>
 
-          {/* inputs */}
           <form className="flex flex-col gap-4 py-2 px-6" onSubmit={handleSubmit(onSubmit)}>
-            {/* Tipo de Modelo */}
             <div className="flex flex-col gap-3 items-start">
               <label htmlFor="titulo" className={`font-medium leading-[20px] text-[14px] text-[#1A1847]`}>
                 Tipo de Modelo:
                 {errors.tipo && <span className="text-red-600">  *</span>}
               </label>
 
-              {/* inputs radios */}
               <div>
-                {/* input type=radio - Laudo */}
                 <div className="flex pl-4">
                   <label htmlFor="Laudo" className="text-[#1A1847] flex items-center gap-2 cursor-pointer">
                     <input
@@ -91,7 +105,6 @@ const NewModelCard: React.FC = () => {
                   </label>
                 </div>
 
-                {/* input type=radio - Receita */}
                 <div className="flex pl-4">
                   <label htmlFor="Receita" className="text-[#1A1847] flex items-center gap-2 cursor-pointer">
                     <input
@@ -112,7 +125,6 @@ const NewModelCard: React.FC = () => {
               </div>
             </div>
 
-            {/* Nome do modelo e link */}
             <div className="flex flex-col gap-4">
               <input
                 type="text"
@@ -137,7 +149,6 @@ const NewModelCard: React.FC = () => {
               </div>
             </div>
 
-            {/* button para visualizar modelo */}
             <div>
               <button
                 type="button"
@@ -161,11 +172,10 @@ const NewModelCard: React.FC = () => {
             </div>
           </form>
 
-          {/* buttons de fechar e salvar */}
           <footer className="flex gap-4 justify-end p-6 bg-[#ECE6F0] rounded-b-[28px]">
             <button
               type="button"
-              onClick={handleClose} // Fecha o card ao clicar em "Cancelar"
+              onClick={handleClose}
               className="text-[#404AA0] leading-6 font-medium text-[14px] px-4 py-2 rounded-[100px] border border-transparent transition-all"
             >
               Cancelar
