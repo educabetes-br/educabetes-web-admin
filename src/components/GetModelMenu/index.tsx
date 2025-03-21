@@ -23,6 +23,10 @@ const GetReportsMenu: React.FC = () => {
     fetchReports();
   }, []);
 
+  const openlinkpdf = (link: string) => {
+    window.open(link, "_blank");
+  }
+
   return (
     <div className="bg-white h-full rounded-[28px] px-8 text-white overflow-y-auto">
       <header>
@@ -46,7 +50,9 @@ const GetReportsMenu: React.FC = () => {
               <div className="flex flex-row ml-auto gap-4 pl-8">
                 <EditModelDialog />
                 <DeleteModelCard />
-                <Image src={eyeMenu} alt="Visualizar modelo" />
+                <button onClick={() => openlinkpdf(report.linkpdf)} className="cursor-pointer">
+                  <Image src={eyeMenu} alt="Visualizar modelo" />
+                </button>
               </div>
             </div>
           ))
