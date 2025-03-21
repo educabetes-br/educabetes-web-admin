@@ -8,6 +8,10 @@ import trash from './ModelList/trash.svg';
 import redTrash from './ModelList/redTrash.svg';
 import pencil from './ModelList/pencil.svg';
 
+import reportIcon from './ModelMenu/reportIcon.svg';
+import searchIcon from './ModelMenu/searchIcon.svg';
+import eyeMenu from './ModelMenu/eyeMenu.svg';
+
 
 export { 
   Logo,
@@ -19,4 +23,7 @@ export {
   trash,
   redTrash,
   pencil,
+  reportIcon,
+  searchIcon,
+  eyeMenu,
  };
