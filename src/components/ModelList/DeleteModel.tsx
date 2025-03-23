@@ -23,7 +23,6 @@ const DeleteModelCard: React.FC<DeleteModelCardProps> = ({ reportId, onDeleteSuc
     try {
       // Chama a função de exclusão da API
       await deleteReport(reportId);
-      alert("Modelo excluído com sucesso!");
 
       // Fecha o diálogo após a exclusão
       setOpen(false);
@@ -33,7 +32,6 @@ const DeleteModelCard: React.FC<DeleteModelCardProps> = ({ reportId, onDeleteSuc
         onDeleteSuccess();
       }
     } catch (error) {
-      console.error("Erro ao excluir o modelo:", error);
       alert("Erro ao excluir o modelo.");
     }
   };
@@ -68,7 +66,7 @@ const DeleteModelCard: React.FC<DeleteModelCardProps> = ({ reportId, onDeleteSuc
           </DialogClose>
 
           <button
-            type="button" // Use type="button" para evitar submissão acidental de formulário
+            type="button"
             onClick={handleDelete}
             className="p-2 text-[14px] leading-[20px] text-[#404AA0] font-medium rounded-lg"
           >

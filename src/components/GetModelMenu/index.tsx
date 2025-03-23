@@ -31,7 +31,7 @@ const GetReportsMenu: React.FC = () => {
     window.open(link, "_blank");
   };
 
-  const handleDeleteSuccess = (deletedReportId: string) => {
+  const handleDeleteSuccess = (deletedReportId: Number) => {
     setReports((prevReports) =>
       prevReports.filter((report) => report.id !== Number(deletedReportId))
     );
@@ -75,7 +75,7 @@ const GetReportsMenu: React.FC = () => {
               <EditModelDialog />
               <DeleteModelCard
                 reportId={report.id}
-                onDeleteSuccess={() => handleDeleteSuccess(report.id.toString())}
+                onDeleteSuccess={() => handleDeleteSuccess(report.id)}
               />
               <button
                 onClick={() => openlinkpdf(report.linkpdf)}
