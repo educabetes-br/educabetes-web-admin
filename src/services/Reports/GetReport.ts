@@ -9,7 +9,7 @@ export type Report = {
 
 export const getReports = async (): Promise<Report[]> => {
   try {
-    const  response = await api.get("/reports");
+    const response = await api.get("/reports");
     return response.data.data;
   } catch (error) {
     console.error("Error getting reports:", error);

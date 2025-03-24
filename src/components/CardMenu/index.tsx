@@ -10,7 +10,7 @@ interface CardMenuProps {
 
 const CardMenu: React.FC<CardMenuProps> = ({ children, children2 }) => {
   return (
-    <div className="flex flex-col w-full mx-32 h-[80%] rounded-[28px] bg-white">
+    <div className="flex flex-col w-full mx-32 h-[80%] rounded-[28px] border border-[#939090] bg-white">
      <header className="flex pl-8 py-4 justify-start border-b border-gray-300">
       <h1 className="text-[24px] ">Modelos de Receitas e Relatórios</h1>
      </header>
@@ -20,7 +20,7 @@ const CardMenu: React.FC<CardMenuProps> = ({ children, children2 }) => {
         {children}
       </div>
 
-      <div className="bg-gray-200 w-full flex mt-auto p-4 justify-end rounded-b-[28px]">
+      <div className="bg-[#F3EDF7] w-full flex mt-auto p-4 justify-end rounded-b-[28px]">
         {children2}
       </div>
     </div>

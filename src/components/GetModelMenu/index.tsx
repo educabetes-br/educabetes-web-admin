@@ -37,6 +37,15 @@ const GetReportsMenu: React.FC = () => {
     );
   };
 
+  const handleEditReport = (updatedReport: Report) => {
+    setReports((prevReports) =>
+      prevReports.map((report) =>
+        report.id === updatedReport.id ? updatedReport : report
+      )
+    );
+  };
+  
+
   return (
     <div className="bg-white overflow-y-auto h-full flex-1 mx-8 text-white">
 
@@ -72,7 +81,13 @@ const GetReportsMenu: React.FC = () => {
 
             {/* Botões de ação (update, delete e view) */}
             <div className="flex flex-row ml-auto gap-4 pl-8">
-              <EditModelDialog />
+              <EditModelDialog 
+                reportId={report.id}
+                titulo={report.titulo}
+                linkpdf={report.linkpdf}
+                tipo={report.tipo}
+                onEditSuccess={(updatedReport: Report) => handleEditReport(updatedReport)}
+              />
               <DeleteModelCard
                 reportId={report.id}
                 onDeleteSuccess={() => handleDeleteSuccess(report.id)}
