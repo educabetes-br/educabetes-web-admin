@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import Image from "next/image";
-import { Report, getReports } from "services/Reports/GetReport";
-import { reportIcon, eyeMenu } from "../../assets/index";
-import DeleteModelCard from "../ModelList/DeleteModel";
-import EditModelDialog from "components/ModelList/EditModelDialog";
+import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
+import { Report, getReports } from 'services/Reports/GetReport';
+import { reportIcon, eyeMenu } from '../../assets/index';
+import DeleteModelCard from '../ModelList/DeleteModel';
+import EditModelDialog from 'components/ModelList/EditModelDialog';
 
 const GetReportsMenu: React.FC = () => {
   const [reports, setReports] = useState<Report[]>([]);
@@ -17,8 +17,8 @@ const GetReportsMenu: React.FC = () => {
         const response = await getReports();
         setReports(response);
       } catch (err) {
-        console.error("Failed to fetch reports:", err);
-        setError("Failed to fetch reports. Please try again later.");
+        console.error('Failed to fetch reports:', err);
+        setError('Failed to fetch reports. Please try again later.');
       } finally {
         setLoading(false); // Set loading to false after fetching
       }
@@ -28,7 +28,7 @@ const GetReportsMenu: React.FC = () => {
   }, []);
 
   const openlinkpdf = (link: string) => {
-    window.open(link, "_blank");
+    window.open(link, '_blank');
   };
 
   const handleDeleteSuccess = (deletedReportId: Number) => {
@@ -44,32 +44,30 @@ const GetReportsMenu: React.FC = () => {
       )
     );
   };
-  
 
   return (
     <div className="bg-white overflow-y-auto h-full flex-1 mx-8 text-white">
-
       {error && <p className="text-red-500">{error}</p>}
+
       {loading ? (
-        <div className="w-full h-full justify-center items-center">
+        <div className="w-full h-full flex justify-center items-center">
           <p>Carregando...</p>
         </div>
-      ) : Array.isArray(reports) && reports.length > 0 ? (
-        reports.map((report, index) => (
+      ) : reports.length > 0 ? (
+        reports.map((report) => (
           <div
-          // Recebe o id do relatório e cria um card com as informações do relatório
             key={report.id}
-            className={`flex flex-row items-center pt-3 pb-[6px] ${
-              index !== reports.length - 1 ? "border-b" : ""
-            }`}
+            className="flex flex-row items-center pt-3 pb-[6px] border-b border-gray-200 last:border-b-0"
           >
-
-          {/* svg a esquerda */}
             <div>
-              <Image src={reportIcon} alt="Report icon" />
+              <Image
+                src={reportIcon}
+                alt="Report icon"
+                width={20}
+                height={20}
+              />
             </div>
-            
-            {/* Informações do relatório */}
+
             <div className="flex flex-col flex-1 pl-4">
               <p className="text-[#49454F] text-[12px] font-medium leading-4">
                 {report.tipo}
@@ -79,14 +77,13 @@ const GetReportsMenu: React.FC = () => {
               </p>
             </div>
 
-            {/* Botões de ação (update, delete e view) */}
             <div className="flex flex-row ml-auto gap-4 pl-8">
-              <EditModelDialog 
+              <EditModelDialog
                 reportId={report.id}
                 titulo={report.titulo}
                 linkpdf={report.linkpdf}
                 tipo={report.tipo}
-                onEditSuccess={(updatedReport: Report) => handleEditReport(updatedReport)}
+                onEditSuccess={handleEditReport}
               />
               <DeleteModelCard
                 reportId={report.id}
@@ -96,13 +93,20 @@ const GetReportsMenu: React.FC = () => {
                 onClick={() => openlinkpdf(report.linkpdf)}
                 className="cursor-pointer"
               >
-                <Image src={eyeMenu} alt="Visualizar modelo" />
+                <Image
+                  src={eyeMenu}
+                  alt="Visualizar modelo"
+                  width={20}
+                  height={20}
+                />
               </button>
             </div>
           </div>
         ))
       ) : (
-        !error && <p>Nenhum relatório encontrado.</p>
+        <div className="w-full h-full flex justify-center items-center">
+          <p className="text-gray-500">Nenhum relatório encontrado.</p>
+        </div>
       )}
     </div>
   );
