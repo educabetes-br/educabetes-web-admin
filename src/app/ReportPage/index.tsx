@@ -50,6 +50,7 @@ const ReportsPage: React.FC = () => {
 
   return (
     <CardMenu
+      titulo="Modelos de Receitas e Relatórios"
       children={
         <GetReportsMenu 
           reports={reports} 
