@@ -7,7 +7,7 @@ export default function Home() {
   const session = useSession({
     required: true,
     onUnauthenticated() {
-      router.replace('/Login');
+      router.replace('/login');
     }
   });
 

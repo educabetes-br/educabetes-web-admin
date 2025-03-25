@@ -91,13 +91,13 @@ export default function Login() {
               type="submit"
               icon={<Image src={Enter} alt="Enter Icon" />}
             />
-            <Button
-              variant="transparent"
-              text="Esqueci minha senha"
-              onClick={() => router.push('/ForgotPassword')}
-            />
           </div>
         </form>
+        <Button
+          variant="transparent"
+          text="Esqueci minha senha"
+          onClick={() => router.push('/forgot-password')}
+        />
       </CardLogo>
     </div>
   );
