@@ -8,37 +8,29 @@ import {
   checked,
   plusIcon
 } from '../../assets/index';
-import { Report, addReport } from 'services/Reports/PostReport';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-  DialogTrigger,
-  DialogClose
-} from '../ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger, DialogClose } from '../ui/dialog';
 
-const NewModelDialog: React.FC = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    watch,
-    setValue
-  } = useForm<{ linkpdf: string; tipo: string; titulo: string }>();
+interface NewModelDialogProps {
+  onReportAdded: (report: { titulo: string; linkpdf: string; tipo: 'Receita' | 'Laudo' }) => Promise<void>;
+}
 
-  const [selectedModel, setSelectedModel] = useState<string | null>(null);
+const NewModelDialog: React.FC<NewModelDialogProps> = ({ onReportAdded }) => {
+  const { register, handleSubmit, formState: { errors }, watch, setValue } = useForm<{
+    linkpdf: string;
+    tipo: string;
+    titulo: string;
+  }>();
+
+  const [selectedModel, setSelectedModel] = useState<'Receita' | 'Laudo' | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleRadioClick = (value: 'Receita' | 'Laudo') => {
     if (selectedModel === value) {
-      // Se o mesmo valor for clicado novamente, desmarque
       setSelectedModel(null);
-      setValue('tipo', ''); // Limpa o valor no formulário
+      setValue('tipo', '');
     } else {
-      // Caso contrário, selecione o novo valor
       setSelectedModel(value);
-      setValue('tipo', value); // Define o valor no formulário
+      setValue('tipo', value);
     }
   };
 
@@ -46,49 +38,36 @@ const NewModelDialog: React.FC = () => {
     window.open(watch('linkpdf'), '_blank');
   };
 
-  const onSubmit = async (data: {
-    linkpdf: string;
-    tipo: string;
-    titulo: string;
-  }) => {
-    if (!data.tipo) {
-      alert('Selecione um tipo de modelo!');
+  const onSubmit = async (data: { linkpdf: string; tipo: string; titulo: string }) => {
+    if (!data.tipo || (data.tipo !== 'Receita' && data.tipo !== 'Laudo')) {
+      alert('Selecione um tipo válido!');
       return;
     }
-
-    // Garante que o tipo seja 'Receita' ou 'Laudo'
-    if (data.tipo !== 'Receita' && data.tipo !== 'Laudo') {
-      alert('Tipo de modelo inválido!');
-      return;
-    }
-
-    const report: Report = {
-      titulo: data.titulo,
-      linkpdf: data.linkpdf,
-      tipo: data.tipo as 'Receita' | 'Laudo'
-    };
 
     const urlPattern = /^(ftp|http|https):\/\/[^ "]+$/;
     if (!urlPattern.test(data.linkpdf)) {
-      alert(
-        'Link do modelo inválido! \nPor favor, insira um link válido (ftp|http|https)'
-      );
+      alert('Link inválido! Use um link completo (http:// ou https://)');
       return;
     }
-
+    
+    setIsSubmitting(true);
     try {
-      const response = await addReport(report);
-      alert('Modelo de relatório adicionado com sucesso!');
-      console.log('Resposta da API:', response);
+      await onReportAdded({
+        titulo: data.titulo,
+        linkpdf: data.linkpdf,
+        tipo: data.tipo as 'Receita' | 'Laudo'
+      });
+      // Fecha o dialog após sucesso
+      document.getElementById('closeDialog')?.click();
     } catch (error) {
-      console.error('Erro ao adicionar relatório:', error);
-      alert('Erro ao adicionar relatório. Por favor, tente novamente.');
+      console.error('Erro ao adicionar:', error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
     <Dialog>
-      {/* button para abrir dialogContent */}
       <DialogTrigger asChild>
         <button className="bg-[#EC0054] items-center p-4 rounded-2xl">
           <Image src={plusIcon} alt="Adicionar modelo" />
@@ -96,7 +75,6 @@ const NewModelDialog: React.FC = () => {
       </DialogTrigger>
 
       <DialogContent className="w-[560px]">
-        {/* Titulo*/}
         <DialogHeader className="flex w-full bg-[#ECE6F0] pt-6 pb-2 items-start pl-6">
           <DialogTitle className="text-[24px] text-[#1A1847] leading-8">
             Novo modelo
@@ -224,22 +202,18 @@ const NewModelDialog: React.FC = () => {
           </div>
         </form>
 
-        {/* buttons de fechar e salvar */}
         <DialogFooter className="flex gap-4 justify-end p-6 bg-[#ECE6F0]">
-          <DialogClose className="text-[#1A1847] leading-6 font-medium text-[14px]">
-            <button
-              type="button"
-              className="text-[#404AA0] leading-6 font-medium text-[14px] px-4 py-2 rounded-[100px] border border-transparent transition-all"
-            >
+          <DialogClose asChild>
+            <button id="closeDialog" className="text-[#404AA0] leading-6 font-medium text-[14px] px-4 py-2 rounded-[100px] border border-transparent transition-all">
               Cancelar
             </button>
           </DialogClose>
-
           <button
             onClick={handleSubmit(onSubmit)}
-            className="bg-[#404AA0] text-[#DFE0FF] leading-6 font-medium text-[14px] px-4 py-2 rounded-[100px] transition-all"
+            disabled={isSubmitting}
+            className="bg-[#404AA0] text-[#DFE0FF] leading-6 font-medium text-[14px] px-4 py-2 rounded-[100px] transition-all disabled:opacity-50"
           >
-            Salvar modelo
+            {isSubmitting ? 'Salvando...' : 'Salvar modelo'}
           </button>
         </DialogFooter>
       </DialogContent>
