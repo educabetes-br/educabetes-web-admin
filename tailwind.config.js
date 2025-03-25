@@ -53,7 +53,8 @@ module.exports = {
         },
         blue: '#404AA0',
         lightBlue: '#8D8BC1',
-        dark: '#111111'
+        dark: '#111111',
+        red: '#EC0054'
       },
       fontFamily: {
         firaSans: ['Fira Sans'],
