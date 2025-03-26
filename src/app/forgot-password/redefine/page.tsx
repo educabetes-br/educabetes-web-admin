@@ -15,7 +15,7 @@ interface FormData extends FieldValues {
   repeatPassword: string;
 }
 
-export default function Login() {
+export default function Redefine() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);

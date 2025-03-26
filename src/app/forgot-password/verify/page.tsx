@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { Button, CardLogo } from 'components';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from 'components/ui/input-otp';
 import { ArrowLeft } from 'lucide-react';
@@ -8,7 +8,7 @@ import { REGEXP_ONLY_DIGITS } from 'input-otp';
 import api from 'services/api';
 import { useForm, SubmitHandler, type FieldValues } from 'react-hook-form';
 
-export default function ForgotPassword() {
+function Verify() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const userEmail = searchParams.get('email') as string;
@@ -41,7 +41,6 @@ export default function ForgotPassword() {
   const handleValidateCode: SubmitHandler<FieldValues> = async () => {
     try {
       setLoading(true);
-      console.log('userEmail:', code);
       const response = await api.post('/validate', {
         userEmail,
         code
@@ -131,5 +130,13 @@ export default function ForgotPassword() {
         </form>
       </CardLogo>
     </div>
+  );
+}
+
+export default function VerifySuspense() {
+  return (
+    <Suspense fallback={<div>Carregando...</div>}>
+      <Verify />
+    </Suspense>
   );
 }
