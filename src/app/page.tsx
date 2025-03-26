@@ -1,16 +1,8 @@
 'use client';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
 
 export default function Home() {
-  const router = useRouter();
-  const session = useSession({
-    required: true,
-    onUnauthenticated() {
-      router.replace('/login');
-    }
-  });
-
+  redirect('/login');
   return (
     <div className="flex flex-1 flex-col h-full justify-around items-center bg-[#404AA0]">
       <div className="flex flex-col justify-center items-center">
