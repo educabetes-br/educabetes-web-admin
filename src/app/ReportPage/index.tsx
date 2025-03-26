@@ -51,7 +51,7 @@ const ReportsPage: React.FC = () => {
   return (
     <CardMenu
       titulo="Modelos de Receitas e Relatórios"
-      children={
+      cardContent={
         <GetReportsMenu 
           reports={reports} 
           loading={loading} 
@@ -60,7 +60,7 @@ const ReportsPage: React.FC = () => {
           onDeleteReport={handleDeleteReport}
         />
       }
-      children2={<NewModelDialog onReportAdded={handleAddReport} />}
+      addButton={<NewModelDialog onReportAdded={handleAddReport} />}
     />
   );
 };
