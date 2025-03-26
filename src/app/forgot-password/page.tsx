@@ -16,6 +16,7 @@ interface FormData extends FieldValues {
 export default function ForgotPassword() {
   const router = useRouter();
   const [error, setError] = React.useState<string | null>(null);
+  const [loading, setLoading] = React.useState(false);
   const {
     register,
     handleSubmit,
@@ -37,6 +38,8 @@ export default function ForgotPassword() {
       }
     } catch (error) {
       console.error('Erro ao enviar o email:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -44,6 +47,7 @@ export default function ForgotPassword() {
     data: FormData
   ) => {
     try {
+      setLoading(true);
       console.log('data:', data);
       const res = await verifyEmail(data.email);
 
@@ -82,7 +86,11 @@ export default function ForgotPassword() {
               ⚠︎ {error}
             </p>
           )}
-          <Button text="Enviar código de verificação" type="submit" />
+          <Button
+            text="Enviar código de verificação"
+            type="submit"
+            loading={loading}
+          />
         </form>
         <Button
           text="Voltar"

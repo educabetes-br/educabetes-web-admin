@@ -19,6 +19,7 @@ export default function Login() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const {
     register,
@@ -29,16 +30,19 @@ export default function Login() {
   });
 
   const handleUpdatePassword: SubmitHandler<FieldValues> = async (data) => {
-    // confere se o email existe
     setError(null);
+    setLoading(true);
+    // confere se o email existe
     const checkEmail = await verifyEmail(data.email);
     if (!checkEmail.exists) {
+      setLoading(false);
       setError('E-mail não encontrado');
       return;
     }
 
     // confere se as senhas novas são iguais
     if (data.password !== data.repeatPassword) {
+      setLoading(false);
       setError('As senhas não coincidem');
       return;
     }
@@ -50,6 +54,8 @@ export default function Login() {
     } else {
       setError('Erro ao atualizar a senha');
     }
+
+    setLoading(false);
   };
 
   return (
@@ -123,7 +129,7 @@ export default function Login() {
             </p>
           )}
           <div className="flex flex-col gap-4 items-center">
-            <Button text="Retornar ao Login" type="submit" />
+            <Button text="Retornar ao Login" type="submit" loading={loading} />
           </div>
         </form>
         <Button

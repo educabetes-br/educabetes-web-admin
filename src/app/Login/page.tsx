@@ -19,6 +19,7 @@ export default function Login() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -27,6 +28,7 @@ export default function Login() {
 
   const handleLogin: SubmitHandler<FormData> = async (data: FormData) => {
     try {
+      setLoading(true);
       const result = await signIn('credentials', {
         redirect: false,
         email: data.email,
@@ -41,6 +43,8 @@ export default function Login() {
       router.push('/');
     } catch (error) {
       console.error('Erro no catch', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -90,6 +94,7 @@ export default function Login() {
               text="Entrar"
               type="submit"
               icon={<Image src={Enter} alt="Enter Icon" />}
+              loading={loading}
             />
           </div>
         </form>
@@ -97,6 +102,7 @@ export default function Login() {
           variant="transparent"
           text="Esqueci minha senha"
           onClick={() => router.push('/forgot-password')}
+          loading={loading}
         />
       </CardLogo>
     </div>

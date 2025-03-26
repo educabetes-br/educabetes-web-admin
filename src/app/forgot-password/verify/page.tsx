@@ -15,13 +15,15 @@ export default function ForgotPassword() {
   const [code, setCode] = useState('');
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [codeError, setCodeError] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [loadingResend, setLoadingResend] = useState(false);
   const { handleSubmit } = useForm<FormData>();
 
   const handleResendMail = async (userEmail: string) => {
     try {
+      setLoadingResend(true);
       setCodeError(false);
       fetchTimer();
-      setIsButtonEnabled(false);
       const response = await api.post('/mail', { userEmail });
 
       if (response.status === 200) {
@@ -30,11 +32,15 @@ export default function ForgotPassword() {
       }
     } catch (error) {
       console.error('Erro ao enviar o email:', error);
+    } finally {
+      setLoadingResend(false);
+      setIsButtonEnabled(false);
     }
   };
 
   const handleValidateCode: SubmitHandler<FieldValues> = async () => {
     try {
+      setLoading(true);
       console.log('userEmail:', code);
       const response = await api.post('/validate', {
         userEmail,
@@ -50,6 +56,8 @@ export default function ForgotPassword() {
     } catch (error) {
       console.error('Error validating code:', error);
       setCodeError(true);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -100,6 +108,7 @@ export default function ForgotPassword() {
           <Button
             text="Reenviar código"
             type="button"
+            loading={loadingResend}
             disabled={!isButtonEnabled}
             onClick={() => handleResendMail(userEmail)}
             className="w-full"
@@ -108,6 +117,7 @@ export default function ForgotPassword() {
             text="Redefinir senha"
             disabled={code.length < 6}
             type="submit"
+            loading={loading}
           />
           <Button
             text="Voltar"

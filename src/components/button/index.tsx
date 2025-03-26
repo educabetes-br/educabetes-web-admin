@@ -2,6 +2,7 @@
 import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from 'utils';
+import { ScaleLoader } from 'react-spinners';
 
 const buttonVariants = cva(
   'flex gap-2 w-fit px-4 py-3 font-medium font-firaSansCondensed items-center justify-center whitespace-nowrap rounded-full text-sm',
@@ -28,18 +29,28 @@ export interface ButtonProps
     VariantProps<typeof buttonVariants> {
   text: string;
   icon?: React.ReactNode;
+  loading?: boolean;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, text, icon, variant, disabled, ...props }, ref) => {
+  ({ className, text, icon, variant, disabled, loading, ...props }, ref) => {
     return (
       <button
         className={cn(buttonVariants({ variant, disabled, className }))}
         ref={ref}
         {...props}
       >
-        {icon}
-        {text}
+        {loading ? (
+          <ScaleLoader
+            color={variant === 'transparent' ? '#404AA0' : '#DFE0FF'}
+            height={20}
+          />
+        ) : (
+          <>
+            {icon}
+            {text}
+          </>
+        )}
       </button>
     );
   }
