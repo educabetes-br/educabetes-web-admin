@@ -129,7 +129,7 @@ export default function Redefine() {
             </p>
           )}
           <div className="flex flex-col gap-4 items-center">
-            <Button text="Retornar ao Login" type="submit" loading={loading} />
+            <Button text="Redefinir senha" type="submit" loading={loading} />
           </div>
         </form>
         <Button
