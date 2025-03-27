@@ -11,7 +11,8 @@ import pencil from './ModelList/pencil.svg';
 import reportIcon from './ModelMenu/reportIcon.svg';
 import searchIcon from './ModelMenu/searchIcon.svg';
 import eyeMenu from './ModelMenu/eyeMenu.svg';
-
+import nextPage from './ModelMenu/nextPage.svg';
+import prevPage from './ModelMenu/prevPage.svg';
 
 export { 
   Logo,
@@ -26,4 +27,6 @@ export {
   reportIcon,
   searchIcon,
   eyeMenu,
+  nextPage,
+  prevPage,
  };

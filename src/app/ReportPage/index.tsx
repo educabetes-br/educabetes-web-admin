@@ -60,7 +60,6 @@ const ReportsPage: React.FC = () => {
           onDeleteReport={handleDeleteReport}
         />
       }
-      addButton={<NewModelDialog onReportAdded={handleAddReport} />}
     />
   );
 };
