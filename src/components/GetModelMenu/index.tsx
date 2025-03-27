@@ -58,8 +58,27 @@ const GetReportsMenu: React.FC<GetReportsMenuProps> = ({
 
   if (loading) {
     return (
-      <div className="w-full h-full flex justify-center items-center">
-        <div role="status">
+      <div className="bg-white  flex-1 rounded-b-[28px] text-white flex flex-col">
+        {/* Campo de busca fixo */}
+        <div className="sticky top-0 ml-8 bg-white z-10 w-[60%]">
+          <div className="relative flex justify-center items-center">
+            <div className="absolute left-1">
+              <Image src={searchIcon} alt="Search icon" />
+            </div>
+            <input
+              type="text"
+              placeholder="Buscar relatório..."
+              value={searchTerm}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+                setCurrentPage(1); // Resetar para a primeira página ao buscar
+              }}
+              className="w-full focus:outline-none p-3 pl-12 bg-[#ECE6F0] rounded-[28px] text-black"
+            />
+          </div>
+        </div>
+
+        <div className="w-full h-full flex justify-center items-center" role="status">
           <svg
             aria-hidden="true"
             className="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-[#1A1847]"
