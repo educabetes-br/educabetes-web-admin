@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { reportIcon, eyeMenu, searchIcon } from '../../assets/index';
-import DeleteModelCard from '../ModelList/DeleteModel';
-import EditModelDialog from '../ModelList/EditModelDialog';
+import DeleteModelCard from '../ModelFunctions/DeleteModel';
+import EditModelDialog from '../ModelFunctions/EditModelDialog';
+import NewModelDialog from 'components/ModelFunctions/NewModelDialog';
 import { Report } from 'services/Reports/GetReport';
 import {
   Pagination,
@@ -18,6 +19,7 @@ interface GetReportsMenuProps {
   error: string | null;
   onUpdateReport: (updatedReport: Report) => void;
   onDeleteReport: (deletedId: number) => void;
+  onAddReport: (newReport: Omit<Report, 'id'>) => Promise<Report>;
   itemsPerPage?: number;
 }
 
@@ -27,6 +29,7 @@ const GetReportsMenu: React.FC<GetReportsMenuProps> = ({
   error,
   onUpdateReport,
   onDeleteReport,
+  onAddReport,
   itemsPerPage = 6
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -59,24 +62,6 @@ const GetReportsMenu: React.FC<GetReportsMenuProps> = ({
   if (loading) {
     return (
       <div className="bg-white  flex-1 rounded-b-[28px] text-white flex flex-col">
-        {/* Campo de busca fixo */}
-        <div className="sticky top-0 ml-8 bg-white z-10 w-[60%]">
-          <div className="relative flex justify-center items-center">
-            <div className="absolute left-1">
-              <Image src={searchIcon} alt="Search icon" />
-            </div>
-            <input
-              type="text"
-              placeholder="Buscar relatório..."
-              value={searchTerm}
-              onChange={(e) => {
-                setSearchTerm(e.target.value);
-                setCurrentPage(1); // Resetar para a primeira página ao buscar
-              }}
-              className="w-full focus:outline-none p-3 pl-12 bg-[#ECE6F0] rounded-[28px] text-black"
-            />
-          </div>
-        </div>
 
         <div className="w-full h-full flex justify-center items-center" role="status">
           <svg
@@ -177,7 +162,7 @@ const GetReportsMenu: React.FC<GetReportsMenuProps> = ({
 
       {/* Paginação */}
       {totalPages > 1 && (
-        <footer className="bg-[#F3EDF7] rounded-b-[28px] py-4 pl-1">
+        <footer className="bg-[#F3EDF7] flex flex-row items-center rounded-b-[28px] py-4 pl-1 pr-4">
           <Pagination>
             <PaginationContent>
               <PaginationItem>
@@ -211,6 +196,13 @@ const GetReportsMenu: React.FC<GetReportsMenuProps> = ({
               </PaginationItem>
             </PaginationContent>
           </Pagination>
+
+            <div>
+              <NewModelDialog 
+                buttontrigger='buttonfooter'
+                onAddSuccess={onAddReport}
+                />
+            </div>
         </footer>
       )}
     </div>

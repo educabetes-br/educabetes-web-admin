@@ -13,6 +13,7 @@ import searchIcon from './ModelMenu/searchIcon.svg';
 import eyeMenu from './ModelMenu/eyeMenu.svg';
 import nextPage from './ModelMenu/nextPage.svg';
 import prevPage from './ModelMenu/prevPage.svg';
+import NewModelIcon from './ModelMenu/newModelIcon.svg';
 
 export { 
   Logo,
@@ -29,4 +30,5 @@ export {
   eyeMenu,
   nextPage,
   prevPage,
+  NewModelIcon,
  };

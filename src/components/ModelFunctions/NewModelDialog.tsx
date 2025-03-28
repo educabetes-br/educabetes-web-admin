@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Image from 'next/image';
+import { ReportInput, Report } from '../../services/Reports/PostReport';
+import { NewModelIcon } from 'assets/index';
 import {
   eye,
   download,
@@ -8,20 +10,38 @@ import {
   checked,
   plusIcon
 } from '../../assets/index';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger, DialogClose } from '../ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+  DialogTrigger,
+  DialogClose
+} from '../ui/dialog';
 
 interface NewModelDialogProps {
-  onReportAdded: (report: { titulo: string; linkpdf: string; tipo: 'Receita' | 'Laudo' }) => Promise<void>;
+  buttontrigger: string;
+  onAddSuccess: (newReport: Omit<Report, 'id'>) => Promise<Report>;
 }
 
-const NewModelDialog: React.FC<NewModelDialogProps> = ({ onReportAdded }) => {
-  const { register, handleSubmit, formState: { errors }, watch, setValue } = useForm<{
+const NewModelDialog: React.FC<NewModelDialogProps> = ({ buttontrigger, onAddSuccess }) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+    watch,
+    setValue,
+    reset
+  } = useForm<{
     linkpdf: string;
     tipo: string;
     titulo: string;
   }>();
 
-  const [selectedModel, setSelectedModel] = useState<'Receita' | 'Laudo' | null>(null);
+  const [selectedModel, setSelectedModel] = useState<
+    'Receita' | 'Laudo' | null
+  >(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleRadioClick = (value: 'Receita' | 'Laudo') => {
@@ -38,7 +58,11 @@ const NewModelDialog: React.FC<NewModelDialogProps> = ({ onReportAdded }) => {
     window.open(watch('linkpdf'), '_blank');
   };
 
-  const onSubmit = async (data: { linkpdf: string; tipo: string; titulo: string }) => {
+  const onSubmit = async (data: {
+    linkpdf: string;
+    tipo: string;
+    titulo: string;
+  }) => {
     if (!data.tipo || (data.tipo !== 'Receita' && data.tipo !== 'Laudo')) {
       alert('Selecione um tipo válido!');
       return;
@@ -49,18 +73,15 @@ const NewModelDialog: React.FC<NewModelDialogProps> = ({ onReportAdded }) => {
       alert('Link inválido! Use um link completo (http:// ou https://)');
       return;
     }
-    
+
     setIsSubmitting(true);
     try {
-      await onReportAdded({
-        titulo: data.titulo,
-        linkpdf: data.linkpdf,
-        tipo: data.tipo as 'Receita' | 'Laudo'
-      });
-      // Fecha o dialog após sucesso
+      const createdReport = await onAddSuccess(data as ReportInput);
+      reset();
+      setSelectedModel(null);
       document.getElementById('closeDialog')?.click();
     } catch (error) {
-      console.error('Erro ao adicionar:', error);
+      alert('Erro ao adicionar relatório. Por favor, tente novamente.');
     } finally {
       setIsSubmitting(false);
     }
@@ -69,9 +90,23 @@ const NewModelDialog: React.FC<NewModelDialogProps> = ({ onReportAdded }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button className="bg-[#EC0054] items-center p-4 rounded-2xl">
-          <Image src={plusIcon} alt="Adicionar modelo" />
-        </button>
+        {buttontrigger === 'buttonfooter' ? (
+          <button className="bg-[#EC0054] items-center p-4 rounded-2xl">
+            <Image src={plusIcon} alt="Adicionar modelo" />
+          </button>
+        ) : buttontrigger === 'novo modelo' ? (
+            <button className="flex items-center gap-3 min-w-[138px] w-full">
+              <Image src={NewModelIcon} alt="Adicionar modelo" />
+              <p className='text-[#1A1847] leading-6 flex-1'>Novo Modelo</p>
+            </button>
+        ) : (
+          <div className="flex items-center cursor-pointer">
+            <Image src={plusIcon} alt="Adicionar modelo" />
+            <span className="text-[#1A1847] font-medium">
+              Adicionar props do modelo // "buttonfooter" ou "novo modelo"
+            </span>
+          </div>
+        )}
       </DialogTrigger>
 
       <DialogContent className="w-[560px]">
@@ -83,11 +118,12 @@ const NewModelDialog: React.FC<NewModelDialogProps> = ({ onReportAdded }) => {
 
         {/* inputs */}
         <form
-          className="flex flex-col gap-4 py-2 px-6"
+          className="flex flex-col gap-4 pt-2"
           onSubmit={handleSubmit(onSubmit)}
+          noValidate
         >
           {/* Tipo de Modelo */}
-          <div className="flex flex-col gap-3 items-start">
+          <div className="flex flex-col gap-3 items-start px-6">
             <label
               htmlFor="titulo"
               className={`font-medium leading-[20px] text-[14px] text-[#1A1847]`}
@@ -149,15 +185,22 @@ const NewModelDialog: React.FC<NewModelDialogProps> = ({ onReportAdded }) => {
           </div>
 
           {/* Nome do modelo e link */}
-          <div className="flex flex-col gap-4">
-            <input
-              type="text"
-              className="w-full focus:outline-none focus:ring-[1.5px] focus:ring-[#404AA0] focus:border-[#404AA0] border border-[#8D8BC1] p-4 rounded-sm placeholder:text-[16px]"
-              placeholder="Nome do modelo"
-              {...register('titulo', {
-                required: 'O nome do modelo é obrigatório'
-              })}
-            />
+          <div className="flex flex-col gap-4 px-6">
+            <div>
+              <input
+                type="text"
+                id="titulo"
+                className={`w-full focus:outline-none focus:ring-[1.5px] ${
+                  errors.titulo
+                    ? 'focus:ring-red-500 border-red-500'
+                    : 'focus:ring-[#404AA0] focus:border-[#404AA0]'
+                } border border-[#8D8BC1] p-4 rounded-sm placeholder:text-[16px]`}
+                placeholder="Nome do modelo"
+                {...register('titulo', {
+                  required: 'O nome do modelo é obrigatório'
+                })}
+              />
+            </div>
 
             <div className="relative">
               <div className="relative flex items-center">
@@ -174,48 +217,59 @@ const NewModelDialog: React.FC<NewModelDialogProps> = ({ onReportAdded }) => {
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* button para visualizar modelo */}
-          <div>
-            <button
-              type="button"
-              onClick={handleOpenLink}
-              className={`flex flex-row items-center gap-2 px-4 h-[40px] rounded-[100px] transition-all border ${
-                watch('linkpdf') ? 'border-[#939090]' : 'bg-white'
-              }`}
-            >
-              <div
-                className={`${watch('linkpdf') ? '' : 'opacity-[38%]'} transition-opacity`}
-              >
-                <Image src={eye} alt="Visualizar modelo" />
-              </div>
-
-              <p
-                className={`transition-all text-[#1A1847] text-[14px] font-medium ${
-                  watch('linkpdf') ? 'text-[#404AA0]' : 'opacity-[38%]'
+            {/* button para visualizar modelo */}
+            <div>
+              <button
+                type="button"
+                onClick={handleOpenLink}
+                className={`flex flex-row items-center gap-2 px-4 h-[40px] rounded-[100px] transition-all border ${
+                  watch('linkpdf') ? 'border-[#939090]' : 'bg-white'
                 }`}
               >
-                Visualizar modelo
-              </p>
-            </button>
-          </div>
-        </form>
+                <div
+                  className={`${watch('linkpdf') ? '' : 'opacity-[38%]'} transition-opacity`}
+                >
+                  <Image src={eye} alt="Visualizar modelo" />
+                </div>
 
-        <DialogFooter className="flex gap-4 justify-end p-6 bg-[#ECE6F0]">
-          <DialogClose asChild>
-            <button id="closeDialog" className="text-[#404AA0] leading-6 font-medium text-[14px] px-4 py-2 rounded-[100px] border border-transparent transition-all">
-              Cancelar
+                <p
+                  className={`transition-all text-[#1A1847] text-[14px] font-medium ${
+                    watch('linkpdf') ? 'text-[#404AA0]' : 'opacity-[38%]'
+                  }`}
+                >
+                  Visualizar modelo
+                </p>
+              </button>
+            </div>
+          </div>
+
+          <DialogFooter className="flex gap-4 justify-end p-6 bg-[#ECE6F0]">
+            <DialogClose asChild>
+              <button
+                id="closeDialog"
+                onClick={() => reset()}
+                className="text-[#404AA0] leading-6 font-medium text-[14px] px-4 py-2 rounded-[100px] border border-transparent hover:border-[#404AA0] transition-all"
+              >
+                Cancelar
+              </button>
+            </DialogClose>
+            <button
+              type="submit"
+              disabled={isSubmitting || !isValid}
+              className="bg-[#404AA0] text-[#DFE0FF] leading-6 font-medium text-[14px] px-4 py-2 rounded-[100px] transition-all hover:bg-[#303880] disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isSubmitting ? (
+                <span className="flex items-center gap-2">
+                  <span className="inline-block w-4 h-4 border-2 border-t-transparent border-white rounded-full animate-spin"></span>
+                  Salvando...
+                </span>
+              ) : (
+                'Salvar modelo'
+              )}
             </button>
-          </DialogClose>
-          <button
-            onClick={handleSubmit(onSubmit)}
-            disabled={isSubmitting}
-            className="bg-[#404AA0] text-[#DFE0FF] leading-6 font-medium text-[14px] px-4 py-2 rounded-[100px] transition-all disabled:opacity-50"
-          >
-            {isSubmitting ? 'Salvando...' : 'Salvar modelo'}
-          </button>
-        </DialogFooter>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   );

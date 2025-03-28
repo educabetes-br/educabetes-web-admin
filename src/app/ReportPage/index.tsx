@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import CardMenu from 'components/CardMenu';
 import GetReportsMenu from 'components/GetModelMenu';
-import NewModelDialog from 'components/ModelList/NewModelDialog';
 import { Report, getReports } from 'services/Reports/GetReport';
-import { addReport } from 'services/Reports/PostReport';
+import { addReport, ReportInput } from 'services/Reports/PostReport';
 
 const ReportsPage: React.FC = () => {
   const [reports, setReports] = useState<Report[]>([]);
@@ -26,15 +25,17 @@ const ReportsPage: React.FC = () => {
   }, []);
 
   // Função para adicionar um novo relatório
-  const handleAddReport = async (newReport: Omit<Report, 'id'>) => {
+  const handleAddReport = async (newReport: ReportInput): Promise<Report> => {
     try {
       const addedReport = await addReport(newReport);
-      setReports(prev => [...prev, addedReport as unknown as Report]);
+      setReports(prev => [...prev, addedReport]);
+      return addedReport;
     } catch (err) {
       alert('Erro ao adicionar relatório.');
-      throw err; // Permite que o NewModelDialog lide com o erro
+      throw err;
     }
   };
+  
 
   // Função para atualizar um relatório existente
   const handleUpdateReport = (updatedReport: Report) => {
@@ -58,6 +59,7 @@ const ReportsPage: React.FC = () => {
           error={error}
           onUpdateReport={handleUpdateReport}
           onDeleteReport={handleDeleteReport}
+          onAddReport={handleAddReport}
         />
       }
     />

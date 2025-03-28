@@ -1,12 +1,16 @@
 import api from "../api";
 
-export type Report = {
-  titulo: string,
-  linkpdf: string,
-  tipo: 'Receita' | 'Laudo',
-}
+export type ReportInput = {
+  titulo: string;
+  linkpdf: string;
+  tipo: 'Receita' | 'Laudo';
+};
 
-export const addReport = async (report: Report): Promise<Report> => {
+export type Report = ReportInput & {
+  id: number;
+};
+
+export const addReport = async (report: ReportInput): Promise<Report> => {
   try {
     const response = await api.post("/reports", report);
     return response.data.data;
@@ -14,4 +18,4 @@ export const addReport = async (report: Report): Promise<Report> => {
     console.error("Error adding report:", error);
     throw error;
   }
-}
+};
