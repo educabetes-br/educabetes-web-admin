@@ -5,7 +5,6 @@ import { ReportInput, Report } from '../../services/Reports/PostReport';
 import { NewModelIcon } from 'assets/index';
 import {
   eye,
-  download,
   unchecked,
   checked,
   plusIcon
@@ -79,7 +78,7 @@ const NewModelDialog: React.FC<NewModelDialogProps> = ({
 
     setIsSubmitting(true);
     try {
-      const createdReport = await onAddSuccess(data as ReportInput);
+      await onAddSuccess(data as ReportInput);
       reset();
       setSelectedModel(null);
       document.getElementById('closeDialog')?.click();
@@ -106,7 +105,7 @@ const NewModelDialog: React.FC<NewModelDialogProps> = ({
           <div className="flex items-center cursor-pointer">
             <Image src={plusIcon} alt="Adicionar modelo" />
             <span className="text-[#1A1847] font-medium">
-              Adicionar props do modelo // "buttonfooter" ou "novo modelo"
+              Adicionar props do modelo // buttonfooter ou novo modelo
             </span>
           </div>
         )}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import Image from 'next/image';
-import { eye, download, unchecked, checked, pencil } from '../../assets/index';
+import { eye, unchecked, checked, pencil } from '../../assets/index';
 import { updateReport } from 'services/Reports/UpdateReport';
 import {
   Dialog,
