@@ -18,9 +18,12 @@ interface DeleteModelCardProps {
 
 const DeleteModelCard: React.FC<DeleteModelCardProps> = ({ reportId, onDeleteSuccess }) => {
   const [open, setOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
 
   const handleDelete = async () => {
     try {
+      setIsSubmitting(true);
       // Chama a função de exclusão da API
       await deleteReport(reportId);
 
@@ -33,6 +36,8 @@ const DeleteModelCard: React.FC<DeleteModelCardProps> = ({ reportId, onDeleteSuc
       }
     } catch (error) {
       alert("Erro ao excluir o modelo.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -60,17 +65,23 @@ const DeleteModelCard: React.FC<DeleteModelCardProps> = ({ reportId, onDeleteSuc
 
         <DialogFooter className="flex flex-row justify-end gap-2 border-t p-6">
           <DialogClose asChild>
-            <button className="p-2 text-[14px] leading-[20px] text-[#404AA0] font-medium rounded-lg">
+            <button className="p-2 text-[14px] leading-[20px] text-[#404AA0] font-medium rounded-lg border border-transparent hover:border-[#404AA0]">
               Cancelar
             </button>
           </DialogClose>
 
           <button
-            type="button"
+            type="submit"
             onClick={handleDelete}
-            className="p-2 text-[14px] leading-[20px] text-[#404AA0] font-medium rounded-lg"
-          >
-            Excluir
+            className="p-2 text-[14px] leading-[20px] text-[#404AA0] font-medium rounded-lg border border-transparent hover:border-[#404AA0]">
+            {isSubmitting ? (
+              <span className="flex items-center gap-2">
+                <span className="inline-block w-4 h-4 border-2 border-t-transparent border-[#EC0054] rounded-full animate-spin"></span>
+                Excluindo...
+              </span>
+            ) : (
+              "Excluir"
+            )}
           </button>
         </DialogFooter>
       </DialogContent>

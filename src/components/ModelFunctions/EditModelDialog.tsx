@@ -247,7 +247,7 @@ const EditModelDialog: React.FC<EditModelDialogProps> = ({
           <DialogClose className="text-[#1A1847] leading-6 font-medium text-[14px]">
             <button
               type="button"
-              className="text-[#404AA0] leading-6 font-medium text-[14px] px-4 py-2 rounded-[100px] border border-transparent transition-all"
+              className="text-[#404AA0] leading-6 font-medium text-[14px] px-4 py-2 rounded-[100px] border border-transparent hover:border-[#404AA0] transition-all"
             >
               Cancelar
             </button>
