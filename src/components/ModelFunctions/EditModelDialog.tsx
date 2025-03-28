@@ -198,47 +198,43 @@ const EditModelDialog: React.FC<EditModelDialogProps> = ({
               })}
             />
 
-            <div className="relative">
-              <div className="relative flex items-center">
-                <input
-                  type="text"
-                  className="w-full flex flex-1 focus:outline-none focus:ring-[1.5px] focus:ring-[#404AA0] focus:border-[#404AA0] border border-[#8D8BC1] p-4 rounded-sm placeholder:text-[16px] pr-10"
-                  placeholder="Link do modelo"
-                  {...register('linkpdf', {
-                    required: 'O link do modelo é obrigatório'
-                  })}
-                />
-                <div className="absolute right-1">
-                  <Image src={download} alt="Baixar modelo" />
+            <div className="flex items-center">
+              <input
+                type="text"
+                className="w-full flex flex-1 focus:outline-none focus:ring-[1.5px] focus:ring-[#404AA0] focus:border-[#404AA0] border border-[#8D8BC1] p-4 rounded-sm placeholder:text-[16px]"
+                placeholder="Link do modelo"
+                {...register('linkpdf', {
+                  required: 'O link do modelo é obrigatório'
+                })}
+              />
+            </div>
+
+            {/* button para visualizar modelo */}
+            <div>
+              <button
+                type="button"
+                onClick={handleOpenLink}
+                className={`flex flex-row items-center gap-2 px-4 h-[40px] rounded-[100px] transition-all border ${
+                  watch('linkpdf') ? 'border-[#939090]' : 'bg-white'
+                }`}
+              >
+                <div
+                  className={`${watch('linkpdf') ? '' : 'opacity-[38%]'} transition-opacity`}
+                >
+                  <Image src={eye} alt="Visualizar modelo" />
                 </div>
-              </div>
+
+                <p
+                  className={`transition-all text-[#1A1847] text-[14px] font-medium ${
+                    watch('linkpdf') ? 'text-[#404AA0]' : 'opacity-[38%]'
+                  }`}
+                >
+                  Visualizar modelo
+                </p>
+              </button>
             </div>
           </div>
 
-          {/* button para visualizar modelo */}
-          <div>
-            <button
-              type="button"
-              onClick={handleOpenLink}
-              className={`flex flex-row items-center gap-2 px-4 h-[40px] rounded-[100px] transition-all border ${
-                watch('linkpdf') ? 'border-[#939090]' : 'bg-white'
-              }`}
-            >
-              <div
-                className={`${watch('linkpdf') ? '' : 'opacity-[38%]'} transition-opacity`}
-              >
-                <Image src={eye} alt="Visualizar modelo" />
-              </div>
-
-              <p
-                className={`transition-all text-[#1A1847] text-[14px] font-medium ${
-                  watch('linkpdf') ? 'text-[#404AA0]' : 'opacity-[38%]'
-                }`}
-              >
-                Visualizar modelo
-              </p>
-            </button>
-          </div>
         </form>
 
         {/* buttons de fechar e salvar */}

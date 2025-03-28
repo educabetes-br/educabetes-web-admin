@@ -25,7 +25,10 @@ interface NewModelDialogProps {
   onAddSuccess: (newReport: Omit<Report, 'id'>) => Promise<Report>;
 }
 
-const NewModelDialog: React.FC<NewModelDialogProps> = ({ buttontrigger, onAddSuccess }) => {
+const NewModelDialog: React.FC<NewModelDialogProps> = ({
+  buttontrigger,
+  onAddSuccess
+}) => {
   const {
     register,
     handleSubmit,
@@ -95,10 +98,10 @@ const NewModelDialog: React.FC<NewModelDialogProps> = ({ buttontrigger, onAddSuc
             <Image src={plusIcon} alt="Adicionar modelo" />
           </button>
         ) : buttontrigger === 'novo modelo' ? (
-            <button className="flex items-center gap-3 min-w-[138px] w-full">
-              <Image src={NewModelIcon} alt="Adicionar modelo" />
-              <p className='text-[#1A1847] leading-6 flex-1'>Novo Modelo</p>
-            </button>
+          <button className="flex items-center gap-3 min-w-[138px] w-full">
+            <Image src={NewModelIcon} alt="Adicionar modelo" />
+            <p className="text-[#1A1847] leading-6 flex-1">Novo Modelo</p>
+          </button>
         ) : (
           <div className="flex items-center cursor-pointer">
             <Image src={plusIcon} alt="Adicionar modelo" />
@@ -184,7 +187,7 @@ const NewModelDialog: React.FC<NewModelDialogProps> = ({ buttontrigger, onAddSuc
             </div>
           </div>
 
-          {/* Nome do modelo e link */}
+          {/* Nome do modelo e link e button de visualizar*/}
           <div className="flex flex-col gap-4 px-6">
             <div>
               <input
@@ -202,20 +205,15 @@ const NewModelDialog: React.FC<NewModelDialogProps> = ({ buttontrigger, onAddSuc
               />
             </div>
 
-            <div className="relative">
-              <div className="relative flex items-center">
-                <input
-                  type="text"
-                  className="w-full flex flex-1 focus:outline-none focus:ring-[1.5px] focus:ring-[#404AA0] focus:border-[#404AA0] border border-[#8D8BC1] p-4 rounded-sm placeholder:text-[16px] pr-10"
-                  placeholder="Link do modelo"
-                  {...register('linkpdf', {
-                    required: 'O link do modelo é obrigatório'
-                  })}
-                />
-                <div className="absolute right-1">
-                  <Image src={download} alt="Baixar modelo" />
-                </div>
-              </div>
+            <div className="relative flex items-center">
+              <input
+                type="text"
+                className="w-full flex flex-1 focus:outline-none focus:ring-[1.5px] focus:ring-[#404AA0] focus:border-[#404AA0] border border-[#8D8BC1] p-4 rounded-sm placeholder:text-[16px] pr-10"
+                placeholder="Link do modelo"
+                {...register('linkpdf', {
+                  required: 'O link do modelo é obrigatório'
+                })}
+              />
             </div>
 
             {/* button para visualizar modelo */}
