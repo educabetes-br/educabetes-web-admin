@@ -39,12 +39,14 @@ const GetReportsMenu: React.FC<GetReportsMenuProps> = ({
     window.open(link, '_blank');
   };
 
-  // 🔍 Filtrar relatórios pelo título ou tipo
-  const filteredReports = reports.filter(
-    (report) =>
-      report.titulo.toLowerCase().includes(searchTerm.trim().toLowerCase()) ||
-      report.tipo.toLowerCase().includes(searchTerm.trim().toLowerCase())
-  );
+  // 🔍 Filtrar relatórios pelo título ou tipo, ignorando acentos
+  const filteredReports = reports.filter((report) => {
+    const normalizedSearchTerm = searchTerm.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    const normalizedTitulo = report.titulo.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+    return (
+      normalizedTitulo.includes(normalizedSearchTerm));
+  });
 
   // Cálculos de paginação
   const totalItems = filteredReports.length;
