@@ -32,13 +32,15 @@ const EditModelDialog: React.FC<EditModelDialogProps> = ({
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
     watch,
     setValue
   } = useForm<{ linkpdf: string; tipo: string; titulo: string }>();
 
   const [selectedModel, setSelectedModel] = useState<string | null>(null);
-  const [open, setOpen] = useState(false); // Add state to manage dialog open/close
+  const [open, setOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
 
   useEffect(() => {
     setValue('titulo', titulo);
@@ -69,6 +71,7 @@ const EditModelDialog: React.FC<EditModelDialogProps> = ({
     titulo: string;
   }) => {
     try {
+      setIsSubmitting(true);
       // Verifica se o tipo é válido
       if (data.tipo !== 'Receita' && data.tipo !== 'Laudo') {
         alert('Tipo de modelo inválido!');
@@ -90,7 +93,7 @@ const EditModelDialog: React.FC<EditModelDialogProps> = ({
         linkpdf: data.linkpdf,
         tipo: data.tipo as 'Receita' | 'Laudo'
       });
-
+      
       // Notifica o componente pai sobre a edição bem-sucedida
       if (onEditSuccess) {
         onEditSuccess(updatedReport);
@@ -100,6 +103,8 @@ const EditModelDialog: React.FC<EditModelDialogProps> = ({
     } catch (error) {
       console.error('Erro ao editar o modelo:', error);
       alert('Erro ao editar o modelo. Por favor, tente novamente.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -249,11 +254,20 @@ const EditModelDialog: React.FC<EditModelDialogProps> = ({
           </DialogClose>
 
           <button
-            onClick={handleSubmit(handleEditSuccess)}
-            className="bg-[#404AA0] text-[#DFE0FF] leading-6 font-medium text-[14px] px-4 py-2 rounded-[100px] transition-all"
-          >
-            Salvar modelo
-          </button>
+              type="submit"
+              disabled={isSubmitting || !isValid}
+              onClick={handleSubmit(handleEditSuccess)}
+              className="bg-[#404AA0] text-[#DFE0FF] leading-6 font-medium text-[14px] px-4 py-2 rounded-[100px] transition-all hover:bg-[#303880] disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isSubmitting ? (
+                <span className="flex items-center gap-2">
+                  <span className="inline-block w-4 h-4 border-2 border-t-transparent border-white rounded-full animate-spin"></span>
+                  Salvando...
+                </span>
+              ) : (
+                'Salvar modelo'
+              )}
+            </button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
