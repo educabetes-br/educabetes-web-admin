@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useState, useEffect } from 'react';
 import CardMenu from 'components/CardMenu';
 import GetReportsMenu from 'components/GetModelMenu';
