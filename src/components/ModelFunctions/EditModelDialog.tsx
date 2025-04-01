@@ -120,14 +120,14 @@ const EditModelDialog: React.FC<EditModelDialogProps> = ({
       <DialogContent className="w-[560px]">
         {/* Titulo*/}
         <DialogHeader className="flex w-full bg-[#ECE6F0] pt-6 pb-2 items-start pl-6">
-          <DialogTitle className="text-[24px] text-[#1A1847] leading-8">
+          <DialogTitle className="text-[24px] text-[#1A1847] leading-8 font-firaSans">
             Editar modelo
           </DialogTitle>
         </DialogHeader>
 
         {/* inputs */}
         <form
-          className="flex flex-col gap-4 py-2 px-6"
+          className="flex flex-col gap-4 py-2 px-6 font-firaSansCondensed"
           onSubmit={handleSubmit(handleEditSuccess)}
         >
           {/* Tipo de Modelo */}
@@ -219,7 +219,7 @@ const EditModelDialog: React.FC<EditModelDialogProps> = ({
               <button
                 type="button"
                 onClick={handleOpenLink}
-                className={`flex flex-row items-center gap-2 px-4 h-[40px] rounded-[100px] transition-all border ${
+                className={`flex flex-row leading-5 items-center gap-2 px-4 h-[40px] rounded-[100px] transition-all border ${
                   watch('linkpdf') ? 'border-[#939090]' : 'bg-white'
                 }`}
               >
@@ -243,11 +243,11 @@ const EditModelDialog: React.FC<EditModelDialogProps> = ({
         </form>
 
         {/* buttons de fechar e salvar */}
-        <DialogFooter className="flex gap-4 justify-end p-6 bg-[#ECE6F0]">
-          <DialogClose className="text-[#1A1847] leading-6 font-medium text-[14px]">
+        <DialogFooter className="flex gap-4 justify-end p-6 bg-[#ECE6F0] font-firaSansCondensed">
+          <DialogClose className="text-[#1A1847] leading-5 font-medium text-[14px]">
             <button
               type="button"
-              className="text-[#404AA0] leading-6 font-medium text-[14px] px-4 py-2 rounded-[100px] border border-transparent hover:border-[#404AA0] transition-all"
+              className="text-[#404AA0] leading-5 font-medium text-[14px] px-4 py-2 rounded-[100px] border border-transparent hover:border-[#404AA0] transition-all"
             >
               Cancelar
             </button>
@@ -257,7 +257,7 @@ const EditModelDialog: React.FC<EditModelDialogProps> = ({
               type="submit"
               disabled={isSubmitting || !isValid}
               onClick={handleSubmit(handleEditSuccess)}
-              className="bg-[#404AA0] text-[#DFE0FF] leading-6 font-medium text-[14px] px-4 py-2 rounded-[100px] transition-all hover:bg-[#303880] disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-[#404AA0] text-[#DFE0FF] leading-5 font-medium text-[14px] px-4 py-2 rounded-[100px] transition-all hover:bg-[#303880] disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? (
                 <span className="flex items-center gap-2">

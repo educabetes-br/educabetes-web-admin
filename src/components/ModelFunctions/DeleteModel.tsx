@@ -54,8 +54,8 @@ const DeleteModelCard: React.FC<DeleteModelCardProps> = ({ reportId, onDeleteSuc
           <Image src={redTrash} alt="Ícone de lixeira" />
         </DialogHeader>
 
-        <div className="text-center items-center flex flex-col gap-4 px-6">
-          <h1 className="text-[24px] leading-[32px] text-[#1A1847] w-[60%]">
+        <div className="text-center font-firaSansCondensed items-center flex flex-col gap-4 px-6">
+          <h1 className="text-[24px] font-firaSans leading-[32px] text-[#1A1847] w-[60%]">
             Deseja excluir o modelo?
           </h1>
           <p className="text-[14px] leading-[20px] text-left">
@@ -63,7 +63,7 @@ const DeleteModelCard: React.FC<DeleteModelCardProps> = ({ reportId, onDeleteSuc
           </p>
         </div>
 
-        <DialogFooter className="flex flex-row justify-end gap-2 border-t p-6">
+        <DialogFooter className="flex flex-row font-firaSansCondensed justify-end gap-2 border-t p-6">
           <DialogClose asChild>
             <button className="p-2 text-[14px] leading-[20px] text-[#404AA0] font-medium rounded-lg border border-transparent hover:border-[#404AA0]">
               Cancelar

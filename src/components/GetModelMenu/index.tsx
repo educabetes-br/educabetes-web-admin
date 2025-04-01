@@ -93,7 +93,7 @@ const GetReportsMenu: React.FC<GetReportsMenuProps> = ({
   }
 
   return (
-    <div className="bg-white  flex-1 rounded-b-[28px] text-white flex flex-col">
+    <div className="bg-white font-firaSans flex-1 rounded-b-[28px] text-white flex flex-col">
       {/* Campo de busca fixo */}
       <div className="sticky top-0 ml-8 bg-white z-10 w-[60%]">
         <div className="relative flex justify-center items-center">
@@ -117,13 +117,13 @@ const GetReportsMenu: React.FC<GetReportsMenuProps> = ({
       <div className="mx-8 flex flex-col overflow-y-auto mt-6 mb-6 flex-1 scrollbar-hide">
         {currentItems.length === 0 ? (
           <div className="flex justify-center items-center h-full">
-            <p className="text-black-500">Nenhum relatório encontrado.</p>
+            <p className="text-black-500 font-firaSans">Nenhum relatório encontrado.</p>
           </div>
         ) : (
           currentItems.map((report) => (
             <div
               key={report.id}
-              className="flex flex-row items-center pt-3 pb-[6px] border-b border-gray-200 last:border-b-0"
+              className="flex flex-row items-center font-firaSans pt-3 pb-[6px] border-b border-gray-200 last:border-b-0"
             >
               <div>
                 <Image src={reportIcon} alt="Report icon" />
@@ -133,7 +133,7 @@ const GetReportsMenu: React.FC<GetReportsMenuProps> = ({
                 <p className="text-[#49454F] text-[12px] font-medium leading-4">
                   {report.tipo}
                 </p>
-                <p className="text-[#1A1847] text-base leading-6">
+                <p className="text-[#1A1847] text-base font-firaSansCondensed leading-6">
                   {report.titulo}
                 </p>
               </div>

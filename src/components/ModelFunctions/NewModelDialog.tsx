@@ -111,9 +111,9 @@ const NewModelDialog: React.FC<NewModelDialogProps> = ({
         )}
       </DialogTrigger>
 
-      <DialogContent className="w-[560px]">
+      <DialogContent className="w-[560px] font-firaSansCondensed">
         <DialogHeader className="flex w-full bg-[#ECE6F0] pt-6 pb-2 items-start pl-6">
-          <DialogTitle className="text-[24px] text-[#1A1847] leading-8">
+          <DialogTitle className="text-[24px] text-[#1A1847] leading-8 font-firaSans">
             Novo modelo
           </DialogTitle>
         </DialogHeader>
@@ -128,7 +128,7 @@ const NewModelDialog: React.FC<NewModelDialogProps> = ({
           <div className="flex flex-col gap-3 items-start px-6">
             <label
               htmlFor="titulo"
-              className={`font-medium leading-[20px] text-[14px] text-[#1A1847]`}
+              className={`font-medium  leading-[20px] text-[14px] text-[#1A1847]`}
             >
               Tipo de Modelo:
               {errors.tipo && <span className="text-red-600"> *</span>}
