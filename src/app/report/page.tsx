@@ -52,19 +52,20 @@ const ReportsPage: React.FC = () => {
   };
 
   return (
-    <CardMenu
-      titulo="Modelos de Receitas e Relatórios"
-      cardContent={
-        <GetReportsMenu 
-          reports={reports} 
-          loading={loading} 
-          error={error}
-          onUpdateReport={handleUpdateReport}
-          onDeleteReport={handleDeleteReport}
-          onAddReport={handleAddReport}
-        />
-      }
-    />
+    <div className="flex flex-1 h-screen justify-around items-center bg-[#404AA0]">
+      <CardMenu
+        titulo="Modelos de Receitas e Relatórios"
+        cardContent={
+          <GetReportsMenu 
+            reports={reports} 
+            loading={loading} 
+            error={error}
+            onUpdateReport={handleUpdateReport}
+            onDeleteReport={handleDeleteReport}
+            onAddReport={handleAddReport}
+          />}
+      />
+    </div>
   );
 };
 
