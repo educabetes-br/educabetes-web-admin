@@ -5,6 +5,7 @@ import CardMenu from 'components/CardMenu';
 import GetReportsMenu from 'components/GetModelMenu';
 import { Report, getReports } from 'services/Reports/GetReport';
 import { addReport, ReportInput } from 'services/Reports/PostReport';
+import { Layout } from 'components/sidebar/layout';
 
 const ReportsPage: React.FC = () => {
   const [reports, setReports] = useState<Report[]>([]);
@@ -52,20 +53,23 @@ const ReportsPage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-1 h-screen justify-around items-center bg-[#404AA0]">
-      <CardMenu
-        titulo="Modelos de Receitas e Relatórios"
-        cardContent={
-          <GetReportsMenu 
-            reports={reports} 
-            loading={loading} 
-            error={error}
-            onUpdateReport={handleUpdateReport}
-            onDeleteReport={handleDeleteReport}
-            onAddReport={handleAddReport}
-          />}
-      />
-    </div>
+    <Layout>
+      <div className="flex flex-1 h-screen justify-around items-center">
+        <CardMenu
+          titulo="Modelos de Receitas e Relatórios"
+          cardContent={
+            <GetReportsMenu 
+              reports={reports} 
+              loading={loading} 
+              error={error}
+              onUpdateReport={handleUpdateReport}
+              onDeleteReport={handleDeleteReport}
+              onAddReport={handleAddReport}
+            />}
+        />
+      </div>
+    </Layout>
+
   );
 };
 

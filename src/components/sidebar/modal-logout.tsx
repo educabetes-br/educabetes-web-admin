@@ -48,7 +48,7 @@ export const ModalLogout = ({
           {!open && <span>Sair</span>}
         </SidebarMenuItem>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className='w-[32rem] p-6'>
         <DialogHeader>
           <DialogTitle className="font-firaSans">Sair</DialogTitle>
           <DialogClose />

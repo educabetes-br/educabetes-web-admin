@@ -18,6 +18,7 @@ import {
   ScrollText,
   UserPlus
 } from 'lucide-react';
+import NewModelDialog from 'components/ModelFunctions/NewModelDialog';
 import { ButtonSidebar } from './button-sidebar';
 import { ModalLogout } from './modal-logout';
 import { usePathname, useRouter } from 'next/navigation';
@@ -32,7 +33,7 @@ const items = {
     },
     {
       title: 'Modelos',
-      url: '/models',
+      url: '/report',
       icon: FileDown
     },
     {

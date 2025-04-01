@@ -1,9 +1,11 @@
 'use client';
-
+import { useSession } from 'next-auth/react';
 import { Layout } from 'components/sidebar/layout';
+import { redirect } from 'next/navigation';
+import ReportsPage from './report/page';
 
 export default function Home() {
-  //const session = useSession();
+  // const session = useSession();
 
   // if (session.status === 'unauthenticated') {
   //   redirect('/login');
@@ -11,10 +13,7 @@ export default function Home() {
 
   return (
     <Layout>
-      <div className="flex flex-1 flex-col h-full justify-around items-center bg-[#404AA0]">
-        <div className="flex flex-col justify-center items-center">
-          <h1 className="text-white text-4xl font-bold">EducaBetes</h1>
-        </div>
+      <div className="bg-[#404AA0]">
       </div>
     </Layout>
   );
