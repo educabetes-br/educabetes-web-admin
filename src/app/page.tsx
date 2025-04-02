@@ -1,18 +1,12 @@
-'use client';
+import React from "react";
+import EducationalMaterials from "components/ui/educationalMaterials";
 
-export default function Home() {
-  //const session = useSession();
-
-  // if (session.status === 'unauthenticated') {
-  //   redirect('/login');
-  // }
-
+const Page: React.FC = () => {
   return (
-    <div className="flex flex-1 flex-col h-full justify-around items-center bg-[#404AA0]">
-      <div className="flex flex-col justify-center items-center">
-        <h1 className="text-white text-4xl font-bold">EducaBetes</h1>
-        
-      </div>
+    <div>
+      <EducationalMaterials />
     </div>
   );
-}
+};
+
+export default Page;
