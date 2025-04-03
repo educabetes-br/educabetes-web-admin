@@ -2,8 +2,6 @@
 import { useSession } from 'next-auth/react';
 import { Layout } from 'components/sidebar/layout';
 import { redirect } from 'next/navigation';
-import ReportsPage from './report/page';
-
 export default function Home() {
   // const session = useSession();
 

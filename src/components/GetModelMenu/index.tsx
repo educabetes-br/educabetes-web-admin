@@ -100,7 +100,7 @@ const GetReportsMenu: React.FC<GetReportsMenuProps> = ({
   return (
     <div className="bg-white font-firaSans flex-1 rounded-b-[28px] text-white flex flex-col">
       {/* Campo de busca fixo */}
-      <div className="sticky top-0 ml-8 bg-white z-10 w-[60%]">
+      <div className="sticky top-0 ml-8 w-[60%]">
         <div className="relative flex justify-center items-center">
           <div className="absolute left-1">
             <Image src={searchIcon} alt="Search icon" />
