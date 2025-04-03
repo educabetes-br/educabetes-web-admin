@@ -43,9 +43,12 @@ const GetReportsMenu: React.FC<GetReportsMenuProps> = ({
   const filteredReports = reports.filter((report) => {
     const normalizedSearchTerm = searchTerm.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     const normalizedTitulo = report.titulo.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    const normalizedTipo = report.tipo.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
     return (
-      normalizedTitulo.includes(normalizedSearchTerm));
+      normalizedTitulo.includes(normalizedSearchTerm) ||
+      normalizedTipo.includes(normalizedSearchTerm)
+    );
   });
 
   // Cálculos de paginação
@@ -64,8 +67,10 @@ const GetReportsMenu: React.FC<GetReportsMenuProps> = ({
   if (loading) {
     return (
       <div className="bg-white  flex-1 rounded-b-[28px] text-white flex flex-col">
-
-        <div className="w-full h-full flex justify-center items-center" role="status">
+        <div
+          className="w-full h-full flex justify-center items-center"
+          role="status"
+        >
           <svg
             aria-hidden="true"
             className="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-[#1A1847]"
@@ -117,7 +122,9 @@ const GetReportsMenu: React.FC<GetReportsMenuProps> = ({
       <div className="mx-8 flex flex-col overflow-y-auto mt-6 mb-6 flex-1 scrollbar-hide">
         {currentItems.length === 0 ? (
           <div className="flex justify-center items-center h-full">
-            <p className="text-black-500 font-firaSans">Nenhum relatório encontrado.</p>
+            <p className="text-black font-firaSans">
+              Página Vazia, adicione um novo relatório!
+            </p>
           </div>
         ) : (
           currentItems.map((report) => (
@@ -163,7 +170,7 @@ const GetReportsMenu: React.FC<GetReportsMenuProps> = ({
       </div>
 
       {/* Paginação */}
-      {totalPages > 1 && (
+      {totalPages >= 1 && (
         <footer className="bg-[#F3EDF7] flex flex-row items-center rounded-b-[28px] py-4 pl-1 pr-4">
           <Pagination>
             <PaginationContent>
@@ -199,12 +206,12 @@ const GetReportsMenu: React.FC<GetReportsMenuProps> = ({
             </PaginationContent>
           </Pagination>
 
-            <div>
-              <NewModelDialog 
-                buttontrigger='buttonfooter'
-                onAddSuccess={onAddReport}
-                />
-            </div>
+          <div>
+            <NewModelDialog
+              buttontrigger="buttonfooter"
+              onAddSuccess={onAddReport}
+            />
+          </div>
         </footer>
       )}
     </div>

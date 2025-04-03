@@ -246,7 +246,7 @@ const NewModelDialog: React.FC<NewModelDialogProps> = ({
               <button
                 id="closeDialog"
                 onClick={() => reset()}
-                className="text-[#404AA0] leading-6 font-medium text-[14px] px-4 py-2 rounded-[100px] border border-transparent hover:border-[#404AA0] transition-all"
+                className="text-[#404AA0] leading-5 font-medium text-[14px] px-4 py-2 rounded-[100px] border border-transparent hover:border-[#404AA0] transition-all"
               >
                 Cancelar
               </button>
@@ -254,7 +254,7 @@ const NewModelDialog: React.FC<NewModelDialogProps> = ({
             <button
               type="submit"
               disabled={isSubmitting || !isValid}
-              className="bg-[#404AA0] text-[#DFE0FF] leading-6 font-medium text-[14px] px-4 py-2 rounded-[100px] transition-all hover:bg-[#303880] disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-[#404AA0] text-[#DFE0FF] leading-5 font-medium text-[14px] px-4 py-2 rounded-[100px] transition-all hover:bg-[#303880] disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? (
                 <span className="flex items-center gap-2">
