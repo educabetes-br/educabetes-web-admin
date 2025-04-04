@@ -170,7 +170,7 @@ const GetReportsMenu: React.FC<GetReportsMenuProps> = ({
       </div>
 
       {/* Paginação */}
-      {totalPages >= 1 && (
+      {totalPages >= 0 && (
         <footer className="bg-[#F3EDF7] flex flex-row items-center rounded-b-[28px] py-4 pl-1 pr-4">
           <Pagination>
             <PaginationContent>
