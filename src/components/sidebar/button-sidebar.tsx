@@ -24,7 +24,7 @@ export function ButtonSidebar({
   items: {
     title: string;
     icon: LucideIcon;
-    action?: () => void; // Adicione esta linha para suportar ações customizadas
+    action?: () => void;
   }[];
 }) {
   const { isMobile } = useSidebar();
