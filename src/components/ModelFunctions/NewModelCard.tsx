@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Image from 'next/image';
 import { ReportInput, Report } from '../../services/Reports/PostReport';
-import { eye, unchecked, checked, plusIcon } from '../../assets/index';
+import { eye, unchecked, checked } from '../../assets/index';
 
 interface NewModelCardProps {
   onAddSuccess: (newReport: Omit<Report, 'id'>) => Promise<Report>;
