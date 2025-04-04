@@ -16,7 +16,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       <div>
         <div
           className={cn(
-            `flex h-14 gap-1 items-center w-full rounded-[4px] border ${error ? 'border-red' : 'border-lightBlue'} bg-background px-3 py-2 min-w-72 focus-within:ring-2 focus-within:ring-blue-500`,
+            `flex h-14 gap-1 items-center w-full rounded-[4px] border ${error ? 'border-red' : 'border-lightBlue'} bg-white px-3 py-2 min-w-72 focus-within:ring-2 focus-within:ring-blue-500`,
             className
           )}
         >

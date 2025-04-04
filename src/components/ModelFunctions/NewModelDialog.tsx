@@ -217,13 +217,14 @@ const NewModelDialog: React.FC<NewModelDialogProps> = ({
 
             {/* button para visualizar modelo */}
             <div>
-              <button
+                <button
                 type="button"
                 onClick={handleOpenLink}
+                disabled={!watch('linkpdf')}
                 className={`flex flex-row items-center gap-2 px-4 h-[40px] rounded-[100px] transition-all border ${
                   watch('linkpdf') ? 'border-[#939090]' : 'bg-white'
-                }`}
-              >
+                } disabled:opacity-[38%] border-[#939090]`}
+                >
                 <div
                   className={`${watch('linkpdf') ? '' : 'opacity-[38%]'} transition-opacity`}
                 >
@@ -232,12 +233,12 @@ const NewModelDialog: React.FC<NewModelDialogProps> = ({
 
                 <p
                   className={`transition-all text-[#1A1847] text-[14px] font-medium ${
-                    watch('linkpdf') ? 'text-[#404AA0]' : 'opacity-[38%]'
+                  watch('linkpdf') ? 'text-[#404AA0]' : 'opacity-[38%]'
                   }`}
                 >
                   Visualizar modelo
                 </p>
-              </button>
+                </button>
             </div>
           </div>
 

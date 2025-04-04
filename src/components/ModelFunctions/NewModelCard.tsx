@@ -188,9 +188,10 @@ const NewModelCard: React.FC<NewModelCardProps> = ({
               <button
                 type="button"
                 onClick={handleOpenLink}
-                className={`flex flex-row items-center gap-2 px-4 h-[40px] rounded-[100px] font-firaSansCondensed transition-all border ${
+                disabled={!watch('linkpdf')}
+                className={`flex flex-row items-center gap-2 px-4 h-[40px] rounded-[100px] transition-all border ${
                   watch('linkpdf') ? 'border-[#939090]' : 'bg-white'
-                }`}
+                } disabled:opacity-[38%] border-[#939090]`}
               >
                 <div
                   className={`${watch('linkpdf') ? '' : 'opacity-[38%]'} transition-opacity`}
