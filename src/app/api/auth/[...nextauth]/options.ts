@@ -8,23 +8,24 @@ export const nextAuthOptions: NextAuthOptions = {
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
-        username: { label: 'Username', type: 'text' },
+        email: { label: 'Email', type: 'email' },
         password: { label: 'Password', type: 'password' }
       },
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       async authorize(credentials, req) {
-        const response = await api.post('/sessions', {
-          username: credentials?.username,
+        const response = await api.post('/sessions/web', {
+          email: credentials?.email,
           password: credentials?.password
         });
 
-        const { user } = response.data.data;
+        const user = response.data.data.loggedUser;
 
         if (user) {
           return user;
         }
 
+        throw new Error('User not found');
         return null;
       }
     })
