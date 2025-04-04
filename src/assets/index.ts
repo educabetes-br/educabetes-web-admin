@@ -1,7 +1,43 @@
 import Logo from './Logo.png';
+import eye from './ModelList/eye.svg';
+import download from './ModelList/download.svg';
+import unchecked from './ModelList/unchecked.svg';
+import checked from './ModelList/checked.svg';
+import plusIcon from './ModelList/plusIcon.svg';
+import trash from './ModelList/trash.svg';
+import redTrash from './ModelList/redTrash.svg';
+import pencil from './ModelList/pencil.svg';
+
+import reportIcon from './ModelMenu/reportIcon.svg';
+import searchIcon from './ModelMenu/searchIcon.svg';
+import eyeMenu from './ModelMenu/eyeMenu.svg';
+import nextPage from './ModelMenu/nextPage.svg';
+import prevPage from './ModelMenu/prevPage.svg';
+import NewModelIcon from './ModelMenu/newModelIcon.svg';
+
 import LogoTitle from './logo-title.svg';
 import UserIcon from './user-icon.svg';
 import Lock from './lock.svg';
 import Enter from './enter.svg';
 
-export { Logo, LogoTitle, UserIcon, Lock, Enter };
+export { 
+  Logo,
+  LogoTitle,  
+  UserIcon, 
+  Lock, 
+  Enter,
+  eye,
+  download,
+  unchecked,
+  checked,
+  plusIcon,
+  trash,
+  redTrash,
+  pencil,
+  reportIcon,
+  searchIcon,
+  eyeMenu,
+  nextPage,
+  prevPage,
+  NewModelIcon,
+ };
