@@ -1,4 +1,4 @@
-import api from "services/api";
+import api from "../api";
 
 export type Pacient = {
   id: number;
@@ -7,10 +7,10 @@ export type Pacient = {
 
 export const getPacients = async (): Promise<Pacient[]> => {
   try {
-    const response = await api.get("/pacient");
+    const response = await api.get("/patient");
     return response.data.data;
   } catch (error) {
-    console.error("Error getting pacients:", error);
+    console.error("Erro detalhado:", error);
     throw error;
   }
 };

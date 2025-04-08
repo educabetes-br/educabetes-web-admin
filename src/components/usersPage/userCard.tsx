@@ -10,7 +10,7 @@ interface UserCardProps {
 
 export const UserCard: React.FC<UserCardProps> = ({ userName, userRole }) => {
     return (
-        <div className="flex items-center justify-between px-4 py-2 mb-4 border-b-2">
+        <div className="flex items-center justify-between px-4 py-2 border-b-2">
             <div className="flex items-center gap-4 font-firaSans">
                 <UserIcon userName={userName} />
                 <span className="text-[#1A1847] text-[16px]">{userName}</span>

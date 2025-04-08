@@ -1,8 +1,23 @@
 import { User } from "lucide-react";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "../ui/tabs";
 import { UsersTab } from "./usersTabs";
+import { Pacient } from "services/Users/GetPacients";
+import { HealthPro } from "services/Users/GetHealthPro";
 
-export const UsersMenu: React.FC = () => {
+interface UsersMenuProps {
+    pacients: Pacient[];
+    healthPros: HealthPro[];
+    loading: boolean;
+    error: string | null;
+  }
+
+
+export const UsersMenu: React.FC<UsersMenuProps> = ({ 
+    pacients, 
+    healthPros, 
+    loading, 
+    error 
+}) => {
 
     return (
         <Tabs defaultValue='users' className="w-full h-[500px]">
@@ -37,7 +52,12 @@ export const UsersMenu: React.FC = () => {
                 </TabsTrigger>
             </TabsList>
             <TabsContent value='users'>
-                <UsersTab />
+                <UsersTab 
+                    pacients={pacients}
+                    healthPros={healthPros}
+                    loading={loading}
+                    error={error}
+                />
             </TabsContent>
             <TabsContent value='admins'>
                 {/* Aqui você pode adicionar o conteúdo para a aba de administradores */}
