@@ -114,72 +114,79 @@ const EducationalMaterials: React.FC = () => {
   );
 
   return (
-    <div className="w-screen h-screen flex justify-center items-center bg-white">
-      <div className="w-[800px] h-[800px] border-2 border-gray-300 rounded-xl p-6 flex flex-col">
-        <h1 className="text-2xl font-bold text-gray-800 mb-4">Materiais Educativos</h1>
-        
-        <div
-          className="relative mb-6 flex items-center space-x-3 bg-[#ece6f0] rounded-full p-3 cursor-text"
-          onClick={() => document.getElementById("searchInput")?.focus()}
-        >
-          <div className="w-10 h-10 bg-gray-600"></div>
-          <input
-            id="searchInput"
-            type="text"
-            placeholder="Buscar Materiais"
-            className="w-full bg-transparent focus:outline-none"
-            value={searchQuery}
-            onChange={(e) => {
-              setSearchQuery(e.target.value);
-              setCurrentPage(1);
-            }}
-          />
-        </div>
-
-        <div className="flex-grow">
-        {paginatedMaterials.map((material, index) => (
-          <div
-            key={material.id}
-            className={`flex items-center justify-between h-14 pb-6 mb-3 hover:bg-gray-100 transition-colors ${
-              index === paginatedMaterials.length - 1 ? "" : "border-b"
-            }`}
-          >
-            <div className="flex items-center">
-              <div className="w-10 h-10 bg-gray-600 mr-3 mt-2"></div>
-              <div>
-                <h3 className="font-medium text-gray-800">{material.titulo}</h3>
-                <p className="text-sm text-gray-500 text-[12px]">{material.descricao}</p>
-              </div>
-            </div>
-            <span className="text-sm text-gray-500">{material.acessos} Acessos</span>
-          </div>
-        ))}
-      </div>
-
-        {totalPages > 1 && (
-          <div className="flex justify-start mt-4 space-x-4">
-            <button
-              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-              disabled={currentPage === 1}
-              className="p-2 rounded-full disabled:opacity-50"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-            <button
-              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-              disabled={currentPage === totalPages}
-              className="p-2 rounded-full disabled:opacity-50"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-          </div>
-        )}
-      </div>
+    <div className="flex-grow overflow-y-auto">
+    <div className="w-full h-full flex flex-col justify-center items-center bg-white">
+  <div className="w-[1128px] h-[945px] border border-[#939090] rounded-[24px] flex flex-col">
+    <h1 className="text-2xl text-[#000000] mb-4 px-6 pt-4">Materiais Educativos</h1>
+    <div className="pl-10 justify-center items-center">
+    <div
+      className="relative flex items-center w-[720px] h-[56px] space-x-3 bg-[#ece6f0] rounded-full p-3 cursor-text"
+      onClick={() => document.getElementById("searchInput")?.focus()}
+    >
+      <img
+      src="../img/searchIcon.png"
+      alt="Search Icon"
+      className="w-[24px] h-[24px] text-gray-500"
+      />
+      <input
+      id="searchInput"
+      type="text"
+      placeholder="Buscar Materiais"
+      className="w-full bg-transparent focus:outline-none"
+      value={searchQuery}
+      onChange={(e) => {
+        setSearchQuery(e.target.value);
+        setCurrentPage(1);
+      }}
+      />
     </div>
+
+    <div className="flex-grow w-[1064px] h-[711px] px-5">
+      {paginatedMaterials.map((material, index) => (
+        <div
+          key={material.id}
+          className={`flex w-[1000px] h-[89px] items-center justify-between hover:bg-gray-100 transition-colors ${
+            index === paginatedMaterials.length - 1 ? "" : "border-b"
+          }`}
+        >
+          <div className="flex items-center">
+            <div className="w-10 h-10 bg-gray-600 mr-3 mt-2"></div>
+            <div>
+              <h3 className="text-[16px] text-[#1A1847]">{material.titulo}</h3>
+              <p className="text-[#111111] text-[14px]">{material.descricao}</p>
+            </div>
+          </div>
+          <span className="text-[11px] text-[#49454F]">{material.acessos} Acessos</span>
+        </div>
+      ))}
+    </div>
+
+    {totalPages > 1 && (
+      <div className="flex justify-start mt-4 space-x-4">
+        <button
+          onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+          disabled={currentPage === 1}
+          className="p-2 rounded-full disabled:opacity-50"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+        <button
+          onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+          disabled={currentPage === totalPages}
+          className="p-2 rounded-full disabled:opacity-50"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+      </div>
+    )}
+    </div>
+    </div>
+  </div>
+</div>
   );
 };
 
