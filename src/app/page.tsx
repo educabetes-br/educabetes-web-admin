@@ -17,5 +17,3 @@ export default function Home() {
     </Layout>
   );
 };
-
-export default Page;
