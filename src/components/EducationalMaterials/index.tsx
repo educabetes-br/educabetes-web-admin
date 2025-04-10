@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { Diabetes, Teenager, Carbo, Childhood, Emotions, Goals, Hiper, Hipo, Insulin, PE, Practise, Skin } from "assets";
 import CardMenu from "components/CardMenu";
 import { Pagination, PaginationContent, PaginationItem, PaginationNext, PaginationPrevious } from "components/ui/pagination";
@@ -157,13 +158,12 @@ const EducationalMaterials: React.FC = () => {
                 }`}
               >
                 <div className="flex items-center">
-                  <img src={material.imgPATH} alt="MDS" className="w-[50px] h-[50px] object-cover mr-4" />
+                  <Image src={material.imgPATH} alt="MDS" className="w-[50px] h-[50px] object-cover mr-4" />
                   <div>
                     <h3 className="text-[16px] text-[#1A1847]">{material.titulo}</h3>
                     <p className="text-[#111111] text-[14px]">{material.descricao}</p>
                   </div>
                 </div>
-                <span className="text-[11px] text-[#49454F]">{material.acessos} Acessos</span>
               </div>
             ))}
           </div>
