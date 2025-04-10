@@ -1,68 +1,183 @@
-import { User } from "lucide-react";
+import React, { useState, useMemo } from 'react';
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "../ui/tabs";
 import { UsersTab } from "./usersTabs";
 import { Pacient } from "services/Users/GetPacients";
 import { HealthPro } from "services/Users/GetHealthPro";
+import { Admin } from "services/Users/GetAdmin";
+import { AdminsTab } from "./AdminsTab";
+import { 
+    Pagination,
+    PaginationContent,
+    PaginationItem,
+    PaginationPrevious,
+    PaginationNext
+} from "../ui/pagination";
+
+export type User = {
+    id: number;
+    name: string;
+    userRole: 'Paciente' | 'Profissional de Saúde';
+}
 
 interface UsersMenuProps {
     pacients: Pacient[];
     healthPros: HealthPro[];
+    admins: Admin[];
     loading: boolean;
     error: string | null;
+    itensPerPage?: number;
   }
-
 
 export const UsersMenu: React.FC<UsersMenuProps> = ({ 
     pacients, 
     healthPros, 
+    admins,
     loading, 
-    error 
+    error,
+    itensPerPage = 6
 }) => {
 
+    const [currentPage, setCurrentPage] = useState(1);
+    const [activeTab, setActiveTab] = useState<'users' | 'admins'>('users');
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const processedItems = useMemo(() => {
+        if (activeTab === 'users') {
+          return [
+            ...pacients.map(p => ({
+              id: p.id,
+              name: p.name,
+              userRole: 'Paciente' as const
+            })),
+            ...healthPros.map(h => ({
+              id: h.id,
+              name: h.name,
+              userRole: 'Profissional de Saúde' as const
+            }))
+          ].sort((a, b) => a.name.localeCompare(b.name));
+        } else {
+          return admins.map(a => ({
+            id: a.id,
+            name: a.name,
+            userRole: 'Administrador' as const
+          })).sort((a, b) => a.name.localeCompare(b.name));
+        }
+      }, [activeTab, pacients, healthPros, admins]);      
+
+      const removeDiacritics = (str: string) =>
+        str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();      
+      // Filtragem centralizada
+      const filteredItems = useMemo(() => {
+        return searchTerm
+          ? processedItems.filter(x =>
+              removeDiacritics(x.name).includes(removeDiacritics(searchTerm))
+            )
+          : processedItems;
+      }, [processedItems, searchTerm]);
+      
+
+    const paginatedItems = useMemo(() => {
+        const start = (currentPage - 1) * itensPerPage;
+        return filteredItems.slice(start, start + itensPerPage);
+      }, [currentPage, itensPerPage, filteredItems]);
+
+      const handlePageChange = (page: number) => {
+        setCurrentPage(page);
+      };
+
+      const totalItems = filteredItems.length; // Usa a lista já filtrada
+      const totalPages = Math.max(Math.ceil(totalItems / itensPerPage), 1);
+
     return (
-        <Tabs defaultValue='users' className="w-full h-[500px]">
-            <TabsList className="grid w-full grid-cols-2 border-b-2 bg-white rounded-none">
-                <TabsTrigger 
-                    value='users'
-                    className='
-                    font-firaSans
-                    text-[14px]
-                    text-black
-                    data-[state=active]:text-[#404AA0]
-                    data-[state=active]:border-b-2
-                    data-[state=active]:rounded-none
-                    data-[state=active]:border-[#404AA0]
-                    data-[state=active]:bg-transparent'
-                >
-                    Usuários
-                </TabsTrigger>
-                <TabsTrigger 
-                    value='admins'
-                    className='
-                    font-firaSans
-                    text-[14px]
-                    text-black
-                    data-[state=active]:text-[#404AA0]
-                    data-[state=active]:border-b-2
-                    data-[state=active]:rounded-none
-                    data-[state=active]:border-[#404AA0]
-                    data-[state=active]:bg-transparent'
+        <div className='"bg-white font-firaSans flex-1 rounded-b-[28px] text-white flex flex-col justify-between'>
+
+            <Tabs 
+            defaultValue='users' 
+            className="w-full h-[500px]" 
+            onValueChange={(value) => {
+                setActiveTab(value as 'users' | 'admins');
+                setCurrentPage(1);
+            }}>
+                <TabsList className="grid w-full grid-cols-2 border-b-2 bg-white rounded-none">
+                    <TabsTrigger 
+                        value='users'
+                        className='
+                        font-firaSans
+                        text-[14px]
+                        text-black
+                        data-[state=active]:text-[#404AA0]
+                        data-[state=active]:border-b-2
+                        data-[state=active]:rounded-none
+                        data-[state=active]:border-[#404AA0]
+                        data-[state=active]:bg-transparent'
                     >
-                    Administradores
-                </TabsTrigger>
-            </TabsList>
-            <TabsContent value='users'>
-                <UsersTab 
-                    pacients={pacients}
-                    healthPros={healthPros}
-                    loading={loading}
-                    error={error}
-                />
-            </TabsContent>
-            <TabsContent value='admins'>
-                {/* Aqui você pode adicionar o conteúdo para a aba de administradores */}
-                <p>Conteúdo da aba de administradores</p>
-            </TabsContent>
-        </Tabs>
+                        Usuários
+                    </TabsTrigger>
+                    <TabsTrigger 
+                        value='admins'
+                        className='
+                        font-firaSans
+                        text-[14px]
+                        text-black
+                        data-[state=active]:text-[#404AA0]
+                        data-[state=active]:border-b-2
+                        data-[state=active]:rounded-none
+                        data-[state=active]:border-[#404AA0]
+                        data-[state=active]:bg-transparent'
+                        >
+                        Administradores
+                    </TabsTrigger>
+                </TabsList>
+                <TabsContent value='users'>
+                    <UsersTab 
+                        users={paginatedItems.filter(item => item.userRole !== 'Administrador')}
+                        loading={loading}
+                        error={error}
+                        searchTerm={searchTerm}
+                        onSearchChange={(term) => {
+                          setSearchTerm(term);
+                          setCurrentPage(1); // Resetar página ao buscar
+                        }}
+                        />
+                </TabsContent>
+                <TabsContent value='admins'>
+                    <AdminsTab
+                        admins={paginatedItems.filter(item => item.userRole === 'Administrador')}
+                        loading={loading}
+                        error={error}
+                        searchTerm={searchTerm}
+                        onSearchChange={(term) => {
+                            setSearchTerm(term);
+                            setCurrentPage(1); // resetar página       
+                        }}                 
+                    />
+                </TabsContent>
+            </Tabs>
+
+            {totalPages >= 0 && (
+          <footer className="bg-[#F3EDF7] flex flex-row items-center rounded-b-[28px] py-4 pl-1 pr-4">
+            
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious
+                    onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
+                    className={currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''}
+                  />
+                </PaginationItem>
+                <div className='font-firaSans text-[14px] text-black mt-3'>
+                  {currentPage} de {totalPages}
+                </div>
+                <PaginationItem>
+                  <PaginationNext
+                    onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
+                    className={currentPage === totalPages ? 'cursor-not-allowed opacity-50' : ''}
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          </footer>
+          )}
+        </div>
     );
 }

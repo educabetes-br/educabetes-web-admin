@@ -8,6 +8,7 @@ import CardMenu from 'components/CardMenu';
 import { UsersMenu } from 'components/usersPage/usersMenu';
 import { Pacient, getPacients } from '../../services/Users/GetPacients';
 import { HealthPro, getHealthPro } from 'services/Users/GetHealthPro';
+import { Admin, getAdmins } from 'services/Users/GetAdmin';
 
 const UsersPage: React.FC = () => {
   const { status } = useSession();
@@ -15,6 +16,7 @@ const UsersPage: React.FC = () => {
 
   const [pacients, setPacients] = useState<Pacient[]>([]);
   const [healthPros, setHealthPros] = useState<HealthPro[]>([]);
+  const [admins, setAdmins] = useState<Admin[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -27,12 +29,14 @@ const UsersPage: React.FC = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const [pacientsData, healthProsData] = await Promise.all([
+        const [pacientsData, healthProsData, AdminData] = await Promise.all([
           getPacients(),
-          getHealthPro()
+          getHealthPro(),
+          getAdmins()
         ]);
         setPacients(pacientsData);
         setHealthPros(healthProsData);
+        setAdmins(AdminData);
 
       } catch (err) {
         console.error('Failed to fetch users:', err);
@@ -45,11 +49,6 @@ const UsersPage: React.FC = () => {
     fetchUsers();
   }, []);
 
-  useEffect(() => {
-    console.log('Dados dos Pacientes:', pacients);
-    console.log('Dados dos Profissionais:', healthPros);
-  }, [pacients, healthPros]);
-
   if (status === 'loading') {
     return <div>Loading...</div>; // ou um spinner bonitinho
   }
@@ -60,7 +59,8 @@ const UsersPage: React.FC = () => {
         <CardMenu
           titulo ="Lista de usuários"
           cardContent={
-            <UsersMenu 
+            <UsersMenu
+              admins={admins} 
               pacients={pacients}
               healthPros={healthPros}
               loading={loading}

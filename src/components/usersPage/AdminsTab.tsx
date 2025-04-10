@@ -1,23 +1,28 @@
-import React from 'react';
-import Image from 'next/image';
-import { searchIcon } from '../../assets/index';
-import { UserCard } from './userCard';
-import { User } from './usersMenu';
+import React from "react";
+import Image from "next/image";
+import { searchIcon } from "../../assets/index";
+import { UserCard } from "./userCard";
 
-interface UsersTabProps {
-  users: User[]; // já filtrados e paginados
+interface Admin {
+  id: number;
+  name: string;
+  userRole: 'Administrador';
+}
+
+interface AdminsTabProps {
+  admins: Admin[]; // já filtrados e paginados
   loading: boolean;
   error: string | null;
   searchTerm: string;
   onSearchChange: (term: string) => void;
 }
 
-export const UsersTab: React.FC<UsersTabProps> = ({
-  users,
+export const AdminsTab: React.FC<AdminsTabProps> = ({
+  admins,
   loading,
   error,
   searchTerm,
-  onSearchChange,
+  onSearchChange
 }) => {
   if (loading) return <div>Carregando...</div>;
   if (error) return <div>Erro: {error}</div>;
@@ -35,30 +40,28 @@ export const UsersTab: React.FC<UsersTabProps> = ({
             type="text"
             placeholder="Buscar usuário..."
             value={searchTerm}
-            onChange={(e) => {
-              onSearchChange(e.target.value);
-            }}
+            onChange={(e) => onSearchChange(e.target.value)}
             className="w-full focus:outline-none p-3 pl-12 bg-[#ECE6F0] rounded-[28px] text-black"
           />
         </div>
       </div>
 
-      {/* Lista de Usuários */}
+      {/* Lista de Administradores */}
       <div className="mx-8 flex flex-col overflow-y-auto mt-6 mb-6 flex-1 scrollbar-hide">
-        {users.length === 0 ? (
+        {admins.length === 0 ? (
           <div className="flex justify-center items-center h-full">
             <p className="text-black font-firaSans">
               {searchTerm
-                ? "Nenhum usuário encontrado"
-                : "Nenhum usuário cadastrado"}
+                ? "Nenhum administrador encontrado"
+                : "Nenhum administrador cadastrado"}
             </p>
           </div>
         ) : (
-          users.map(user => (
+          admins.map(admin => (
             <UserCard
-              key={`${user.userRole}-${user.id}`}
-              userName={user.name}
-              userRole={user.userRole}
+              key={`${admin.userRole}-${admin.id}`}
+              userName={admin.name}
+              userRole={admin.userRole}
             />
           ))
         )}

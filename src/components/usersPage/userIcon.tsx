@@ -13,7 +13,7 @@ export const UserIcon: React.FC<UserIconProps> = ({ userName }) => {
         let initials = names[0].charAt(0).toUpperCase();
         
         if (names.length > 1) {
-            initials += names[names.length - 1].charAt(0).toUpperCase();
+            initials += names[1].charAt(0).toUpperCase();
         }
         
         return initials;

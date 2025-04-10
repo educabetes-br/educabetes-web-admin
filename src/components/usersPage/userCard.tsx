@@ -16,7 +16,7 @@ export const UserCard: React.FC<UserCardProps> = ({ userName, userRole }) => {
                 <span className="text-[#1A1847] text-[16px]">{userName}</span>
             </div>
             <div className="flex items-center gap-4 font-firaSans">
-                <span className="font-firaSans text-[14px]">{userRole}</span>
+                <span className="font-firaSans text-[14px] text-black">{userRole}</span>
                 <Image src={nextPage}/>
             </div>
         </div>
