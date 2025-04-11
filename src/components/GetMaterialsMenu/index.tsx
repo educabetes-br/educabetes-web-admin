@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { Diabetes, Teenager, Carbo, Childhood, Emotions, Goals, Hiper, Hipo, Insulin, PE, Practise, Skin } from "assets";
+import { Diabetes, Teenager, Carbo, Childhood, Emotions, Goals, Hiper, Hipo, Insulin, PE, Practise, Skin, searchIcon } from "assets";
 import CardMenu from "components/CardMenu";
 import { Pagination, PaginationContent, PaginationItem, PaginationNext, PaginationPrevious } from "components/ui/pagination";
 
@@ -14,7 +14,7 @@ interface Material {
   acessos: number;
 }
 
-const EducationalMaterials: React.FC = () => {
+const GetMaterialsMenu: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
@@ -124,53 +124,48 @@ const EducationalMaterials: React.FC = () => {
   );
 
   return (
-    <CardMenu titulo="Materiais Educativos" cardContent={
-      <div className="flex-grow overflow-y-auto">
-        <div className="pl-10 justify-center items-center">
-          <div
-            className="relative flex items-center w-[720px] h-[56px] space-x-3 bg-[#ece6f0] rounded-full p-3 cursor-text mb-2"
-            onClick={() => document.getElementById("searchInput")?.focus()}
-          >
-            <img
-              src="../img/searchIcon.png"
-              alt="Search Icon"
-              className="w-[24px] h-[24px] text-gray-500"
-            />
+      <div className="bg-white font-firaSans flex-1 rounded-[28px] max-w-[1126px] text-white flex flex-col">
+        <div className="sticky top-0 ml-8 w-[60%] bg-white pb-6">
+          <div className="relative flex justify-center items-center">
+            <div className="absolute left-1">
+              <Image src={searchIcon} alt="Search icon" />
+            </div>
             <input
-              id="searchInput"
               type="text"
               placeholder="Buscar Materiais"
-              className="w-full bg-transparent focus:outline-none"
               value={searchQuery}
               onChange={(e) => {
                 setSearchQuery(e.target.value);
-                setCurrentPage(1);
+                setCurrentPage(1); // Resetar para a primeira página ao buscar
               }}
+              className="w-full focus:outline-none p-3 pl-12 bg-[#ECE6F0] rounded-[28px] text-black"
             />
           </div>
+        </div>
 
-          <div className="flex-grow w-[1064px] h-[711px] px-5">
-            {paginatedMaterials.map((material, index) => (
-              <div
-                key={material.id}
-                className={`flex w-[1000px] h-[89px] items-center justify-between hover:bg-gray-100 transition-colors ${
-                  index === paginatedMaterials.length - 1 ? "" : "border-b"
-                }`}
-              >
-                <div className="flex items-center">
-                  <Image src={material.imgPATH} alt="MDS" className="w-[50px] h-[50px] object-cover mr-4" />
-                  <div>
-                    <h3 className="text-[16px] text-[#1A1847]">{material.titulo}</h3>
-                    <p className="text-[#111111] text-[14px]">{material.descricao}</p>
-                  </div>
-                </div>
+        {/* Lista de Materiais */ }
+        <div className="w-[1064px] h-[711px] mx-8 flex-grow mb-6 ml-12 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
+          {paginatedMaterials.map((material, index) => (
+            <div
+              key={material.id}
+              className={`flex w-[1024px] h-[89px] items-center justify-between hover:bg-gray-100 transition-colors ${
+          index === paginatedMaterials.length - 1 ? "" : "border-b"
+              }`}
+            >
+              <div className="flex items-center">
+          <Image src={material.imgPATH} alt="MDS" className="w-[50px] h-[50px] object-cover mr-4" />
+          <div>
+            <h3 className="text-[16px] text-[#1A1847]">{material.titulo}</h3>
+            <p className="text-[#111111] text-[14px]">{material.descricao}</p>
+          </div>
               </div>
-            ))}
-          </div>
-          </div>
-          {/* Paginação */}
+            </div>
+          ))}
+        </div>
+        
+        {/* Paginação */}
         {totalPages >= 0 && (
-            <footer className="flex flex-row items-start rounded-b-[28px] py-4 pl-1 pr-4">
+          <footer className="bg-[#F3EDF7] flex flex-row items-center rounded-b-[28px] py-4 pl-1 pr-4">
             <Pagination>
               <PaginationContent>
                 <PaginationItem>
@@ -180,61 +175,33 @@ const EducationalMaterials: React.FC = () => {
                       e.preventDefault();
                       handlePageChange(currentPage - 1);
                     }}
-                    className={`p-2 rounded-full ${
-                      currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''
-                    }`}
-                  >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
-          </PaginationPrevious>
-        </PaginationItem>
+                    className={
+                      currentPage === 1
+                        ? 'opacity-50 cursor-not-allowed flex rounded-full'
+                        : 'flex rounded-full'
+                    }
+                  />
+                </PaginationItem>
+  
+                <PaginationItem>
+                  <PaginationNext
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePageChange(currentPage + 1);
+                    }}
+                    className={
+                      currentPage === totalPages
+                        ? 'opacity-50 cursor-not-allowed flex rounded-full'
+                        : 'flex rounded-full'
+                    }
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          </footer>
+        )}
+    </div>
+   )}
 
-        <PaginationItem>
-          <PaginationNext
-            href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              handlePageChange(currentPage + 1);
-            }}
-            className={`p-2 rounded-full ${
-              currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''
-            }`}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-          </PaginationNext>
-        </PaginationItem>
-      </PaginationContent>
-    </Pagination>
-  </footer>
-)}
-      </div>
-    } />
-  );
-};
-
-export default EducationalMaterials;
+export default GetMaterialsMenu;
