@@ -181,6 +181,10 @@ const GetMaterialsMenu: React.FC = () => {
                     }
                   />
                 </PaginationItem>
+
+                <div className='font-firaSans text-[14px] text-black mt-3'>
+                  {currentPage} de {totalPages}
+                </div>
   
                 <PaginationItem>
                   <PaginationNext
