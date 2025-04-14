@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { Diabetes, Teenager, Carbo, Childhood, Emotions, Goals, Hiper, Hipo, Insulin, PE, Practise, Skin, searchIcon } from "assets";
-import CardMenu from "components/CardMenu";
 import { Pagination, PaginationContent, PaginationItem, PaginationNext, PaginationPrevious } from "components/ui/pagination";
 
 interface Material {

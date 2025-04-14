@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import CardMenu from 'components/CardMenu';
 import { Layout } from 'components/sidebar/layout';
 import { useSession } from 'next-auth/react';
