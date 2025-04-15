@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "../ui/tabs";
 import { UsersTab } from "./usersTabs";
-import { Pacient } from "services/Users/GetPacients";
+import { Patient } from "services/Users/GetPatients";
 import { HealthPro } from "services/Users/GetHealthPro";
 import { Admin } from "services/Users/GetAdmin";
 import { AdminsTab } from "./AdminsTab";
@@ -12,32 +12,32 @@ import {
     PaginationPrevious,
     PaginationNext
 } from "../ui/pagination";
-import { PacientThing } from 'services/Users/PostPacient';
 import { NewUserDialog } from './newUserDialog';
+import { PatientInput } from '../../services/Users/PostPatient';
 
 export type User = {
     id: number;
     name: string;
-    userRole: 'Paciente' | 'Profissional de Saúde';
+    userRole: 'Patiente' | 'Profissional de Saúde';
 }
 
 interface UsersMenuProps {
-    pacients: Pacient[];
+    patients: Patient[];
     healthPros: HealthPro[];
     admins: Admin[];
     loading: boolean;
     error: string | null;
     itensPerPage?: number;
-    onAddPacient: (newPacient: PacientThing) => void;
+    onAddPatient: (newPatient: PatientInput) => void;
   }
 
 export const UsersMenu: React.FC<UsersMenuProps> = ({ 
-    pacients, 
+    patients, 
     healthPros, 
     admins,
     loading, 
     error,
-    onAddPacient,
+    onAddPatient,
     itensPerPage = 6
 }) => {
 
@@ -48,10 +48,10 @@ export const UsersMenu: React.FC<UsersMenuProps> = ({
     const processedItems = useMemo(() => {
         if (activeTab === 'users') {
           return [
-            ...pacients.map(p => ({
+            ...patients.map(p => ({
               id: p.id,
               name: p.name,
-              userRole: 'Paciente' as const
+              userRole: 'Patiente' as const
             })),
             ...healthPros.map(h => ({
               id: h.id,
@@ -66,7 +66,7 @@ export const UsersMenu: React.FC<UsersMenuProps> = ({
             userRole: 'Administrador' as const
           })).sort((a, b) => a.name.localeCompare(b.name));
         }
-      }, [activeTab, pacients, healthPros, admins]);      
+      }, [activeTab, patients, healthPros, admins]);      
 
       const removeDiacritics = (str: string) =>
         str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();      
@@ -182,7 +182,7 @@ export const UsersMenu: React.FC<UsersMenuProps> = ({
             </Pagination>
 
             <div>
-              <NewUserDialog onAddSuccess={onAddPacient} />
+              <NewUserDialog onAddSuccess={onAddPatient} />
             </div>
           </footer>
           )}

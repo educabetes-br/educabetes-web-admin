@@ -10,19 +10,19 @@ import {
   DialogClose
 } from "../ui/dialog";
 import Image from "next/image";
-import { PacientThing, PacientInput } from "services/Users/PostPacient";
+import { PatientInput } from "../../services/Users/PostPatient";
 import { checked, plusIcon, unchecked } from "assets";
 
 interface NewUserDialogProps {
-  onAddSuccess: (newPacient: PacientThing) => Promise<PacientThing>;
+  onAddSuccess: (newPatient: PatientInput) => Promise<PatientInput>;
 }
 
 export const NewUserDialog: React.FC<NewUserDialogProps> = ({
   onAddSuccess,
 }) => {
-  type UserType = "Paciente" | "Profissional" | "Admin";
+  type UserType = "Patiente" | "Profissional" | "Admin";
 
-  const [userType, setUserType] = useState<UserType | null>("Paciente");
+  const [userType, setUserType] = useState<UserType | null>("Patiente");
   const [name, setName] = useState("");
   const [birthDate, setBirthDate] = useState("");
   const [diagnosisTime, setDiagnosisTime] = useState("");
@@ -53,8 +53,8 @@ export const NewUserDialog: React.FC<NewUserDialogProps> = ({
     };
     
 
-    const pacienteExtras =
-      userType === "Paciente"
+    const patienteExtras =
+      userType === "Patiente"
         ? {
             birthDate:formatDateToBR(birthDate),
 
@@ -64,7 +64,7 @@ export const NewUserDialog: React.FC<NewUserDialogProps> = ({
 
     const finalData = {
       ...baseData,
-      ...pacienteExtras,
+      ...patienteExtras,
     };
     console.log(finalData);
 
@@ -116,7 +116,7 @@ export const NewUserDialog: React.FC<NewUserDialogProps> = ({
                   Tipo de Usuário:
                 </label>
                 <div className="flex flex-col gap-2">
-                  {["Paciente", "Profissional", "Admin"].map((type) => (
+                  {["Patiente", "Profissional", "Admin"].map((type) => (
                     <label
                       key={type}
                       className="flex items-center gap-2 cursor-pointer"
@@ -156,7 +156,7 @@ export const NewUserDialog: React.FC<NewUserDialogProps> = ({
                 />
               )}
 
-              {userType === "Paciente" && (
+              {userType === "Patiente" && (
                 <>
                   <input
                     type="date"

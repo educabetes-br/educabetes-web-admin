@@ -1,11 +1,11 @@
 import api from "../api";
 
-export type Pacient = {
+export type Patient = {
   id: number;
   name: string;
 };
 
-export const getPacients = async (): Promise<Pacient[]> => {
+export const getPatients = async (): Promise<Patient[]> => {
   try {
     const response = await api.get("/patient");
     return response.data.data;

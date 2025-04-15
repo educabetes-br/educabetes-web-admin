@@ -6,20 +6,21 @@ import { useRouter } from 'next/navigation';
 import { Layout } from 'components/sidebar/layout';
 import CardMenu from 'components/CardMenu';
 import { UsersMenu } from 'components/usersPage/usersMenu';
-import { Pacient, getPacients } from '../../services/Users/GetPacients';
+import { Patient, getPatients } from '../../services/Users/GetPatients';
 import { HealthPro, getHealthPro } from 'services/Users/GetHealthPro';
 import { Admin, getAdmins } from 'services/Users/GetAdmin';
-import handleAddPacient from 'services/Users/HandlePostPatients';
+import { PatientInput, postPatient } from 'services/Users/PostPatient';
 
 const UsersPage: React.FC = () => {
   const { status } = useSession();
   const router = useRouter();
 
-  const [pacients, setPacients] = useState<Pacient[]>([]);
+  const [patients, setPatients] = useState<Patient[]>([]);
   const [healthPros, setHealthPros] = useState<HealthPro[]>([]);
   const [admins, setAdmins] = useState<Admin[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [, setNewPatient] = useState<PatientInput[]>([]);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -30,12 +31,12 @@ const UsersPage: React.FC = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const [pacientsData, healthProsData, AdminData] = await Promise.all([
-          getPacients(),
+        const [patientsData, healthProsData, AdminData] = await Promise.all([
+          getPatients(),
           getHealthPro(),
           getAdmins()
         ]);
-        setPacients(pacientsData);
+        setPatients(patientsData);
         setHealthPros(healthProsData);
         setAdmins(AdminData);
 
@@ -50,6 +51,18 @@ const UsersPage: React.FC = () => {
     fetchUsers();
   }, []);
 
+  const handleAddPatient = async (newPatient: PatientInput): Promise<PatientInput> => {
+    console.log('Entrou nessa func1');
+    try {
+      const addedPatient = await postPatient(newPatient);
+      setNewPatient(prev => [...prev, addedPatient]);
+      return addedPatient;
+    } catch (err) {
+      alert('Erro ao adicionar patiente.');
+      throw err;
+    }
+  }
+
   if (status === 'loading') {
     return <div>Loading...</div>; // ou um spinner bonitinho
   }
@@ -62,11 +75,11 @@ const UsersPage: React.FC = () => {
           cardContent={
             <UsersMenu
               admins={admins} 
-              pacients={pacients}
+              patients={patients}
               healthPros={healthPros}
               loading={loading}
               error={error}
-              onAddPacient={handleAddPacient}
+              onAddPatient={handleAddPatient}
             />
           }
         /> 
