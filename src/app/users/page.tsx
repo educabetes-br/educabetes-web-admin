@@ -9,7 +9,7 @@ import { UsersMenu } from 'components/usersPage/usersMenu';
 import { Pacient, getPacients } from '../../services/Users/GetPacients';
 import { HealthPro, getHealthPro } from 'services/Users/GetHealthPro';
 import { Admin, getAdmins } from 'services/Users/GetAdmin';
-import { postPacient, PacientInput, PacientThing } from 'services/Users/PostPacient';
+import handleAddPacient from 'services/Users/HandlePostPatients';
 
 const UsersPage: React.FC = () => {
   const { status } = useSession();
@@ -20,7 +20,6 @@ const UsersPage: React.FC = () => {
   const [admins, setAdmins] = useState<Admin[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [newPacient, setNewPacient] = useState<PacientThing[]>([]);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -50,17 +49,6 @@ const UsersPage: React.FC = () => {
 
     fetchUsers();
   }, []);
-
-  const handleAddPacient = async (newPacient: PacientInput): Promise<PacientThing> => {
-    try {
-      const addedPacient = await postPacient(newPacient);
-      setNewPacient(prev => [...prev, addedPacient]);
-      return addedPacient;
-    } catch (err) {
-      alert('Erro ao adicionar paciente.');
-      throw err;
-    }
-  }
 
   if (status === 'loading') {
     return <div>Loading...</div>; // ou um spinner bonitinho

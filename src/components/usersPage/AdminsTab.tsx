@@ -74,7 +74,7 @@ export const AdminsTab: React.FC<AdminsTabProps> = ({
       </div>
 
       {/* Lista de Administradores */}
-      <div className="mx-8 flex flex-col overflow-y-auto mt-6 mb-6 flex-1 scrollbar-hide">
+      <div className="flex flex-col overflow-y-auto mt-6 mb-6 flex-1 scrollbar-hide">
         {admins.length === 0 ? (
           <div className="flex justify-center items-center h-full">
             <p className="text-black font-firaSans">

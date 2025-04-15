@@ -44,10 +44,20 @@ export const NewUserDialog: React.FC<NewUserDialogProps> = ({
       password,
     };
 
+    const formatDateToBR = (dateString: string) => {
+      const date = new Date(dateString);
+      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, '0'); // +1 porque janeiro é 0
+      const year = date.getFullYear();
+      return `${day}/${month}/${year}`;
+    };
+    
+
     const pacienteExtras =
       userType === "Paciente"
         ? {
-            birthDate: new Date(birthDate).toISOString(),
+            birthDate:formatDateToBR(birthDate),
+
             diagnosisTime,
           }
         : {};
@@ -93,12 +103,12 @@ export const NewUserDialog: React.FC<NewUserDialogProps> = ({
         </DialogHeader>
 
         <form
-          className="flex flex-col gap-4 pt-4 px-6"
           onSubmit={(e) => {
             e.preventDefault();
             step === 1 ? setStep(2) : handleSubmit();
           }}
         >
+          <div className="flex flex-col gap-4 py-4 px-6">
           {step === 1 && (
             <>
               <div className="flex flex-col gap-3 items-start">
@@ -136,6 +146,16 @@ export const NewUserDialog: React.FC<NewUserDialogProps> = ({
                 className={`w-full focus:outline-none focus:ring-[1.5px] border border-[#8D8BC1] p-4 rounded-sm placeholder:text-[16px]`}
               />
 
+              {userType === "Profissional" && (
+                  <input
+                  type="date"
+                  placeholder="Data de Nascimento"
+                  value={birthDate}
+                  onChange={(e) => setBirthDate(e.target.value)}
+                  className={`w-full focus:outline-none focus:ring-[1.5px] border border-[#8D8BC1] p-4 rounded-sm placeholder:text-[16px]`}
+                />
+              )}
+
               {userType === "Paciente" && (
                 <>
                   <input
@@ -163,6 +183,9 @@ export const NewUserDialog: React.FC<NewUserDialogProps> = ({
 
           {step === 2 && (
             <>
+              <label className={`font-medium leading-[20px] text-[14px] text-[#1A1847]`}>
+                Login:
+              </label>
               <input
                 type="email"
                 placeholder="E-mail"
@@ -186,8 +209,9 @@ export const NewUserDialog: React.FC<NewUserDialogProps> = ({
               />
             </>
           )}
+          </div>
 
-          <DialogFooter className="flex gap-4 justify-end px-6 pt-4 w-full bg-[#ECE6F0]">
+          <DialogFooter className="flex gap-4 justify-end p-6 bg-[#ECE6F0]">
             <DialogClose asChild>
               <button
                 id="closeDialog"
@@ -200,7 +224,7 @@ export const NewUserDialog: React.FC<NewUserDialogProps> = ({
               <button
                 type="button"
                 onClick={() => setStep(1)}
-                className="bg-transparent border border-[#404AA0] text-[#404AA0] leading-5 font-medium text-[14px] px-4 py-2 rounded-[100px] hover:bg-[#f2f3ff]"
+                className="text-[#404AA0] leading-5 font-medium text-[14px] px-4 py-2 rounded-[100px] border border-transparent hover:border-[#404AA0] transition-all"
               >
                 Voltar
               </button>

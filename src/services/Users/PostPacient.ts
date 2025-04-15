@@ -5,7 +5,7 @@ type DiagnosisTime = "LESS_THAN_6MONTHS" | "BETWEEN_6MONTHS_AND_1YEAR" | "BETWEE
 export type PacientInput = {
   name: string,
   email: string,
-  birthDate: Date,
+  birthDate: string,
   diagnosisTime : DiagnosisTime,
 }
 

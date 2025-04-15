@@ -50,7 +50,7 @@ export const UsersTab: React.FC<UsersTabProps> = ({
   if (error) return <div>Erro: {error}</div>;
 
   return (
-    <div className="flex flex-col bg-white font-firaSans flex-1 rounded-b-[28px] px-2 py-4 gap-6 h-full">
+    <div className="flex flex-col bg-white font-firaSans flex-1 rounded-b-[28px] px-8 py-4 gap-6 h-full">
       
       {/* Barra de Pesquisa */}
       <div className="sticky top-0 w-[60%]">
@@ -71,7 +71,7 @@ export const UsersTab: React.FC<UsersTabProps> = ({
       </div>
 
       {/* Lista de Usuários */}
-      <div className="mx-8 flex flex-col overflow-y-auto mt-6 mb-6 flex-1 scrollbar-hide">
+      <div className="flex flex-col overflow-y-auto mt-6 mb-6 flex-1 scrollbar-hide">
         {users.length === 0 ? (
           <div className="flex justify-center items-center h-full">
             <p className="text-black font-firaSans">
