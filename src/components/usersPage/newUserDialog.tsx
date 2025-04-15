@@ -1,0 +1,220 @@
+import React, { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose
+} from "../ui/dialog";
+import Image from "next/image";
+import { PacientThing, PacientInput } from "services/Users/PostPacient";
+import { checked, plusIcon, unchecked } from "assets";
+
+interface NewUserDialogProps {
+  onAddSuccess: (newPacient: PacientThing) => Promise<PacientThing>;
+}
+
+export const NewUserDialog: React.FC<NewUserDialogProps> = ({
+  onAddSuccess,
+}) => {
+  type UserType = "Paciente" | "Profissional" | "Admin";
+
+  const [userType, setUserType] = useState<UserType | null>("Paciente");
+  const [name, setName] = useState("");
+  const [birthDate, setBirthDate] = useState("");
+  const [diagnosisTime, setDiagnosisTime] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [step, setStep] = useState<1 | 2>(1);
+
+  const handleSubmit = async () => {
+    if (!name || !email || !userType || !password || password !== confirmPassword) {
+      alert("Preencha todos os campos corretamente.");
+      return;
+    }
+
+    const baseData = {
+      name,
+      email,
+      password,
+    };
+
+    const pacienteExtras =
+      userType === "Paciente"
+        ? {
+            birthDate: new Date(birthDate).toISOString(),
+            diagnosisTime,
+          }
+        : {};
+
+    const finalData = {
+      ...baseData,
+      ...pacienteExtras,
+    };
+    console.log(finalData);
+
+    try {
+      setLoading(true);
+      await onAddSuccess(finalData);
+      setName("");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+      setBirthDate("");
+      setDiagnosisTime("");
+      setUserType(null);
+      setStep(1);
+      document.getElementById("closeDialog")?.click();
+    } catch (err) {
+      alert("Erro ao cadastrar usuário.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <button className="bg-[#EC0054] items-center p-4 rounded-2xl">
+          <Image src={plusIcon} alt="Adicionar usuário" />
+        </button>
+      </DialogTrigger>
+      <DialogContent className="w-[560px] font-firaSansCondensed">
+        <DialogHeader className="flex w-full bg-[#ECE6F0] pt-6 pb-2 items-start pl-6">
+          <DialogTitle className="text-[24px] text-[#1A1847] leading-8 font-firaSans">
+            Novo Usuário
+          </DialogTitle>
+          <DialogDescription></DialogDescription>
+        </DialogHeader>
+
+        <form
+          className="flex flex-col gap-4 pt-4 px-6"
+          onSubmit={(e) => {
+            e.preventDefault();
+            step === 1 ? setStep(2) : handleSubmit();
+          }}
+        >
+          {step === 1 && (
+            <>
+              <div className="flex flex-col gap-3 items-start">
+                <label className={`font-medium leading-[20px] text-[14px] text-[#1A1847]`}>
+                  Tipo de Usuário:
+                </label>
+                <div className="flex flex-col gap-2">
+                  {["Paciente", "Profissional", "Admin"].map((type) => (
+                    <label
+                      key={type}
+                      className="flex items-center gap-2 cursor-pointer"
+                    >
+                      <input
+                        type="radio"
+                        name="userType"
+                        value={type}
+                        className="hidden"
+                        onChange={() => setUserType(type as UserType)}
+                      />
+                      <Image
+                        src={userType === type ? checked : unchecked}
+                        alt="radio"
+                      />
+                      {type}
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              <input
+                type="text"
+                placeholder="Nome"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className={`w-full focus:outline-none focus:ring-[1.5px] border border-[#8D8BC1] p-4 rounded-sm placeholder:text-[16px]`}
+              />
+
+              {userType === "Paciente" && (
+                <>
+                  <input
+                    type="date"
+                    placeholder="Data de Nascimento"
+                    value={birthDate}
+                    onChange={(e) => setBirthDate(e.target.value)}
+                    className={`w-full focus:outline-none focus:ring-[1.5px] border border-[#8D8BC1] p-4 rounded-sm placeholder:text-[16px]`}
+                  />
+                  <select
+                    value={diagnosisTime}
+                    onChange={(e) => setDiagnosisTime(e.target.value)}
+                    className={`w-full focus:outline-none focus:ring-[1.5px] border border-[#8D8BC1] p-4 rounded-sm placeholder:text-[16px]`}
+                  >
+                    <option value="">Tempo de Diagnóstico</option>
+                    <option value="LESS_THAN_6MONTHS">Menos de 6 meses</option>
+                    <option value="BETWEEN_6MONTHS_AND_1YEAR">6 meses a 1 ano</option>
+                    <option value="BETWEEN_1YEAR_AND_2YEARS">1 a 2 anos</option>
+                    <option value="MORE_THAN_2YEARS">Mais de 2 anos</option>
+                  </select>
+                </>
+              )}
+            </>
+          )}
+
+          {step === 2 && (
+            <>
+              <input
+                type="email"
+                placeholder="E-mail"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className={`w-full focus:outline-none focus:ring-[1.5px] border border-[#8D8BC1] p-4 rounded-sm placeholder:text-[16px]`}
+              />
+              <input
+                type="password"
+                placeholder="Senha"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className={`w-full focus:outline-none focus:ring-[1.5px] border border-[#8D8BC1] p-4 rounded-sm placeholder:text-[16px]`}
+              />
+              <input
+                type="password"
+                placeholder="Confirmar Senha"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className={`w-full focus:outline-none focus:ring-[1.5px] border border-[#8D8BC1] p-4 rounded-sm placeholder:text-[16px]`}
+              />
+            </>
+          )}
+
+          <DialogFooter className="flex gap-4 justify-end px-6 pt-4 w-full bg-[#ECE6F0]">
+            <DialogClose asChild>
+              <button
+                id="closeDialog"
+                className="text-[#404AA0] leading-5 font-medium text-[14px] px-4 py-2 rounded-[100px] border border-transparent hover:border-[#404AA0] transition-all"
+              >
+                Cancelar
+              </button>
+            </DialogClose>
+            {step === 2 && (
+              <button
+                type="button"
+                onClick={() => setStep(1)}
+                className="bg-transparent border border-[#404AA0] text-[#404AA0] leading-5 font-medium text-[14px] px-4 py-2 rounded-[100px] hover:bg-[#f2f3ff]"
+              >
+                Voltar
+              </button>
+            )}
+            <button
+              type="submit"
+              disabled={loading}
+              className="bg-[#404AA0] text-[#DFE0FF] leading-5 font-medium text-[14px] px-4 py-2 rounded-[100px] transition-all hover:bg-[#303880] disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading ? "Enviando..." : step === 1 ? "Próximo" : "Enviar"}
+            </button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+};

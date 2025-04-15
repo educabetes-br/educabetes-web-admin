@@ -12,6 +12,8 @@ import {
     PaginationPrevious,
     PaginationNext
 } from "../ui/pagination";
+import { PacientThing } from 'services/Users/PostPacient';
+import { NewUserDialog } from './newUserDialog';
 
 export type User = {
     id: number;
@@ -26,6 +28,7 @@ interface UsersMenuProps {
     loading: boolean;
     error: string | null;
     itensPerPage?: number;
+    onAddPacient: (newPacient: PacientThing) => void;
   }
 
 export const UsersMenu: React.FC<UsersMenuProps> = ({ 
@@ -34,6 +37,7 @@ export const UsersMenu: React.FC<UsersMenuProps> = ({
     admins,
     loading, 
     error,
+    onAddPacient,
     itensPerPage = 6
 }) => {
 
@@ -176,6 +180,10 @@ export const UsersMenu: React.FC<UsersMenuProps> = ({
                 </PaginationItem>
               </PaginationContent>
             </Pagination>
+
+            <div>
+              <NewUserDialog onAddSuccess={onAddPacient} />
+            </div>
           </footer>
           )}
         </div>
