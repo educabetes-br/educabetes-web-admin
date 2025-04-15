@@ -143,7 +143,7 @@ const GetMaterialsMenu: React.FC = () => {
         </div>
 
         {/* Lista de Materiais */ }
-        <div className=" mx-8 flex-grow mb-6 ml-12 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
+        <div className=" mx-8 flex-grow mb-6 ml-12 overflow-y-auto overflow-x-hidden">
           {paginatedMaterials.map((material, index) => (
             <div
               key={material.id}
