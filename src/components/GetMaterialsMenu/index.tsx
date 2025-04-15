@@ -123,7 +123,7 @@ const GetMaterialsMenu: React.FC = () => {
   );
 
   return (
-      <div className="bg-white font-firaSans flex-1 rounded-[28px] max-w-[1126px] text-white flex flex-col">
+      <div className="bg-white font-firaSans flex-1 rounded-[28px] text-white flex flex-col">
         <div className="sticky top-0 ml-8 w-[60%] bg-white pb-6">
           <div className="relative flex justify-center items-center">
             <div className="absolute left-1">
@@ -143,11 +143,11 @@ const GetMaterialsMenu: React.FC = () => {
         </div>
 
         {/* Lista de Materiais */ }
-        <div className="w-[1064px] h-[711px] mx-8 flex-grow mb-6 ml-12 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
+        <div className=" mx-8 flex-grow mb-6 ml-12 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
           {paginatedMaterials.map((material, index) => (
             <div
               key={material.id}
-              className={`flex w-[1024px] h-[89px] items-center justify-between hover:bg-gray-100 transition-colors ${
+              className={`flex h-[89px] items-center justify-between hover:bg-gray-100 transition-colors ${
           index === paginatedMaterials.length - 1 ? "" : "border-b"
               }`}
             >

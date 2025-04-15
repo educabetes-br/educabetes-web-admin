@@ -7,7 +7,7 @@ interface CardMenuProps {
 
 const CardMenu: React.FC<CardMenuProps> = ({ cardContent, titulo }) => {
   return (
-    <div className="flex flex-col w-[1128px] mx-32 h-[95%] rounded-[28px] border border-[#939090] bg-white">
+    <div className="flex flex-col w-full mx-32 h-[95%] rounded-[28px] border border-[#939090] bg-white">
       <header className="flex pl-8 py-4">
         <h1 className="text-[24px] font-firaSans leading-8 text-[#1A1847]">{titulo}</h1>
       </header>
