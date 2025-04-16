@@ -10,6 +10,7 @@ import { Patient, getPatients } from '../../services/Users/GetPatients';
 import { HealthPro, getHealthPro } from 'services/Users/GetHealthPro';
 import { Admin, getAdmins } from 'services/Users/GetAdmin';
 import { PatientInput, postPatient } from 'services/Users/PostPatient';
+import { HealthProInput, postHealthPro } from 'services/Users/PostHealthPro';
 
 const UsersPage: React.FC = () => {
   const { status } = useSession();
@@ -21,6 +22,7 @@ const UsersPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [, setNewPatient] = useState<PatientInput[]>([]);
+  const [, setNewHealthPro] = useState<HealthProInput[]>([]);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -63,6 +65,18 @@ const UsersPage: React.FC = () => {
     }
   }
 
+  const handleAddHealthPro = async (newHealthPro: HealthProInput): Promise<HealthProInput> => {
+    console.log('Entrou nessa func2');
+    try {
+      const addedHealthPro = await postHealthPro(newHealthPro);
+      setNewHealthPro(prev => [...prev, addedHealthPro]);
+      return addedHealthPro;
+    } catch (err) {
+      alert('Erro ao adicionar profissional.');
+      throw err;
+    }
+  }
+
   if (status === 'loading') {
     return <div>Loading...</div>; // ou um spinner bonitinho
   }
@@ -80,6 +94,7 @@ const UsersPage: React.FC = () => {
               loading={loading}
               error={error}
               onAddPatient={handleAddPatient}
+              onAddHealthPro={handleAddHealthPro}
             />
           }
         /> 

@@ -15,14 +15,16 @@ import { checked, plusIcon, unchecked } from "assets";
 
 interface NewUserDialogProps {
   onAddSuccess: (newPatient: PatientInput) => Promise<PatientInput>;
+  onAddHealthProSuccess: (newHealthPro: PatientInput) => Promise<PatientInput>;
 }
 
 export const NewUserDialog: React.FC<NewUserDialogProps> = ({
   onAddSuccess,
+  onAddHealthProSuccess,
 }) => {
-  type UserType = "Patiente" | "Profissional" | "Admin";
+  type UserType = "Paciente" | "Profissional" | "Admin";
 
-  const [userType, setUserType] = useState<UserType | null>("Patiente");
+  const [userType, setUserType] = useState<UserType | null>("Paciente");
   const [name, setName] = useState("");
   const [birthDate, setBirthDate] = useState("");
   const [diagnosisTime, setDiagnosisTime] = useState("");
@@ -53,24 +55,49 @@ export const NewUserDialog: React.FC<NewUserDialogProps> = ({
     };
     
 
-    const patienteExtras =
-      userType === "Patiente"
-        ? {
-            birthDate:formatDateToBR(birthDate),
-
-            diagnosisTime,
-          }
-        : {};
+    const extras = {
+      ...(userType === "Paciente" && {
+        birthDate: formatDateToBR(birthDate),
+        diagnosisTime,
+      }),
+      ...(userType === "Profissional" && {
+        birthDate: formatDateToBR(birthDate),
+      }),
+    };
+    
 
     const finalData = {
       ...baseData,
-      ...patienteExtras,
+      ...extras,
     };
     console.log(finalData);
 
     try {
       setLoading(true);
-      await onAddSuccess(finalData);
+
+      if (userType === "Paciente") {
+        const pacienteData = {
+          name: finalData.name,
+          email: finalData.email,
+          password: finalData.password,
+          birthDate: finalData.birthDate,
+          diagnosisTime: finalData.diagnosisTime,
+        };
+        await onAddSuccess(pacienteData); // prop vinda da página
+      }
+  
+      if (userType === "Profissional") {
+        setDiagnosisTime("");
+        const healthProData = {
+          name: finalData.name,
+          email: finalData.email,
+          password: finalData.password,
+          birthDate: finalData.birthDate,
+        };
+        console.log(healthProData);
+        await onAddHealthProSuccess(healthProData);
+      }
+
       setName("");
       setEmail("");
       setPassword("");
@@ -116,7 +143,7 @@ export const NewUserDialog: React.FC<NewUserDialogProps> = ({
                   Tipo de Usuário:
                 </label>
                 <div className="flex flex-col gap-2">
-                  {["Patiente", "Profissional", "Admin"].map((type) => (
+                  {["Paciente", "Profissional", "Admin"].map((type) => (
                     <label
                       key={type}
                       className="flex items-center gap-2 cursor-pointer"
@@ -156,7 +183,7 @@ export const NewUserDialog: React.FC<NewUserDialogProps> = ({
                 />
               )}
 
-              {userType === "Patiente" && (
+              {userType === "Paciente" && (
                 <>
                   <input
                     type="date"

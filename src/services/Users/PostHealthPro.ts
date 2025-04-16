@@ -6,11 +6,7 @@ export type HealthProInput = {
     birthDate: string,
 }
 
-export type HealthProThing = HealthProInput & {
-    id: number,
-}
-
-export const postHealthPro = async (healthPro: HealthProInput): Promise<HealthProThing> => {
+export const postHealthPro = async (healthPro: HealthProInput): Promise<HealthProInput> => {
     try {
         const response = await api.post("/healthprofessional", healthPro);
         return response.data.data;

@@ -28,7 +28,8 @@ interface UsersMenuProps {
     loading: boolean;
     error: string | null;
     itensPerPage?: number;
-    onAddPatient: (newPatient: PatientInput) => void;
+    onAddPatient: (newPatient: PatientInput) => Promise<PatientInput>;
+    onAddHealthPro: (newHealthPro: PatientInput) => Promise<PatientInput>;
   }
 
 export const UsersMenu: React.FC<UsersMenuProps> = ({ 
@@ -38,6 +39,7 @@ export const UsersMenu: React.FC<UsersMenuProps> = ({
     loading, 
     error,
     onAddPatient,
+    onAddHealthPro,
     itensPerPage = 6
 }) => {
 
@@ -182,7 +184,10 @@ export const UsersMenu: React.FC<UsersMenuProps> = ({
             </Pagination>
 
             <div>
-              <NewUserDialog onAddSuccess={onAddPatient} />
+              <NewUserDialog 
+              onAddSuccess={onAddPatient}
+              onAddHealthProSuccess={onAddHealthPro}
+              />
             </div>
           </footer>
           )}
