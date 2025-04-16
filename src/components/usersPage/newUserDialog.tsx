@@ -10,7 +10,7 @@ import {
   DialogClose
 } from "../ui/dialog";
 import Image from "next/image";
-import { PatientInput } from "../../services/Users/PostPatient";
+import { PatientInput, DiagnosisTime } from "../../services/Users/PostPatient";
 import { checked, plusIcon, unchecked } from "assets";
 import { HealthProInput } from "services/Users/PostHealthPro";
 import { AdminInput } from "services/Users/PostAdmin";
@@ -65,11 +65,11 @@ export const NewUserDialog: React.FC<NewUserDialogProps> = ({
 
     const extras = {
       ...(userType === "Paciente" && {
-        birthDate: formatDateToBR(birthDate),
-        diagnosisTime,
+        birthDate: formatDateToBR(birthDate) || "",
+        diagnosisTime: diagnosisTime as DiagnosisTime,
       }),
       ...(userType === "Profissional" && {
-        birthDate: formatDateToBR(birthDate),
+        birthDate: formatDateToBR(birthDate) || "",
       }),
     };
     
@@ -88,8 +88,8 @@ export const NewUserDialog: React.FC<NewUserDialogProps> = ({
           name: finalData.name,
           email: finalData.email,
           password: finalData.password,
-          birthDate: finalData.birthDate,
-          diagnosisTime: finalData.diagnosisTime,
+          birthDate: finalData.birthDate || "",
+          diagnosisTime: finalData.diagnosisTime as DiagnosisTime || "",
         };
         await onAddSuccess(pacienteData); 
       }
@@ -99,7 +99,7 @@ export const NewUserDialog: React.FC<NewUserDialogProps> = ({
           name: finalData.name,
           email: finalData.email,
           password: finalData.password,
-          birthDate: finalData.birthDate,
+          birthDate: finalData.birthDate || "",
         };
         await onAddHealthProSuccess(healthProData);
       }
@@ -133,7 +133,7 @@ export const NewUserDialog: React.FC<NewUserDialogProps> = ({
     <Dialog>
       <DialogTrigger asChild>
         <button className="bg-[#EC0054] items-center p-4 rounded-2xl">
-          <Image src={plusIcon} alt="Adicionar usuário" />
+          <Image src={plusIcon} alt="Adicionar usuário" />        
         </button>
       </DialogTrigger>
       <DialogContent className="w-[560px] font-firaSansCondensed">
@@ -172,7 +172,7 @@ export const NewUserDialog: React.FC<NewUserDialogProps> = ({
                       />
                       <Image
                         src={userType === type ? checked : unchecked}
-                        alt="radio"
+                        alt={`Selecionar tipo de usuário: ${type}`}
                       />
                       {type}
                     </label>

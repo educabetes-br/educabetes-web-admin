@@ -147,7 +147,7 @@ const NewUserCard: React.FC<NewUserCardProps> = ({
                                                 />
                                                 <Image
                                                     src={userType === type ? checked : unchecked}
-                                                    alt="radio"
+                                                    alt={`Selecionar tipo de usuário: ${type}`}
                                                 />
                                                 {type}
                                             </label>
