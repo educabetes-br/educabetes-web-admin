@@ -11,6 +11,7 @@ import { HealthPro, getHealthPro } from 'services/Users/GetHealthPro';
 import { Admin, getAdmins } from 'services/Users/GetAdmin';
 import { PatientInput, postPatient } from 'services/Users/PostPatient';
 import { HealthProInput, postHealthPro } from 'services/Users/PostHealthPro';
+import { AdminInput, postAdmin } from 'services/Users/PostAdmin';
 
 const UsersPage: React.FC = () => {
   const { status } = useSession();
@@ -23,6 +24,7 @@ const UsersPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [, setNewPatient] = useState<PatientInput[]>([]);
   const [, setNewHealthPro] = useState<HealthProInput[]>([]);
+  const [, setNewAdmin] = useState<AdminInput[]>([]);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -54,7 +56,6 @@ const UsersPage: React.FC = () => {
   }, []);
 
   const handleAddPatient = async (newPatient: PatientInput): Promise<PatientInput> => {
-    console.log('Entrou nessa func1');
     try {
       const addedPatient = await postPatient(newPatient);
       setNewPatient(prev => [...prev, addedPatient]);
@@ -66,13 +67,23 @@ const UsersPage: React.FC = () => {
   }
 
   const handleAddHealthPro = async (newHealthPro: HealthProInput): Promise<HealthProInput> => {
-    console.log('Entrou nessa func2');
     try {
       const addedHealthPro = await postHealthPro(newHealthPro);
       setNewHealthPro(prev => [...prev, addedHealthPro]);
       return addedHealthPro;
     } catch (err) {
       alert('Erro ao adicionar profissional.');
+      throw err;
+    }
+  }
+
+  const handleAddAdmin = async (newAdmin: AdminInput): Promise<AdminInput> => {
+    try {
+      const addedAdmin = await postAdmin(newAdmin);
+      setNewAdmin(prev => [...prev, addedAdmin]);
+      return addedAdmin;
+    } catch (err) {
+      alert('Erro ao adicionar admin.');
       throw err;
     }
   }
@@ -95,6 +106,7 @@ const UsersPage: React.FC = () => {
               error={error}
               onAddPatient={handleAddPatient}
               onAddHealthPro={handleAddHealthPro}
+              onAddAdmin={handleAddAdmin}
             />
           }
         /> 

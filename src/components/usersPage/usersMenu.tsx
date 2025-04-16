@@ -14,6 +14,8 @@ import {
 } from "../ui/pagination";
 import { NewUserDialog } from './newUserDialog';
 import { PatientInput } from '../../services/Users/PostPatient';
+import { HealthProInput } from 'services/Users/PostHealthPro';
+import { AdminInput } from 'services/Users/PostAdmin';
 
 export type User = {
     id: number;
@@ -29,7 +31,8 @@ interface UsersMenuProps {
     error: string | null;
     itensPerPage?: number;
     onAddPatient: (newPatient: PatientInput) => Promise<PatientInput>;
-    onAddHealthPro: (newHealthPro: PatientInput) => Promise<PatientInput>;
+    onAddHealthPro: (newHealthPro: HealthProInput) => Promise<HealthProInput>;
+    onAddAdmin: (newAdmin: AdminInput) => Promise<AdminInput>;
   }
 
 export const UsersMenu: React.FC<UsersMenuProps> = ({ 
@@ -40,6 +43,7 @@ export const UsersMenu: React.FC<UsersMenuProps> = ({
     error,
     onAddPatient,
     onAddHealthPro,
+    onAddAdmin,
     itensPerPage = 6
 }) => {
 
@@ -187,6 +191,7 @@ export const UsersMenu: React.FC<UsersMenuProps> = ({
               <NewUserDialog 
               onAddSuccess={onAddPatient}
               onAddHealthProSuccess={onAddHealthPro}
+              onAddAdminSucess={onAddAdmin}
               />
             </div>
           </footer>

@@ -12,15 +12,19 @@ import {
 import Image from "next/image";
 import { PatientInput } from "../../services/Users/PostPatient";
 import { checked, plusIcon, unchecked } from "assets";
+import { HealthProInput } from "services/Users/PostHealthPro";
+import { AdminInput } from "services/Users/PostAdmin";
 
 interface NewUserDialogProps {
   onAddSuccess: (newPatient: PatientInput) => Promise<PatientInput>;
-  onAddHealthProSuccess: (newHealthPro: PatientInput) => Promise<PatientInput>;
-}
+  onAddHealthProSuccess: (newHealthPro: HealthProInput) => Promise<HealthProInput>;
+  onAddAdminSucess: (newAdmin: AdminInput ) => Promise<AdminInput>;
+};
 
 export const NewUserDialog: React.FC<NewUserDialogProps> = ({
   onAddSuccess,
   onAddHealthProSuccess,
+  onAddAdminSucess
 }) => {
   type UserType = "Paciente" | "Profissional" | "Admin";
 
@@ -83,19 +87,26 @@ export const NewUserDialog: React.FC<NewUserDialogProps> = ({
           birthDate: finalData.birthDate,
           diagnosisTime: finalData.diagnosisTime,
         };
-        await onAddSuccess(pacienteData); // prop vinda da página
+        await onAddSuccess(pacienteData); 
       }
   
       if (userType === "Profissional") {
-        setDiagnosisTime("");
         const healthProData = {
           name: finalData.name,
           email: finalData.email,
           password: finalData.password,
           birthDate: finalData.birthDate,
         };
-        console.log(healthProData);
         await onAddHealthProSuccess(healthProData);
+      }
+
+      if(userType === "Admin") {
+        const adminData = {
+          name: finalData.name,
+          email: finalData.email,
+          password: finalData.password,
+        };
+        await onAddAdminSucess(adminData);
       }
 
       setName("");
