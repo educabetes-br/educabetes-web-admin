@@ -14,6 +14,7 @@ import { PatientInput } from "../../services/Users/PostPatient";
 import { checked, plusIcon, unchecked } from "assets";
 import { HealthProInput } from "services/Users/PostHealthPro";
 import { AdminInput } from "services/Users/PostAdmin";
+import { Eye, EyeOff } from "lucide-react";
 
 interface NewUserDialogProps {
   onAddSuccess: (newPatient: PatientInput) => Promise<PatientInput>;
@@ -37,6 +38,9 @@ export const NewUserDialog: React.FC<NewUserDialogProps> = ({
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState<1 | 2>(1);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
 
   const handleSubmit = async () => {
     if (!name || !email || !userType || !password || password !== confirmPassword) {
@@ -231,20 +235,39 @@ export const NewUserDialog: React.FC<NewUserDialogProps> = ({
                 onChange={(e) => setEmail(e.target.value)}
                 className={`w-full focus:outline-none focus:ring-[1.5px] border border-[#8D8BC1] p-4 rounded-sm placeholder:text-[16px]`}
               />
-              <input
-                type="password"
-                placeholder="Senha"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className={`w-full focus:outline-none focus:ring-[1.5px] border border-[#8D8BC1] p-4 rounded-sm placeholder:text-[16px]`}
-              />
-              <input
-                type="password"
-                placeholder="Confirmar Senha"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className={`w-full focus:outline-none focus:ring-[1.5px] border border-[#8D8BC1] p-4 rounded-sm placeholder:text-[16px]`}
-              />
+              <div className="relative w-full">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Senha"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full focus:outline-none focus:ring-[1.5px] border border-[#8D8BC1] p-4 rounded-sm placeholder:text-[16px]"
+                />
+                <div className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer">
+                  {showPassword ? (
+                    <EyeOff width={24} onClick={() => setShowPassword(false)} />
+                  ) : (
+                    <Eye width={24} onClick={() => setShowPassword(true)} />
+                  )}
+                </div>
+              </div>
+
+              <div className="relative w-full">
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  placeholder="Confirmar Senha"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="w-full focus:outline-none focus:ring-[1.5px] border border-[#8D8BC1] p-4 rounded-sm placeholder:text-[16px]"
+                />
+                <div className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer">
+                  {showConfirmPassword ? (
+                    <EyeOff width={24} onClick={() => setShowConfirmPassword(false)} />
+                  ) : (
+                    <Eye width={24} onClick={() => setShowConfirmPassword(true)} />
+                  )}
+                </div>
+              </div>
             </>
           )}
           </div>
