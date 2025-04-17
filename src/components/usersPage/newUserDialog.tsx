@@ -47,6 +47,7 @@ export const NewUserDialog: React.FC<NewUserDialogProps> = ({
   const [step, setStep] = useState<1 | 2>(1);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
 
   const handleSubmit = async () => {
@@ -129,13 +130,30 @@ export const NewUserDialog: React.FC<NewUserDialogProps> = ({
       setUserType(null);
       setStep(1);
       document.getElementById("closeDialog")?.click();
-    } catch (err) {
-      alert("Erro ao cadastrar usuário.");
     } finally {
       setLoading(false);
     }
   };
 
+  const isStepOneValid = () => {
+    if (!userType || !name) return false;
+  
+    if (userType === "Paciente") {
+      return birthDate !== "" && diagnosisTime !== "";
+    }
+  
+    if (userType === "Profissional") {
+      return birthDate !== "";
+    }
+  
+    return true; // Admin só precisa do nome
+  };
+
+  const isStepTwoValid = () => {
+  return email !== "" && password !== "" && confirmPassword !== "" && password === confirmPassword;
+};
+
+  
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -298,7 +316,7 @@ export const NewUserDialog: React.FC<NewUserDialogProps> = ({
             )}
             <button
               type="submit"
-              disabled={loading}
+              disabled={loading || (step === 1 ? !isStepOneValid() : !isStepTwoValid())}
               className="bg-[#404AA0] text-[#DFE0FF] leading-5 font-medium text-[14px] px-4 py-2 rounded-[100px] transition-all hover:bg-[#303880] disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? "Enviando..." : step === 1 ? "Próximo" : "Enviar"}
