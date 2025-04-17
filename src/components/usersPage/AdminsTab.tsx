@@ -19,7 +19,6 @@ interface AdminsTabProps {
 
 export const AdminsTab: React.FC<AdminsTabProps> = ({
   admins,
-  loading,
   error,
   searchTerm,
   onSearchChange

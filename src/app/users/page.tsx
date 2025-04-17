@@ -108,7 +108,4 @@ const UsersPage: React.FC = () => {
 };
 
 export default UsersPage;
-function fetchUsers() {
-  throw new Error('Function not implemented.');
-}
 

@@ -14,7 +14,6 @@ interface UsersTabProps {
 
 export const UsersTab: React.FC<UsersTabProps> = ({
   users,
-  loading,
   error,
   searchTerm,
   onSearchChange,
