@@ -22,9 +22,24 @@ const UsersPage: React.FC = () => {
   const [admins, setAdmins] = useState<Admin[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [, setNewPatient] = useState<PatientInput[]>([]);
-  const [, setNewHealthPro] = useState<HealthProInput[]>([]);
-  const [, setNewAdmin] = useState<AdminInput[]>([]);
+
+  const fetchUsers = async () => {
+    try {
+      const [patientsData, healthProsData, AdminData] = await Promise.all([
+        getPatients(),
+        getHealthPro(),
+        getAdmins()
+      ]);
+      setPatients(patientsData);
+      setHealthPros(healthProsData);
+      setAdmins(AdminData);
+    } catch (err) {
+      console.error('Failed to fetch users:', err);
+      setError(err instanceof Error ? err.message : 'Erro desconhecido');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -33,32 +48,13 @@ const UsersPage: React.FC = () => {
   }, [status, router]);
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const [patientsData, healthProsData, AdminData] = await Promise.all([
-          getPatients(),
-          getHealthPro(),
-          getAdmins()
-        ]);
-        setPatients(patientsData);
-        setHealthPros(healthProsData);
-        setAdmins(AdminData);
-
-      } catch (err) {
-        console.error('Failed to fetch users:', err);
-        setError(err instanceof Error ? err.message : 'Erro desconhecido');
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchUsers();
   }, []);
 
   const handleAddPatient = async (newPatient: PatientInput): Promise<PatientInput> => {
     try {
       const addedPatient = await postPatient(newPatient);
-      setNewPatient(prev => [...prev, addedPatient]);
+      await fetchUsers();
       return addedPatient;
     } catch (err) {
       alert('Erro ao adicionar patiente.');
@@ -69,7 +65,7 @@ const UsersPage: React.FC = () => {
   const handleAddHealthPro = async (newHealthPro: HealthProInput): Promise<HealthProInput> => {
     try {
       const addedHealthPro = await postHealthPro(newHealthPro);
-      setNewHealthPro(prev => [...prev, addedHealthPro]);
+      await fetchUsers();
       return addedHealthPro;
     } catch (err) {
       alert('Erro ao adicionar profissional.');
@@ -80,7 +76,7 @@ const UsersPage: React.FC = () => {
   const handleAddAdmin = async (newAdmin: AdminInput): Promise<AdminInput> => {
     try {
       const addedAdmin = await postAdmin(newAdmin);
-      setNewAdmin(prev => [...prev, addedAdmin]);
+      await fetchUsers();
       return addedAdmin;
     } catch (err) {
       alert('Erro ao adicionar admin.');
@@ -112,3 +108,7 @@ const UsersPage: React.FC = () => {
 };
 
 export default UsersPage;
+function fetchUsers() {
+  throw new Error('Function not implemented.');
+}
+

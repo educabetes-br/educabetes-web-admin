@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { Eye, EyeOff } from "lucide-react";
-import { checked, unchecked} from "assets";
+import { checked, unchecked } from "assets";
 import { PatientInput } from "services/Users/PostPatient";
 import { HealthProInput } from "services/Users/PostHealthPro";
 import { AdminInput } from "services/Users/PostAdmin";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "../ui/select";
 
 interface NewUserCardProps {
     isOpen: boolean;
@@ -177,17 +178,17 @@ const NewUserCard: React.FC<NewUserCardProps> = ({
 
                                 {/* Se for Paciente, exibe também o seletor de Tempo de Diagnóstico */}
                                 {userType === "Paciente" && (
-                                    <select
-                                        value={diagnosisTime}
-                                        onChange={(e) => setDiagnosisTime(e.target.value)}
-                                        className="w-full border border-[#8D8BC1] p-4 rounded-sm"
-                                    >
-                                        <option value="">Tempo de Diagnóstico</option>
-                                        <option value="LESS_THAN_6MONTHS">Menos de 6 meses</option>
-                                        <option value="BETWEEN_6MONTHS_AND_1YEAR">6 meses a 1 ano</option>
-                                        <option value="BETWEEN_1YEAR_AND_2YEARS">1 a 2 anos</option>
-                                        <option value="MORE_THAN_2YEARS">Mais de 2 anos</option>
-                                    </select>
+                                    <Select value={diagnosisTime} onValueChange={setDiagnosisTime}>
+                                    <SelectTrigger className={`w-full focus:outline-none focus:ring-[1.5px] border border-[#8D8BC1] p-4 rounded-sm placeholder:text-[16px] h-14 bg-white`}>
+                                      <SelectValue placeholder="Tempo de Diagnóstico" />
+                                    </SelectTrigger>
+                                    <SelectContent className="bg-white border border-[#8D8BC1] text-[#1A1847] font-semibold text-base">
+                                      <SelectItem value="LESS_THAN_6MONTHS" className="hover:bg-[#F2F3FF] cursor-pointer">Menos de 6 meses</SelectItem>
+                                      <SelectItem value="BETWEEN_6MONTHS_AND_1YEAR" className="hover:bg-[#F2F3FF] cursor-pointer">6 meses a 1 ano</SelectItem>
+                                      <SelectItem value="BETWEEN_1YEAR_AND_2YEARS" className="hover:bg-[#F2F3FF] cursor-pointer">1 a 2 anos</SelectItem>
+                                      <SelectItem value="MORE_THAN_2YEARS" className="hover:bg-[#F2F3FF] cursor-pointer">Mais de 2 anos</SelectItem>
+                                    </SelectContent>
+                                  </Select>
                                 )}
                             </>
                         )}

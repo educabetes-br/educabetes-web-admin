@@ -209,7 +209,6 @@ export const NewUserDialog: React.FC<NewUserDialogProps> = ({
                 <>
                   <input
                     type="date"
-                    placeholder="Data de Nascimento"
                     value={birthDate}
                     onChange={(e) => setBirthDate(e.target.value)}
                     className={`w-full focus:outline-none focus:ring-[1.5px] border border-[#8D8BC1] p-4 rounded-sm placeholder:text-[16px]`}
