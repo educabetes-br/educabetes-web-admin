@@ -88,10 +88,6 @@ const UsersPage: React.FC = () => {
     }
   }
 
-  if (status === 'loading') {
-    return <div>Loading...</div>; // ou um spinner bonitinho
-  }
-
   return (
     <Layout>
       <div className="flex flex-1 h-screen justify-around items-center">
