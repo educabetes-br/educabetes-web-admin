@@ -10,7 +10,6 @@ interface Material {
   titulo: string;
   descricao: string;
   imgPATH: string;
-  acessos: number;
 }
 
 const GetMaterialsMenu: React.FC = () => {
@@ -24,84 +23,72 @@ const GetMaterialsMenu: React.FC = () => {
       titulo: "O que é diabetes?",
       descricao: "Ainda há muito a aprender sobre o que exatamente desencadeia o...",
       imgPATH: Diabetes,
-      acessos: 1545
     },
     {
       id: 2,
       titulo: "Diabetes na adolescência",
       descricao: "A adolescência é marcada por intensas mudanças hormonais...",
       imgPATH: Teenager,
-      acessos: 114
     },
     {
       id: 3,
       titulo: "Lidando com as emoções",
       descricao: "Para adaptar-se ao diagnóstico e tratamento do diabetes é...",
       imgPATH: Emotions,
-      acessos: 2555
     },
     {
       id: 4,
       titulo: "Hipoglicemia",
       descricao: "Hipoglicemia, ou açúcar baixo no sangue, é quando o sangue fica...",
       imgPATH: Hipo,
-      acessos: 100
     },
     {
       id: 5,
       titulo: "Hiperglicemia",
       descricao: "Hiperglicemia acontece quando há muita glicose (açúcar) no sangue.",
       imgPATH: Hiper,
-      acessos: 39000
     },
     {
       id: 6,
       titulo: "Como agem as insulinas",
       descricao: "No diabetes tipo 1, os anticorpos que deveriam nos proteger e...",
       imgPATH: Insulin,
-      acessos: 100
     },
     {
       id: 7,
       titulo: "Insulinas: Parte Prática",
       descricao: "Existem diferentes formas de administrar insulina e cada uma...",
       imgPATH: Practise,
-      acessos: 100
     },
     {
       id: 8,
       titulo: "Cuidados com a Pele",
       descricao: "Muita gente apresenta alergias com os dispositivos utilizados...",
       imgPATH: Skin,
-      acessos: 22
     },
     {
       id: 9,
       titulo: "Contagem de Carboidratos",
       descricao: "A necessidade de nutrientes para a criança com diabetes tipo 1 é...",
       imgPATH: Carbo,
-      acessos: 1
     },
     {
       id: 10,
       titulo: "Monitoração e Metas",
       descricao: "A sua principal seta para encontrar a direção no controle...",
       imgPATH: Goals,
-      acessos: 30
     },
     {
       id: 11,
       titulo: "Exercícios Físicos",
       descricao: "A atividade física promove benefícios sociais e de saúde...",
       imgPATH: PE,
-      acessos: 30
     },
     {
       id: 12,
       titulo: "Diabetes na Infância",
       descricao: "O diabetes entra na infância e impacta o dia a dia dos pais e...",
       imgPATH: Childhood,
-      acessos: 30
     },
   ];
 
@@ -111,10 +98,16 @@ const GetMaterialsMenu: React.FC = () => {
     }
   };
 
-  const filteredMaterials = materials.filter(material =>
-    material.titulo.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    material.descricao.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredMaterials = materials.filter((material) => {
+    const normalizedSearchQuery = searchQuery.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    const normalizedTitulo = material.titulo.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    const normalizedDescricao = material.descricao.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  
+    return (
+      normalizedTitulo.includes(normalizedSearchQuery) ||
+      normalizedDescricao.includes(normalizedSearchQuery)
+    );
+  });
 
   const totalPages = Math.ceil(filteredMaterials.length / itemsPerPage);
   const paginatedMaterials = filteredMaterials.slice(
