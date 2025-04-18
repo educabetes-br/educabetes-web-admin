@@ -47,7 +47,6 @@ export const NewUserDialog: React.FC<NewUserDialogProps> = ({
   const [step, setStep] = useState<1 | 2>(1);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
 
   const handleSubmit = async () => {

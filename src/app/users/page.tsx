@@ -57,7 +57,7 @@ const UsersPage: React.FC = () => {
       await fetchUsers();
       return addedPatient;
     } catch (err) {
-      alert('Erro ao adicionar patiente.');
+      alert('Erro ao adicionar paciente.');
       throw err;
     }
   }

@@ -54,7 +54,7 @@ export function ButtonSidebar({
         setNewPatient(prev => [...prev, addedPatient]);
         return addedPatient;
       } catch (err) {
-        alert('Erro ao adicionar patiente.');
+        alert('Erro ao adicionar paciente.');
         throw err;
       }
     }
