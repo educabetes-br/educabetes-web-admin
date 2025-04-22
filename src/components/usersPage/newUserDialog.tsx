@@ -85,7 +85,7 @@ useEffect(() => {
 
   const handleSubmit = async () => {
     try {
-      const parsed = redefinePassword.parse({
+      redefinePassword.parse({
         email,
         password,
         repeatPassword: confirmPassword
