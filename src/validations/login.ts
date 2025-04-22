@@ -27,5 +27,8 @@ export const redefinePassword = z.object({
     .regex(/\d/, { message: 'A senha precisa ter pelo menos um número' })
     .regex(/[!@#$%^&*(),.?":{}|<>_\-+=~`[\]\\;'/]/, {
       message: 'A senha precisa ter pelo menos um caractere especial'
-    })
-});
+    }),
+    }).refine((data) => data.password === data.repeatPassword, {
+      message: 'As senhas não coincidem',
+      path: ['repeatPassword'], // 
+    });

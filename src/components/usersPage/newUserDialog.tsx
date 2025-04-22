@@ -22,6 +22,10 @@ import { checked, plusIcon, unchecked } from "assets";
 import { HealthProInput } from "services/Users/PostHealthPro";
 import { AdminInput } from "services/Users/PostAdmin";
 import { Eye, EyeOff } from "lucide-react";
+import { redefinePassword } from "validations/login";
+import { z } from "zod";
+import { useEffect } from "react";
+
 
 interface NewUserDialogProps {
   onAddSuccess: (newPatient: PatientInput) => Promise<PatientInput>;
@@ -48,13 +52,55 @@ export const NewUserDialog: React.FC<NewUserDialogProps> = ({
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [touched, setTouched] = useState({
+  email: false,
+  password: false,
+  repeatPassword: false,
+});
+
+
+
+useEffect(() => {
+  if (step === 2) {
+    try {
+      redefinePassword.parse({
+        email,
+        password,
+        repeatPassword: confirmPassword,
+      });
+      setErrors({}); // limpa erros
+    } catch (e) {
+      if (e instanceof z.ZodError) {
+        const fieldErrors: { [key: string]: string } = {};
+        e.errors.forEach((err) => {
+          const field = err.path[0];
+          fieldErrors[field] = err.message;
+        });
+        setErrors(fieldErrors);
+      }
+    }
+  }
+}, [email, password, confirmPassword, step]);
 
 
   const handleSubmit = async () => {
-    if (!name || !email || !userType || !password || password !== confirmPassword) {
-      alert("Preencha todos os campos corretamente.");
-      return;
-    }
+    try {
+      const parsed = redefinePassword.parse({
+        email,
+        password,
+        repeatPassword: confirmPassword
+      });
+    } catch (e) {
+      if (e instanceof z.ZodError) {
+        const fieldErrors: { [key: string]: string } = {};
+        e.errors.forEach((err) => {
+          const field = err.path[0];
+          fieldErrors[field] = err.message;
+        });
+        setErrors(fieldErrors);
+        return; // interrompe o envio se houver erro
+      }
+    }    
 
     const baseData = {
       name,
@@ -149,11 +195,19 @@ export const NewUserDialog: React.FC<NewUserDialogProps> = ({
     return true; // Admin só precisa do nome
   };
 
-  const isStepTwoValid = () => {
-  return email !== "" && password !== "" && confirmPassword !== "" && password === confirmPassword;
-};
+    const isStepTwoValid = () => {
+      try {
+        redefinePassword.parse({
+          email,
+          password,
+          repeatPassword: confirmPassword
+        });
+        return true;
+      } catch (e) {
+        return false;
+      }
+    };    
 
-  
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -252,21 +306,32 @@ export const NewUserDialog: React.FC<NewUserDialogProps> = ({
               <label className={`font-medium leading-[20px] text-[14px] text-[#1A1847]`}>
                 Login:
               </label>
+              <div className="relative w-full">
               <input
                 type="email"
                 placeholder="E-mail"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className={`w-full focus:outline-none focus:ring-[1.5px] border border-[#8D8BC1] p-4 rounded-sm placeholder:text-[16px]`}
+                onBlur={() => setTouched((prev) => ({ ...prev, email: true }))}
+                className="w-full focus:outline-none focus:ring-[1.5px] border border-[#8D8BC1] p-4 rounded-sm placeholder:text-[16px]"
               />
+              {touched.email && errors.email && (
+                <p className="text-red-500 text-sm">{errors.email}</p>
+              )}
+              </div>
+
               <div className="relative w-full">
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="Senha"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  onBlur={() => setTouched((prev) => ({ ...prev, password: true }))}
                   className="w-full focus:outline-none focus:ring-[1.5px] border border-[#8D8BC1] p-4 rounded-sm placeholder:text-[16px]"
                 />
+                {touched.password && errors.password && (
+                  <p className="text-red-500 text-sm">{errors.password}</p>
+                )}
                 <div className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer">
                   {showPassword ? (
                     <EyeOff width={24} onClick={() => setShowPassword(false)} />
@@ -282,8 +347,13 @@ export const NewUserDialog: React.FC<NewUserDialogProps> = ({
                   placeholder="Confirmar Senha"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
+                  onBlur={() => setTouched((prev) => ({ ...prev, repeatPassword: true }))}
                   className="w-full focus:outline-none focus:ring-[1.5px] border border-[#8D8BC1] p-4 rounded-sm placeholder:text-[16px]"
                 />
+                {touched.repeatPassword && errors.repeatPassword && (
+                  <p className="text-red-500 text-sm">{errors.repeatPassword}</p>
+                )}
+
                 <div className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer">
                   {showConfirmPassword ? (
                     <EyeOff width={24} onClick={() => setShowConfirmPassword(false)} />
@@ -316,7 +386,11 @@ export const NewUserDialog: React.FC<NewUserDialogProps> = ({
             )}
             <button
               type="submit"
-              disabled={loading || (step === 1 ? !isStepOneValid() : !isStepTwoValid())}
+              disabled={
+                loading ||
+                (step === 1 && !isStepOneValid()) ||
+                (step === 2 && !isStepTwoValid())
+              }
               className="bg-[#404AA0] text-[#DFE0FF] leading-5 font-medium text-[14px] px-4 py-2 rounded-[100px] transition-all hover:bg-[#303880] disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? "Enviando..." : step === 1 ? "Próximo" : "Enviar"}
