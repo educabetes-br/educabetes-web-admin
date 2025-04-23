@@ -316,7 +316,7 @@ useEffect(() => {
                 className="w-full focus:outline-none focus:ring-[1.5px] border border-[#8D8BC1] p-4 rounded-sm placeholder:text-[16px]"
               />
               {touched.email && errors.email && (
-                <p className="text-red-500 text-sm">{errors.email}</p>
+                <p className="text-red text-sm">{errors.email}</p>
               )}
               </div>
 
@@ -330,7 +330,7 @@ useEffect(() => {
                   className="w-full focus:outline-none focus:ring-[1.5px] border border-[#8D8BC1] p-4 rounded-sm placeholder:text-[16px]"
                 />
                 {touched.password && errors.password && (
-                  <p className="text-red-500 text-sm">{errors.password}</p>
+                  <p className="text-red text-sm">{errors.password}</p>
                 )}
                 <div className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer">
                   {showPassword ? (
@@ -351,7 +351,7 @@ useEffect(() => {
                   className="w-full focus:outline-none focus:ring-[1.5px] border border-[#8D8BC1] p-4 rounded-sm placeholder:text-[16px]"
                 />
                 {touched.repeatPassword && errors.repeatPassword && (
-                  <p className="text-red-500 text-sm">{errors.repeatPassword}</p>
+                  <p className="text-red text-sm">{errors.repeatPassword}</p>
                 )}
 
                 <div className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer">

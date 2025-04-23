@@ -6,6 +6,10 @@ import { PatientInput } from "services/Users/PostPatient";
 import { HealthProInput } from "services/Users/PostHealthPro";
 import { AdminInput } from "services/Users/PostAdmin";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "../ui/select";
+import { redefinePassword } from "validations/login";
+import { z } from "zod";
+import { useEffect } from "react";
+
 
 interface NewUserCardProps {
     isOpen: boolean;
@@ -36,6 +40,35 @@ const NewUserCard: React.FC<NewUserCardProps> = ({
     const [step, setStep] = useState<1 | 2>(1);
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [errors, setErrors] = useState<{ [key: string]: string }>({});
+    const [touched, setTouched] = useState({
+    email: false,
+    password: false,
+    repeatPassword: false,
+    });
+
+    useEffect(() => {
+        if (step === 2) {
+          try {
+            redefinePassword.parse({
+              email,
+              password,
+              repeatPassword: confirmPassword,
+            });
+            setErrors({});
+          } catch (e) {
+            if (e instanceof z.ZodError) {
+              const fieldErrors: { [key: string]: string } = {};
+              e.errors.forEach((err) => {
+                const field = err.path[0];
+                fieldErrors[field] = err.message;
+              });
+              setErrors(fieldErrors);
+            }
+          }
+        }
+      }, [email, password, confirmPassword, step]);      
+
 
     // Se isOpen for false, o componente não renderiza nada
     if (!isOpen) return null;
@@ -60,6 +93,26 @@ const NewUserCard: React.FC<NewUserCardProps> = ({
         setUserType("Paciente");
         setStep(1);
     };
+
+    const isStepOneValid = () => {
+        if (!userType || !name) return false;
+        if (userType === "Paciente") return birthDate !== "" && diagnosisTime !== "";
+        if (userType === "Profissional") return birthDate !== "";
+        return true;
+      };
+      
+      const isStepTwoValid = () => {
+        try {
+          redefinePassword.parse({
+            email,
+            password,
+            repeatPassword: confirmPassword,
+          });
+          return true;
+        } catch {
+          return false;
+        }
+      };      
 
     // Função de submissão dos dados conforme tipo de usuário
     const handleSubmit = async () => {
@@ -201,8 +254,12 @@ const NewUserCard: React.FC<NewUserCardProps> = ({
                                     placeholder="E-mail"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
+                                    onBlur={() => setTouched((prev) => ({ ...prev, email: true }))}
                                     className="w-full border border-[#8D8BC1] p-4 rounded-sm placeholder:text-[16px]"
                                 />
+                                {touched.email && errors.email && (
+                                    <p className="text-red text-sm">{errors.email}</p>
+                                )}
                                 {/* Senha com ícone para mostrar/ocultar */}
                                 <div className="relative w-full">
                                     <input
@@ -210,8 +267,12 @@ const NewUserCard: React.FC<NewUserCardProps> = ({
                                         placeholder="Senha"
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
+                                        onBlur={() => setTouched((prev) => ({ ...prev, password: true }))}
                                         className="w-full border border-[#8D8BC1] p-4 rounded-sm placeholder:text-[16px]"
                                     />
+                                    {touched.password && errors.password && (
+                                        <p className="text-red text-sm">{errors.password}</p>
+                                    )}
                                     <div className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer">
                                         {showPassword ? (
                                             <EyeOff width={24} onClick={() => setShowPassword(false)} />
@@ -227,8 +288,12 @@ const NewUserCard: React.FC<NewUserCardProps> = ({
                                         placeholder="Confirmar Senha"
                                         value={confirmPassword}
                                         onChange={(e) => setConfirmPassword(e.target.value)}
+                                        onBlur={() => setTouched((prev) => ({ ...prev, repeatPassword: true }))}
                                         className="w-full border border-[#8D8BC1] p-4 rounded-sm placeholder:text-[16px]"
                                     />
+                                    {touched.repeatPassword && errors.repeatPassword && (
+                                        <p className="text-red text-sm">{errors.repeatPassword}</p>
+                                    )}
                                     <div className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer">
                                         {showConfirmPassword ? (
                                             <EyeOff width={24} onClick={() => setShowConfirmPassword(false)} />
@@ -263,9 +328,13 @@ const NewUserCard: React.FC<NewUserCardProps> = ({
                         )}
                         <button
                             type="submit"
-                            disabled={loading}
+                            disabled={
+                                loading ||
+                                (step === 1 && !isStepOneValid()) ||
+                                (step === 2 && !isStepTwoValid())
+                            }
                             className="bg-[#404AA0] text-white px-4 py-2 rounded-[100px] hover:bg-[#303880] disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
+                            >
                             {loading ? "Enviando..." : step === 1 ? "Próximo" : "Enviar"}
                         </button>
                     </div>
