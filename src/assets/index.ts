@@ -20,6 +20,19 @@ import UserIcon from './user-icon.svg';
 import Lock from './lock.svg';
 import Enter from './enter.svg';
 
+import Diabetes from './Materials/diabetes.svg';
+import Teenager from './Materials/teenager.svg';
+import Carbo from './Materials/carbo.svg';
+import Childhood from './Materials/childhood.svg';
+import Emotions from './Materials/emotions.svg';
+import Goals from './Materials/goals.svg';
+import Hiper from './Materials/hiper.svg';
+import Hipo from './Materials/hipo.svg';
+import Insulin from './Materials/insulin.svg';
+import PE from './Materials/pe.svg';
+import Practise from './Materials/practise.svg';
+import Skin from './Materials/skin.svg';
+
 export { 
   Logo,
   LogoTitle,  
@@ -40,4 +53,16 @@ export {
   nextPage,
   prevPage,
   NewModelIcon,
+  Diabetes,
+  Teenager,
+  Carbo,
+  Childhood,
+  Emotions,
+  Goals,
+  Hiper,
+  Hipo,
+  Insulin,
+  PE,
+  Practise,
+  Skin,
  };

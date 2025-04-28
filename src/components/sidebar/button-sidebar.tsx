@@ -17,6 +17,10 @@ import {
 import NewModelCard from 'components/ModelFunctions/NewModelCard';
 import { addReport, ReportInput } from 'services/Reports/PostReport';
 import { Report } from 'services/Reports/GetReport';
+import NewUserCard from 'components/usersPage/newUserCard';
+import { PatientInput, postPatient } from 'services/Users/PostPatient';
+import { HealthProInput, postHealthPro } from 'services/Users/PostHealthPro';
+import { AdminInput, postAdmin } from 'services/Users/PostAdmin';
 
 export function ButtonSidebar({
   items
@@ -29,6 +33,10 @@ export function ButtonSidebar({
 }) {
   const { isMobile } = useSidebar();
   const [isCardOpen, setIsCardOpen] = useState(false);
+  const [isUserCardOpen, setIsUserCardOpen] = useState(false);
+  const [, setNewPatient] = useState<PatientInput[]>([]);
+  const [, setNewHealthPro] = useState<HealthProInput[]>([]);
+  const [, setNewAdmin] = useState<AdminInput[]>([]);
 
   // Função para adicionar um novo relatório
   const handleAddReport = async (newReport: ReportInput): Promise<Report> => {
@@ -39,6 +47,39 @@ export function ButtonSidebar({
       throw err;
     }
   };
+
+  const handleAddPatient = async (newPatient: PatientInput): Promise<PatientInput> => {
+      try {
+        const addedPatient = await postPatient(newPatient);
+        setNewPatient(prev => [...prev, addedPatient]);
+        return addedPatient;
+      } catch (err) {
+        alert('Erro ao adicionar paciente.');
+        throw err;
+      }
+    }
+  
+    const handleAddHealthPro = async (newHealthPro: HealthProInput): Promise<HealthProInput> => {
+      try {
+        const addedHealthPro = await postHealthPro(newHealthPro);
+        setNewHealthPro(prev => [...prev, addedHealthPro]);
+        return addedHealthPro;
+      } catch (err) {
+        alert('Erro ao adicionar profissional.');
+        throw err;
+      }
+    }
+  
+    const handleAddAdmin = async (newAdmin: AdminInput): Promise<AdminInput> => {
+      try {
+        const addedAdmin = await postAdmin(newAdmin);
+        setNewAdmin(prev => [...prev, addedAdmin]);
+        return addedAdmin;
+      } catch (err) {
+        alert('Erro ao adicionar admin.');
+        throw err;
+      }
+    }
 
   return (
     <>
@@ -58,28 +99,21 @@ export function ButtonSidebar({
               >
                 {items.map((item) => (
                   <DropdownMenuItem
-                    asChild
-                    key={item.title}
-                    className="h-12"
-                    onClick={(e) => {
-                      if (item.action) {
-                        e.preventDefault();
-                        item.action();
-                      }
-                    }}
-                  >
-                    {item.title === 'Novo Modelo' ? (
-                      <div onClick={() => setIsCardOpen(true)}>
-                        <item.icon className="!size-5 mr-4" />
-                        {item.title}
-                      </div>
-                    ) : (
-                      <a href={item.title}>
-                        <item.icon className="!size-5 mr-4" />
-                        {item.title}
-                      </a>
-                    )}
-                  </DropdownMenuItem>
+                  key={item.title}
+                  className="h-12"
+                  onClick={() => {
+                    if (item.title === 'Novo Modelo') {
+                      setIsCardOpen(true);
+                    } else if (item.title === 'Novo Usuário') {
+                      setIsUserCardOpen(true);
+                    }
+                  }}
+                >
+                  <div className="flex items-center gap-4 cursor-pointer">
+                    <item.icon className="!size-5" />
+                    {item.title}
+                  </div>
+                </DropdownMenuItem>                
                 ))}
               </DropdownMenuContent>
             ) : null}
@@ -92,6 +126,15 @@ export function ButtonSidebar({
         onClose={() => setIsCardOpen(false)}
         onAddSuccess={handleAddReport}
       />
+
+      <NewUserCard
+        isOpen={isUserCardOpen}
+        onClose={() => setIsUserCardOpen(false)}
+        onAddSuccess={handleAddPatient}
+        onAddHealthProSuccess={handleAddHealthPro}
+        onAddAdminSuccess={handleAddAdmin}
+      />
+
     </>
   );
 }
