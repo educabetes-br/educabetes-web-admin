@@ -7,13 +7,11 @@ import { Report, getReports } from 'services/Reports/GetReport';
 import { addReport, ReportInput } from 'services/Reports/PostReport';
 import { Layout } from 'components/sidebar/layout';
 import { useSession } from 'next-auth/react';
-import { redirect } from 'next/navigation';
-
 
 const ReportsPage: React.FC = () => {
   const session = useSession();
   if (session.status === 'unauthenticated') {
-    redirect('/login');
+    //redirect('/login');
   }
   
   const [reports, setReports] = useState<Report[]>([]);
