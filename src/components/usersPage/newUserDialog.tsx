@@ -25,6 +25,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { redefinePassword } from "validations/login";
 import { z } from "zod";
 import { useEffect } from "react";
+import { Input } from "components/input";
 
 
 interface NewUserDialogProps {
@@ -321,46 +322,41 @@ useEffect(() => {
               </div>
 
               <div className="relative w-full">
-                <input
+               <Input
                   type={showPassword ? "text" : "password"}
                   placeholder="Senha"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   onBlur={() => setTouched((prev) => ({ ...prev, password: true }))}
-                  className="w-full focus:outline-none focus:ring-[1.5px] border border-[#8D8BC1] p-4 rounded-sm placeholder:text-[16px]"
-                />
+                  after= 
+                      {showPassword ? (
+                          <EyeOff width={32} onClick={() => setShowPassword(false)} className="cursor-pointer"/>
+                      ) : (
+                          <Eye width={32} onClick={() => setShowPassword(true)} />
+                      )}
+                  />
                 {touched.password && errors.password && (
                   <p className="text-red text-sm">{errors.password}</p>
                 )}
-                <div className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer">
-                  {showPassword ? (
-                    <EyeOff width={24} onClick={() => setShowPassword(false)} />
-                  ) : (
-                    <Eye width={24} onClick={() => setShowPassword(true)} />
-                  )}
-                </div>
               </div>
 
               <div className="relative w-full">
-                <input
+               <Input
                   type={showConfirmPassword ? "text" : "password"}
                   placeholder="Confirmar Senha"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   onBlur={() => setTouched((prev) => ({ ...prev, repeatPassword: true }))}
-                  className="w-full focus:outline-none focus:ring-[1.5px] border border-[#8D8BC1] p-4 rounded-sm placeholder:text-[16px]"
+                  after= 
+                  {showConfirmPassword ? (
+                      <EyeOff width={32} onClick={() => setShowConfirmPassword(false)} className="cursor-pointer"/>
+                  ) : (
+                      <Eye width={32} onClick={() => setShowConfirmPassword(true)} />
+                  )}
                 />
                 {touched.repeatPassword && errors.repeatPassword && (
                   <p className="text-red text-sm">{errors.repeatPassword}</p>
                 )}
-
-                <div className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer">
-                  {showConfirmPassword ? (
-                    <EyeOff width={24} onClick={() => setShowConfirmPassword(false)} />
-                  ) : (
-                    <Eye width={24} onClick={() => setShowConfirmPassword(true)} />
-                  )}
-                </div>
               </div>
             </>
           )}
