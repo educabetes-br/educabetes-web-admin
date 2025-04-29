@@ -4,7 +4,7 @@ import { UsersTab } from "./usersTabs";
 import { Patient } from "services/Users/GetPatients";
 import { HealthPro } from "services/Users/GetHealthPro";
 import { Admin } from "services/Users/GetAdmin";
-import { AdminsTab } from "./AdminsTab";
+import { AdminsTab } from "./adminsTab";
 import { 
     Pagination,
     PaginationContent,
@@ -13,13 +13,15 @@ import {
     PaginationNext
 } from "../ui/pagination";
 import { NewUserDialog } from './newUserDialog';
-import { PatientInput } from '../../services/Users/PostPatient';
+import { PatientInput, userState } from '../../services/Users/PostPatient';
 import { HealthProInput } from 'services/Users/PostHealthPro';
 import { AdminInput } from 'services/Users/PostAdmin';
 
 export type User = {
     id: number;
     name: string;
+    userState: userState;
+    userCity: string;
     userRole: 'Paciente' | 'Profissional de Saúde';
 }
 
@@ -57,11 +59,15 @@ export const UsersMenu: React.FC<UsersMenuProps> = ({
             ...patients.map(p => ({
               id: p.id,
               name: p.name,
+              userState: p.userState,
+              userCity: p.userCity,
               userRole: 'Paciente' as const
             })),
             ...healthPros.map(h => ({
               id: h.id,
               name: h.name,
+              userState: h.userState,
+              userCity: h.userCity,
               userRole: 'Profissional de Saúde' as const
             }))
           ].sort((a, b) => a.name.localeCompare(b.name));
@@ -170,6 +176,7 @@ export const UsersMenu: React.FC<UsersMenuProps> = ({
                 <TabsContent value='users'>
                     <UsersTab 
                         users={paginatedItems.filter(item => item.userRole !== 'Administrador')}
+                        allUsers={filteredItems.filter(item => item.userRole !== 'Administrador')}
                         loading={loading}
                         error={error}
                         searchTerm={searchTerm}
