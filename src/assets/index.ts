@@ -1,4 +1,5 @@
 import Logo from './Logo.png';
+import LogoTitleFile from './LogoTitleFile.png';
 import eye from './ModelList/eye.svg';
 import download from './ModelList/download.svg';
 import unchecked from './ModelList/unchecked.svg';
@@ -35,6 +36,7 @@ import Skin from './Materials/skin.svg';
 
 export { 
   Logo,
+  LogoTitleFile,
   LogoTitle,  
   UserIcon, 
   Lock, 
