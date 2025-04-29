@@ -1,11 +1,15 @@
+'use client';
+
 import React from 'react';
 import Image from 'next/image';
 import { searchIcon } from '../../assets/index';
 import { UserCard } from './userCard';
 import { User } from './usersMenu';
+import { ExportUsersDialog } from './exportReport';
 
 interface UsersTabProps {
-  users: User[]; // já filtrados e paginados
+  users: User[];
+  allUsers: User[];
   loading: boolean;
   error: string | null;
   searchTerm: string;
@@ -14,32 +18,35 @@ interface UsersTabProps {
 
 export const UsersTab: React.FC<UsersTabProps> = ({
   users,
+  allUsers,
   error,
   searchTerm,
   onSearchChange,
 }) => {
-  
   if (error) return <div>Erro: {error}</div>;
 
   return (
     <div className="flex flex-col bg-white font-firaSans flex-1 rounded-b-[28px] px-8 py-4 gap-6 h-full">
       
-      {/* Barra de Pesquisa */}
-      <div className="sticky top-0 w-[60%]">
-        <div className="relative flex justify-center items-center">
-          <div className="absolute left-1">
-            <Image src={searchIcon} alt="Search icon" />
+      {/* Barra de Pesquisa e Botão de Exportação */}
+      <div className='flex flex-row gap-2'>
+        <div className="w-[60%]">
+          <div className="relative flex justify-center items-center">
+            <div className="absolute left-1">
+              <Image src={searchIcon} alt="Search icon" />
+            </div>
+            <input
+              type="text"
+              placeholder="Buscar usuário..."
+              value={searchTerm}
+              onChange={(e) => onSearchChange(e.target.value)}
+              className="w-full focus:outline-none p-3 pl-12 bg-[#ECE6F0] rounded-[28px] text-black"
+            />
           </div>
-          <input
-            type="text"
-            placeholder="Buscar usuário..."
-            value={searchTerm}
-            onChange={(e) => {
-              onSearchChange(e.target.value);
-            }}
-            className="w-full focus:outline-none p-3 pl-12 bg-[#ECE6F0] rounded-[28px] text-black"
-          />
         </div>
+
+        {/* Botão de Exportar para Excel */}
+        <ExportUsersDialog allUsers={allUsers} />
       </div>
 
       {/* Lista de Usuários */}

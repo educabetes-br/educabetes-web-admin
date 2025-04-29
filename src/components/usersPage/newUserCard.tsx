@@ -10,6 +10,7 @@ import { redefinePassword } from "validations/login";
 import { z } from "zod";
 import { useEffect } from "react";
 import { Input } from "components/input";
+import StatesOptions from "utils/stateOptions";
 
 
 interface NewUserCardProps {
@@ -47,6 +48,9 @@ const NewUserCard: React.FC<NewUserCardProps> = ({
     password: false,
     repeatPassword: false,
     });
+    const [userState, setUserState] = useState("");
+    const [userCity, setUserCity] = useState("");
+
 
     useEffect(() => {
         if (step === 2) {
@@ -97,8 +101,8 @@ const NewUserCard: React.FC<NewUserCardProps> = ({
 
     const isStepOneValid = () => {
         if (!userType || !name) return false;
-        if (userType === "Paciente") return birthDate !== "" && diagnosisTime !== "";
-        if (userType === "Profissional") return birthDate !== "";
+        if (userType === "Paciente") return birthDate !== "" && diagnosisTime !== "" && userState !== "" && userCity !== "";
+        if (userType === "Profissional") return birthDate !== "" && userState !== "" && userCity !== "";
         return true;
       };
       
@@ -123,7 +127,8 @@ const NewUserCard: React.FC<NewUserCardProps> = ({
             !email ||
             !userType ||
             !password ||
-            password !== confirmPassword
+            password !== confirmPassword 
+
         ) {
             alert("Preencha todos os campos corretamente.");
             return;
@@ -136,9 +141,13 @@ const NewUserCard: React.FC<NewUserCardProps> = ({
             ...(userType === "Paciente" && {
                 birthDate: formatDateToBR(birthDate),
                 diagnosisTime,
+                userState,
+                userCity,
             }),
             ...(userType === "Profissional" && {
                 birthDate: formatDateToBR(birthDate),
+                userState,
+                userCity,
             }),
             // Admin não envia birthDate, diagnosisTime, pois não são necessários
         };
@@ -244,6 +253,34 @@ const NewUserCard: React.FC<NewUserCardProps> = ({
                                       <SelectItem value="MORE_THAN_2YEARS" className="hover:bg-[#F2F3FF] cursor-pointer">Mais de 2 anos</SelectItem>
                                     </SelectContent>
                                   </Select>
+                                )}
+                                {(userType === "Paciente" || userType === "Profissional") && (
+                                    <>
+                                    <Select value={userState} onValueChange={setUserState}>
+                                        <SelectTrigger className="w-full focus:outline-none focus:ring-[1.5px] border border-[#8D8BC1] p-4 rounded-sm placeholder:text-[16px] h-14 bg-white">
+                                        <SelectValue placeholder="Estado" />
+                                        </SelectTrigger>
+                                        <SelectContent className="bg-white border border-[#8D8BC1] text-[#1A1847] font-semibold text-base">
+                                        {StatesOptions.map((state) => (
+                                            <SelectItem
+                                            key={state.value}
+                                            value={state.key}
+                                            className="hover:bg-[#F2F3FF] cursor-pointer"
+                                            >
+                                            {state.value}
+                                            </SelectItem>
+                                        ))}
+                                        </SelectContent>
+                                    </Select>
+
+                                    <input
+                                        type="text"
+                                        placeholder="Cidade"
+                                        value={userCity}
+                                        onChange={(e) => setUserCity(e.target.value)}
+                                        className="w-full focus:outline-none focus:ring-[1.5px] border border-[#8D8BC1] p-4 rounded-sm placeholder:text-[16px]"
+                                    />
+                                    </>
                                 )}
                             </>
                         )}
