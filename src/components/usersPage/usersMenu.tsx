@@ -4,7 +4,7 @@ import { UsersTab } from "./usersTabs";
 import { Patient } from "services/Users/GetPatients";
 import { HealthPro } from "services/Users/GetHealthPro";
 import { Admin } from "services/Users/GetAdmin";
-import { AdminsTab } from "./AdminsTab";
+import { AdminsTab } from "./adminsTab";
 import { 
     Pagination,
     PaginationContent,

@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { searchIcon } from '../../assets/index';
 import { UserCard } from './userCard';
 import { User } from './usersMenu';
-import { ExportUsersDialog } from './ExportReport';
+import { ExportUsersDialog } from './exportReport';
 
 interface UsersTabProps {
   users: User[];

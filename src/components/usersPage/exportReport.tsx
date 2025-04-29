@@ -19,6 +19,7 @@ export function getStateLabel(key: string): string {
 
 const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
 
+// estilo para o pdf 
 const styles = StyleSheet.create({
   page: {
     padding: 24,
