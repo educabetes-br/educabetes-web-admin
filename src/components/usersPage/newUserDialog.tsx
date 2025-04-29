@@ -17,7 +17,7 @@ import {
   SelectValue,
 } from "../ui/select"
 import Image from "next/image";
-import { PatientInput, DiagnosisTime } from "../../services/Users/PostPatient";
+import { PatientInput, DiagnosisTime, userState } from "../../services/Users/PostPatient";
 import { checked, plusIcon, unchecked } from "assets";
 import { HealthProInput } from "services/Users/PostHealthPro";
 import { AdminInput } from "services/Users/PostAdmin";
@@ -26,6 +26,7 @@ import { redefinePassword } from "validations/login";
 import { z } from "zod";
 import { useEffect } from "react";
 import { Input } from "components/input";
+import stateOptions from "utils/stateOptions";
 
 
 interface NewUserDialogProps {
@@ -54,12 +55,12 @@ export const NewUserDialog: React.FC<NewUserDialogProps> = ({
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [touched, setTouched] = useState({
-  email: false,
-  password: false,
-  repeatPassword: false,
-});
-
-
+    email: false,
+    password: false,
+    repeatPassword: false,
+  });
+  const [userState, setUserState] = useState("");
+  const [userCity, setUserCity] = useState("");
 
 useEffect(() => {
   if (step === 2) {
@@ -122,9 +123,13 @@ useEffect(() => {
       ...(userType === "Paciente" && {
         birthDate: formatDateToBR(birthDate) || "",
         diagnosisTime: diagnosisTime as DiagnosisTime,
+        userState: userState as userState,
+        userCity: userCity,  
       }),
       ...(userType === "Profissional" && {
         birthDate: formatDateToBR(birthDate) || "",
+        userState: userState as userState,
+        userCity: userCity,
       }),
     };
     
@@ -145,6 +150,8 @@ useEffect(() => {
           password: finalData.password,
           birthDate: finalData.birthDate || "",
           diagnosisTime: finalData.diagnosisTime as DiagnosisTime || "",
+          userState: finalData.userState as userState || "SAO_PAULO",
+          userCity: finalData.userCity || "São Paulo",
         };
         await onAddSuccess(pacienteData); 
       }
@@ -155,6 +162,8 @@ useEffect(() => {
           email: finalData.email,
           password: finalData.password,
           birthDate: finalData.birthDate || "",
+          userState: finalData.userState as userState || "SAO_PAULO",
+          userCity: finalData.userCity || "São Paulo",
         };
         await onAddHealthProSuccess(healthProData);
       }
@@ -186,11 +195,11 @@ useEffect(() => {
     if (!userType || !name) return false;
   
     if (userType === "Paciente") {
-      return birthDate !== "" && diagnosisTime !== "";
+      return birthDate !== "" && diagnosisTime !== "" && userState !== "" && userCity !== "";
     }
   
     if (userType === "Profissional") {
-      return birthDate !== "";
+      return birthDate !== "" && userState !== "" && userCity !== "";
     }
   
     return true; // Admin só precisa do nome
@@ -299,8 +308,38 @@ useEffect(() => {
                   </Select>
                 </>
               )}
+              {(userType === "Paciente" || userType === "Profissional") && (
+                <>
+                  <Select value={userState} onValueChange={setUserState}>
+                    <SelectTrigger className="w-full focus:outline-none focus:ring-[1.5px] border border-[#8D8BC1] p-4 rounded-sm placeholder:text-[16px] h-14 bg-white">
+                      <SelectValue placeholder="Estado" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white border border-[#8D8BC1] text-[#1A1847] font-semibold text-base">
+                      {stateOptions.map((state) => (
+                        <SelectItem
+                          key={state.value}
+                          value={state.key}
+                          className="hover:bg-[#F2F3FF] cursor-pointer"
+                        >
+                          {state.value}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+
+                  <input
+                    type="text"
+                    placeholder="Cidade"
+                    value={userCity}
+                    onChange={(e) => setUserCity(e.target.value)}
+                    className="w-full focus:outline-none focus:ring-[1.5px] border border-[#8D8BC1] p-4 rounded-sm placeholder:text-[16px]"
+                  />
+                </>
+              )}
             </>
           )}
+
+
 
           {step === 2 && (
             <>
