@@ -1,5 +1,5 @@
 import React from "react";
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogClose, DialogDescription } from "../ui/dialog";
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogClose } from "../ui/dialog";
 import { Button } from "../ui/button";
 import { Upload, FileText, FileSpreadsheet } from "lucide-react";
 import * as XLSX from "xlsx";

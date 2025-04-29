@@ -5,16 +5,7 @@ import Image from 'next/image';
 import { searchIcon } from '../../assets/index';
 import { UserCard } from './userCard';
 import { User } from './usersMenu';
-import { Upload } from 'lucide-react';
-import StatesOptions from 'utils/stateOptions';
-import { LogoTitleFile } from '../../assets/index';
-import * as XLSX from 'xlsx';
 import { ExportUsersDialog } from './ExportReport';
-
-export function getStateLabel(key: string): string {
-  const found = StatesOptions.find(option => option.key === key);
-  return found ? found.value : key;
-}
 
 interface UsersTabProps {
   users: User[];
@@ -23,24 +14,6 @@ interface UsersTabProps {
   error: string | null;
   searchTerm: string;
   onSearchChange: (term: string) => void;
-}
-
-const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
-
-function exportUsersToExcel(allUsers: User[]) {
-  const formatUser = (user: User) => ({
-    Nome: capitalize(user.name),
-    Estado: getStateLabel(user.userState),
-    Cidade: user.userCity,
-    Tipo: user.userRole,
-  });
-
-  const formattedUsers = allUsers.map(formatUser);
-
-  const ws = XLSX.utils.json_to_sheet(formattedUsers);
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, 'Usuários');
-  XLSX.writeFile(wb, 'usuarios.xlsx');
 }
 
 export const UsersTab: React.FC<UsersTabProps> = ({
