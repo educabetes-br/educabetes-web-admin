@@ -4,10 +4,9 @@ import { searchIcon } from '../../assets/index';
 import { UserCard } from './userCard';
 import { User } from './usersMenu';
 import { Upload } from 'lucide-react';
-import { jsPDF } from 'jspdf';
-import autoTable from 'jspdf-autotable';
 import StatesOptions from 'utils/stateOptions';
 import { LogoTitleFile } from '../../assets/index';
+import { PDFDownloadLink, Document, Page, Text, View, StyleSheet, Image as PDFImage } from '@react-pdf/renderer';
 
 export function getStateLabel(key: string): string {
   const found = StatesOptions.find(option => option.key === key);
@@ -23,6 +22,114 @@ interface UsersTabProps {
   onSearchChange: (term: string) => void;
 }
 
+const styles = StyleSheet.create({
+  page: {
+    padding: 24,
+    fontSize: 8,
+    fontFamily: 'Helvetica',
+  },
+  section: {
+    marginBottom: 24,
+  },
+  logoContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 12,
+  },
+  logo: {
+    width: 160,
+    height: 80,
+    alignSelf: 'center',
+  },
+  title: {
+    fontSize: 14,
+    marginBottom: 12,
+    textAlign: 'left',
+    fontWeight: 'bold',
+  },
+  table: {
+    display: 'flex',
+    flexDirection: 'column',
+    borderWidth: 1,
+    borderColor: '#cccccc',
+    borderRadius: 6,
+    overflow: 'hidden', // simula cantos arredondados
+    marginBottom: 16,
+  },
+  tableRow: {
+    flexDirection: 'row',
+  },
+  tableColHeader: {
+    width: '33.33%',
+    backgroundColor: '#404AA0',
+    padding: 6,
+    borderRightWidth: 1,
+    borderRightColor: '#cccccc',
+  },
+  tableCol: {
+    width: '33.33%',
+    padding: 6,
+    borderRightWidth: 1,
+    borderRightColor: '#cccccc',
+    borderBottomWidth: 1,
+    borderBottomColor: '#cccccc',
+  },
+  headerText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  cellText: {
+    color: '#282828',
+  },
+});
+
+
+const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
+
+const UserPDFDocument = ({ allUsers }: { allUsers: User[] }) => (
+  <Document>
+    <Page size="A4" style={styles.page}>
+      <PDFImage src={LogoTitleFile.src} style={styles.logo} />
+
+      <View style={styles.section}>
+        <Text style={styles.title}>Lista de Pacientes</Text>
+        <View style={styles.table}>
+          <View style={styles.tableRow}>
+            <View style={styles.tableColHeader}><Text style={styles.headerText}>Nome</Text></View>
+            <View style={styles.tableColHeader}><Text style={styles.headerText}>Estado</Text></View>
+            <View style={styles.tableColHeader}><Text style={styles.headerText}>Cidade</Text></View>
+          </View>
+          {allUsers.filter(u => u.userRole === 'Paciente').map((user, idx) => (
+            <View key={idx} style={styles.tableRow}>
+              <View style={styles.tableCol}><Text style={styles.cellText}>{capitalize(user.name)}</Text></View>
+              <View style={styles.tableCol}><Text style={styles.cellText}>{getStateLabel(user.userState)}</Text></View>
+              <View style={styles.tableCol}><Text style={styles.cellText}>{user.userCity}</Text></View>
+            </View>
+          ))}
+        </View>
+      </View>
+
+      <View style={styles.section}>
+        <Text style={styles.title}>Lista de Profissionais de Saúde</Text>
+        <View style={styles.table}>
+          <View style={styles.tableRow}>
+            <View style={styles.tableColHeader}><Text style={styles.headerText}>Nome</Text></View>
+            <View style={styles.tableColHeader}><Text style={styles.headerText}>Estado</Text></View>
+            <View style={styles.tableColHeader}><Text style={styles.headerText}>Cidade</Text></View>
+          </View>
+          {allUsers.filter(u => u.userRole === 'Profissional de Saúde').map((user, idx) => (
+            <View key={idx} style={styles.tableRow}>
+              <View style={styles.tableCol}><Text style={styles.cellText}>{capitalize(user.name)}</Text></View>
+              <View style={styles.tableCol}><Text style={styles.cellText}>{getStateLabel(user.userState)}</Text></View>
+              <View style={styles.tableCol}><Text style={styles.cellText}>{user.userCity}</Text></View>
+            </View>
+          ))}
+        </View>
+      </View>
+    </Page>
+  </Document>
+);
+
 export const UsersTab: React.FC<UsersTabProps> = ({
   users,
   allUsers,
@@ -33,127 +140,11 @@ export const UsersTab: React.FC<UsersTabProps> = ({
   
   if (error) return <div>Erro: {error}</div>;
 
-  const handleExportPDF = () => {
-    const doc = new jsPDF();
-    const imageHeight = 30;
-    const spacingAfterImage = 4;
-    const titleYOffset = 10 + imageHeight + spacingAfterImage;
-  
-    const img = new window.Image();
-    img.src = LogoTitleFile.src;
-  
-    img.onload = () => {
-      doc.addImage(img, 'PNG', 14, 10, 60, imageHeight);
-  
-      doc.setFontSize(18);
-      doc.text('Lista de Pacientes', 14, titleYOffset);
-  
-      autoTable(doc, {
-        startY: titleYOffset + 6,
-        head: [['Nome', 'Estado', 'Cidade']],
-        body: allUsers
-          .filter(user => user.userRole === 'Paciente')
-          .map(user => [
-            capitalize(user.name) ?? 'N/A',
-            getStateLabel(user.userState) ?? 'N/A',
-            user.userCity ?? 'N/A',
-          ]),
-        styles: {
-          font: 'times',
-          fontSize: 11,
-          cellPadding: 4,
-          textColor: [40, 40, 40],
-          lineColor: [220, 220, 220],
-          lineWidth: 0.5,
-        },
-        headStyles: {
-          fillColor: [64, 74, 160],
-          textColor: [255, 255, 255],
-          fontStyle: 'bold',
-          halign: 'center',
-        },
-        bodyStyles: {
-          halign: 'left',
-        },
-        alternateRowStyles: {
-          fillColor: [245, 245, 245],
-        },
-        theme: 'striped',
-        didDrawPage: function (data) {
-          const pageNumber = doc.internal.getCurrentPageInfo().pageNumber;
-          const pageCount = doc.getNumberOfPages();
-          doc.setFontSize(10);
-          doc.text(
-            `Página ${pageNumber} de ${pageCount}`,
-            doc.internal.pageSize.getWidth() - 40,
-            doc.internal.pageSize.getHeight() - 10
-          );
-        },
-      });
-  
-      const currentY = doc.lastAutoTable.finalY + 10;
-  
-      doc.setFontSize(18);
-      doc.text('Lista de Profissionais de Saúde', 14, currentY);
-  
-      autoTable(doc, {
-        startY: currentY + 6,
-        head: [['Nome', 'Estado', 'Cidade']],
-        body: allUsers
-          .filter(user => user.userRole === 'Profissional de Saúde')
-          .map(user => [
-            capitalize(user.name) ?? 'N/A',
-            getStateLabel(user.userState) ?? 'N/A',
-            user.userCity ?? 'N/A',
-          ]),
-        styles: {
-          font: 'times',
-          fontSize: 11,
-          cellPadding: 4,
-          textColor: [40, 40, 40],
-          lineColor: [220, 220, 220],
-          lineWidth: 0.5,
-        },
-        headStyles: {
-          fillColor: [64, 74, 160],
-          textColor: [255, 255, 255],
-          fontStyle: 'bold',
-          halign: 'center',
-        },
-        bodyStyles: {
-          halign: 'left',
-        },
-        alternateRowStyles: {
-          fillColor: [245, 245, 245],
-        },
-        theme: 'striped',
-        didDrawPage: function (data) {
-          const pageNumber = doc.internal.getCurrentPageInfo().pageNumber;
-          const pageCount = doc.getNumberOfPages();
-          doc.setFontSize(10);
-          doc.text(
-            `Página ${pageNumber} de ${pageCount}`,
-            doc.internal.pageSize.getWidth() - 40,
-            doc.internal.pageSize.getHeight() - 10
-          );
-        },
-      });
-  
-      doc.save('usuarios.pdf');
-    };
-  };
-  
-  
-  const capitalize = (str: string) => {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  };
-  
-
   return (
     <div className="flex flex-col bg-white font-firaSans flex-1 rounded-b-[28px] px-8 py-4 gap-6 h-full">
       
       {/* Barra de Pesquisa */}
-      <div className='flex felx-row gap-6'>
+      <div className='flex felx-row gap-2'>
         <div className="sticky top-0 w-[60%]">
           <div className="relative flex justify-center items-center">
             <div className="absolute left-1">
@@ -172,12 +163,14 @@ export const UsersTab: React.FC<UsersTabProps> = ({
         </div>
 
         {/* Botão de Exportar Usuários */}
-        <button
-          onClick={handleExportPDF}
+        <PDFDownloadLink
+          document={<UserPDFDocument allUsers={allUsers} />}
+          fileName="usuarios.pdf"
           className='flex items-center gap-2 px-4 py-2 bg-[#ECE6F0] rounded-full hover:bg-[#d6cfe0] transition'
         >
           <Upload size={18} strokeWidth={2} color="black" />
-        </button>
+          <span className="text-black font-firaSans">Exportar Usuários</span>
+        </PDFDownloadLink>
       </div>
 
       {/* Lista de Usuários */}
