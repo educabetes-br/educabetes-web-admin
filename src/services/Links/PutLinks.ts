@@ -7,7 +7,8 @@ export type Links = {
 
 export const updateLinks = async (links: Links): Promise<void> => {
     try {
-      await api.put("/links", links);
+      const response = await api.patch("/links", links);
+      return response.data.data;
     } catch (error) {
       console.error("Erro ao atualizar os links:", error);
       throw error;

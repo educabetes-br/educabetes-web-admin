@@ -24,6 +24,7 @@ const GetEditLinksMenu: React.FC = () => {
       }
     };
 
+
     loadLinks();
   }, []);
 
@@ -64,7 +65,7 @@ const GetEditLinksMenu: React.FC = () => {
               <span className="text-2xl font-bold">Cetoacidose:</span>
               <div className="flex items-center gap-4">
               <div className="border p-4 min-w-[300px] rounded text-lg">
-                <span>{ketoacidosisLink}</span>
+                <span className="text-black">{ketoacidosisLink}</span>
                 </div>
                 <button
                   className="bg-blue-500 text-black px-6 py-3 rounded text-lg bg-gray-400"

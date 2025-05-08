@@ -8,7 +8,7 @@ export type Links = {
 export const getLinks = async (): Promise<Links> => {
   try {
     const response = await api.get("/links");
-    return response.data;
+    return response.data.data;
   } catch (error) {
     console.error("Erro ao buscar os links:", error);
     throw error;
