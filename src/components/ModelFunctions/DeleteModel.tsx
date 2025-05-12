@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import { trash, redTrash } from "../../assets/index";
-import { deleteReport } from "../../services/Reports/DeleteReport";
+import { trash, redTrash } from "@assets";
+import { deleteReport } from "@services";
 import {
   Dialog,
   DialogContent,
@@ -9,7 +9,7 @@ import {
   DialogFooter,
   DialogTrigger,
   DialogClose,
-} from "../ui/dialog";
+} from "@components";
 
 interface DeleteModelCardProps {
   reportId: number; // Recebe o ID do relatório que será excluído

@@ -1,21 +1,27 @@
 import React, { useState, useMemo } from 'react';
-import {Tabs, TabsContent, TabsList, TabsTrigger} from "../ui/tabs";
-import { UsersTab } from "./usersTabs";
-import { Patient } from "services/Users/GetPatients";
-import { HealthPro } from "services/Users/GetHealthPro";
-import { Admin } from "services/Users/GetAdmin";
-import { AdminsTab } from "./adminsTab";
+import {
+  Tabs, 
+  TabsContent, 
+  TabsList, 
+  TabsTrigger,
+  UsersTab,
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationPrevious,
+  PaginationNext,
+  NewUserDialog,
+  AdminsTab,
+} from "@components";
 import { 
-    Pagination,
-    PaginationContent,
-    PaginationItem,
-    PaginationPrevious,
-    PaginationNext
-} from "../ui/pagination";
-import { NewUserDialog } from './newUserDialog';
-import { PatientInput, userState } from '../../services/Users/PostPatient';
-import { HealthProInput } from 'services/Users/PostHealthPro';
-import { AdminInput } from 'services/Users/PostAdmin';
+  Patient, 
+  HealthPro, 
+  Admin, 
+  PatientInput, 
+  HealthProInput, 
+  AdminInput, 
+  userState 
+} from "@services";
 
 export type User = {
     id: number;

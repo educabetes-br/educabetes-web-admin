@@ -5,10 +5,11 @@ import {
   DialogTitle,
   DialogFooter,
   DialogTrigger,
-  DialogClose
-} from '../ui/dialog';
+  DialogClose,
+  SidebarMenuButton,
+  SidebarMenuItem
+} from '@components';
 import { LogOut } from 'lucide-react';
-import { SidebarMenuItem, SidebarMenuButton } from '../ui/sidebar';
 
 export const ModalLogout = ({
   handleClick,

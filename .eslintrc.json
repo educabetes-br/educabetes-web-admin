@@ -5,5 +5,12 @@
   ],
   "plugins": [
     "prettier"
-  ]
+  ],
+  "settings": {
+    "import/resolver": {
+      "typescript": {
+        "project": "./tsconfig.json"
+      }
+    }
+  }
 }

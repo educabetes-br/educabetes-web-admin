@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Image from 'next/image';
-import { ReportInput, Report } from 'services/Reports/PostReport';
-import { NewModelIcon } from 'assets/index';
+import { ReportInput, Report } from '@services';
 import {
   eye,
   unchecked,
   checked,
-  plusIcon
-} from '../../assets/index';
+  plusIcon,
+  NewModelIcon
+} from '@assets';
 import {
   Dialog,
   DialogContent,
@@ -17,7 +17,7 @@ import {
   DialogFooter,
   DialogTrigger,
   DialogClose
-} from '../ui/dialog';
+} from '@components';
 
 interface NewModelDialogProps {
   buttontrigger: string;

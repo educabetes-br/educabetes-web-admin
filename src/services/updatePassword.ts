@@ -1,4 +1,4 @@
-import api from './api';
+import { api } from '@services';
 
 export const updatePassword = async (email: string, password: string) => {
   try {

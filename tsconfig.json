@@ -16,7 +16,12 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "paths": {
-      "@mui/styled-engine": ["./node_modules/@mui/styled-engine-sc"]
+      "@components": ["components"],
+      "@utils": ["utils"],
+      "@assets": ["assets"],
+      "@styles": ["styles/theme"],
+      "@services": ["services"],
+      "@mui/styled-engine": ["../node_modules/@mui/styled-engine-sc"]
     },
     "plugins": [
       {

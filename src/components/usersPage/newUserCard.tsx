@@ -1,16 +1,30 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
 import Image from "next/image";
-import { Eye, EyeOff } from "lucide-react";
-import { checked, unchecked } from "assets";
-import { PatientInput } from "services/Users/PostPatient";
-import { HealthProInput } from "services/Users/PostHealthPro";
-import { AdminInput } from "services/Users/PostAdmin";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "../ui/select";
 import { redefinePassword } from "validations/login";
 import { z } from "zod";
-import { useEffect } from "react";
-import { Input } from "components/input";
-import StatesOptions from "utils/stateOptions";
+import {StatesOptions} from "@utils";
+import { 
+    Eye, 
+    EyeOff 
+} from "lucide-react";
+import { 
+    checked, 
+    unchecked 
+} from "@assets";
+import { 
+    PatientInput,
+    HealthProInput,
+    AdminInput
+} from "@services";
+import { 
+    Select, 
+    SelectTrigger, 
+    SelectValue, 
+    SelectContent, 
+    SelectItem,
+    Input 
+} from "@components";
 
 
 interface NewUserCardProps {
