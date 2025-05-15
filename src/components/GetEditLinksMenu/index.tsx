@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { getLinks } from 'services/Links/GetLink';
 import { updateLinks } from "services/Links/PutLinks";
 import Image from 'next/image';
-import { reportIcon, pencil, eyeMenu } from '../../assets/index';
+import { pencil, eyeMenu } from '../../assets/index';
 import {Link as LinkIcon} from 'lucide-react';
 
 const GetEditLinksMenu: React.FC = () => {
