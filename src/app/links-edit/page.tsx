@@ -18,7 +18,7 @@ const EditLinksPage: React.FC = () => {
     <Layout>
       <div className="flex flex-1 h-screen justify-around items-center">
       <CardMenu
-          titulo="Editar Links"
+          titulo="Alterar Links"
           cardContent={ <GetEditLinksMenu/> }
         />
       </div>
