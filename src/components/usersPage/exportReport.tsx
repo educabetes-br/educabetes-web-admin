@@ -1,14 +1,18 @@
-"use client"
+"use client";
 
+import dynamic from "next/dynamic";
 import React from "react";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogClose } from "../ui/dialog";
 import { Button } from "../ui/button";
-import { Upload, FileText, FileSpreadsheet } from "lucide-react";
-import * as XLSX from "xlsx";
-import { PDFDownloadLink, Document, Page, Text, View, StyleSheet, Image as PDFImage } from '@react-pdf/renderer';
-import { LogoTitleFile } from '../../assets/index';
+import { Upload, FileSpreadsheet } from "lucide-react";
 import StatesOptions from 'utils/stateOptions';
+import * as XLSX from "xlsx";
 import { User } from "./usersMenu";
+
+// Importação dinâmica (evita o erro)
+const UserPDFExport = dynamic(() => import('./userPdfExport').then(mod => mod.UserPDFExport), {
+  ssr: false,
+});
 
 interface ExportUsersDialogProps {
   allUsers: User[];
@@ -21,106 +25,6 @@ export function getStateLabel(key: string): string {
 
 const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
 
-// estilo para o pdf 
-const styles = StyleSheet.create({
-  page: {
-    padding: 24,
-    fontSize: 8,
-    fontFamily: 'Helvetica',
-  },
-  section: {
-    marginBottom: 24,
-  },
-  logo: {
-    width: 160,
-    height: 80,
-    alignSelf: 'center',
-  },
-  title: {
-    fontSize: 14,
-    marginBottom: 12,
-    textAlign: 'left',
-    fontWeight: 'bold',
-  },
-  table: {
-    display: 'flex',
-    flexDirection: 'column',
-    borderWidth: 1,
-    borderColor: '#cccccc',
-    borderRadius: 6,
-    overflow: 'hidden',
-    marginBottom: 16,
-  },
-  tableRow: {
-    flexDirection: 'row',
-  },
-  tableColHeader: {
-    width: '33.33%',
-    backgroundColor: '#404AA0',
-    padding: 6,
-    borderRightWidth: 1,
-    borderRightColor: '#cccccc',
-  },
-  tableCol: {
-    width: '33.33%',
-    padding: 6,
-    borderRightWidth: 1,
-    borderRightColor: '#cccccc',
-    borderBottomWidth: 1,
-    borderBottomColor: '#cccccc',
-  },
-  headerText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
-  cellText: {
-    color: '#282828',
-  },
-});
-
-const UserPDFDocument = ({ allUsers }: { allUsers: User[] }) => (
-  <Document>
-    <Page size="A4" style={styles.page}>
-      <PDFImage src={LogoTitleFile.src} style={styles.logo} />
-
-      <View style={styles.section}>
-        <Text style={styles.title}>Lista de Pacientes</Text>
-        <View style={styles.table}>
-          <View style={styles.tableRow}>
-            <View style={styles.tableColHeader}><Text style={styles.headerText}>Nome</Text></View>
-            <View style={styles.tableColHeader}><Text style={styles.headerText}>Estado</Text></View>
-            <View style={styles.tableColHeader}><Text style={styles.headerText}>Cidade</Text></View>
-          </View>
-          {allUsers.filter(u => u.userRole === 'Paciente').map((user, idx) => (
-            <View key={idx} style={styles.tableRow}>
-              <View style={styles.tableCol}><Text style={styles.cellText}>{capitalize(user.name)}</Text></View>
-              <View style={styles.tableCol}><Text style={styles.cellText}>{getStateLabel(user.userState)}</Text></View>
-              <View style={styles.tableCol}><Text style={styles.cellText}>{user.userCity}</Text></View>
-            </View>
-          ))}
-        </View>
-      </View>
-
-      <View style={styles.section}>
-        <Text style={styles.title}>Lista de Profissionais de Saúde</Text>
-        <View style={styles.table}>
-          <View style={styles.tableRow}>
-            <View style={styles.tableColHeader}><Text style={styles.headerText}>Nome</Text></View>
-            <View style={styles.tableColHeader}><Text style={styles.headerText}>Estado</Text></View>
-            <View style={styles.tableColHeader}><Text style={styles.headerText}>Cidade</Text></View>
-          </View>
-          {allUsers.filter(u => u.userRole === 'Profissional de Saúde').map((user, idx) => (
-            <View key={idx} style={styles.tableRow}>
-              <View style={styles.tableCol}><Text style={styles.cellText}>{capitalize(user.name)}</Text></View>
-              <View style={styles.tableCol}><Text style={styles.cellText}>{getStateLabel(user.userState)}</Text></View>
-              <View style={styles.tableCol}><Text style={styles.cellText}>{user.userCity}</Text></View>
-            </View>
-          ))}
-        </View>
-      </View>
-    </Page>
-  </Document>
-);
 
 function exportUsersToExcel(allUsers: User[]) {
   const formatUser = (user: User) => ({
@@ -153,23 +57,12 @@ export const ExportUsersDialog: React.FC<ExportUsersDialogProps> = ({ allUsers }
       </DialogTrigger>
 
       <DialogContent className="max-w-md font-firaSansCondensed">
-      <DialogHeader className="flex w-full bg-[#ECE6F0] pt-6 pb-2 items-start pl-6">
-          <DialogTitle className="text-[24px] text-[#1A1847] leading-8 font-firaSans">
-            Exportar Usuários
-          </DialogTitle>
+        <DialogHeader className="flex w-full bg-[#ECE6F0] pt-6 pb-2 items-start pl-6">
+          <DialogTitle className="text-[24px] text-[#1A1847] leading-8 font-firaSans">Exportar Usuários</DialogTitle>
         </DialogHeader>
 
         <div className="flex flex-col gap-4 py-4">
-          <PDFDownloadLink
-            document={<UserPDFDocument allUsers={allUsers} />}
-            fileName="EducaBetes_Usuários.pdf"
-            
-          >
-              <Button className="flex gap-2 justify-start text-xl font-normal bg-transparent text-black hover:bg-[#d6cfe0] w-full">
-                <FileText size={18}/>
-                <span> Exportar como PDF</span>
-              </Button>
-          </PDFDownloadLink>
+          <UserPDFExport allUsers={allUsers} />
 
           <Button
             onClick={handleExportExcel}
