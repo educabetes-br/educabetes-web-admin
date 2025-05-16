@@ -16,7 +16,8 @@ import {
   CircleUser,
   FileDown,
   ScrollText,
-  UserPlus
+  UserPlus,
+  Cog
 } from 'lucide-react';
 import { ButtonSidebar } from './button-sidebar';
 import { ModalLogout } from './modal-logout';
@@ -39,6 +40,11 @@ const items = {
       title: 'Materiais',
       url: '/materials',
       icon: ScrollText
+    },
+    {
+      title: 'Alterar Links',
+      url: '/links-edit',
+      icon: Cog
     }
   ],
   button: [
