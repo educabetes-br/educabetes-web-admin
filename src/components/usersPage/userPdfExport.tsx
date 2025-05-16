@@ -81,7 +81,7 @@ const UserPDFDocument = ({ allUsers }: { allUsers: User[] }) => (
              <View style={styles.table}>
                <View style={styles.tableRow}>
                  <View style={styles.tableColHeader}><Text style={styles.headerText}>Nome</Text></View>
-                 <View style={styles.tableColHeader}><Text style={styles.heade0rText}>Estado</Text></View>
+                 <View style={styles.tableColHeader}><Text style={styles.headerText}>Estado</Text></View>
                  <View style={styles.tableColHeader}><Text style={styles.headerText}>Cidade</Text></View>
                </View>
                {allUsers.filter(u => u.userRole === 'Paciente').map((user, idx) => (
