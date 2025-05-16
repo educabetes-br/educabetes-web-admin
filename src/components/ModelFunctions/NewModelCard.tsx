@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Image from 'next/image';
-import { ReportInput, Report } from '../../services/Reports/PostReport';
-import { eye, unchecked, checked } from '../../assets/index';
+import { ReportInput, Report } from '@services';
+import { eye, unchecked, checked } from '@assets';
 
 interface NewModelCardProps {
   onAddSuccess: (newReport: Omit<Report, 'id'>) => Promise<Report>;

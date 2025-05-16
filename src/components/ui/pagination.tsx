@@ -1,10 +1,10 @@
 import * as React from "react"
 import { MoreHorizontal } from "lucide-react"
 import Image from "next/image"
-import { nextPage, prevPage } from "../../assets/index"
+import { nextPage, prevPage } from "@assets"
 
-import { cn } from "../../lib/utils"
-import { ButtonProps, buttonVariants } from "../ui/button"
+import { cn } from "@utils"
+import { ButtonProps, buttonVariants } from "@components"
 
 const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
   <nav

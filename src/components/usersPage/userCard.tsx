@@ -1,5 +1,5 @@
 import React from 'react';
-import { UserIcon }  from './userIcon';
+import { UserIcon }  from '@components';
 import { nextPage } from 'assets';
 import Image from 'next/image';
 

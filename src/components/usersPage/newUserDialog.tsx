@@ -1,4 +1,13 @@
 import React, { useState } from "react";
+import Image from "next/image";
+import { 
+  Eye, 
+  EyeOff 
+} from "lucide-react";
+import { redefinePassword } from "validations/login";
+import { z } from "zod";
+import { useEffect } from "react";
+import { StatesOptions } from "@utils";
 import {
   Dialog,
   DialogContent,
@@ -7,26 +16,25 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogClose
-} from "../ui/dialog";
-import {
+  DialogClose,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select"
-import Image from "next/image";
-import { PatientInput, DiagnosisTime, userState } from "../../services/Users/PostPatient";
-import { checked, plusIcon, unchecked } from "assets";
-import { HealthProInput } from "services/Users/PostHealthPro";
-import { AdminInput } from "services/Users/PostAdmin";
-import { Eye, EyeOff } from "lucide-react";
-import { redefinePassword } from "validations/login";
-import { z } from "zod";
-import { useEffect } from "react";
-import { Input } from "components/input";
-import stateOptions from "utils/stateOptions";
+  Input
+} from "@components"
+import { 
+  PatientInput, 
+  DiagnosisTime, 
+  userState,
+  HealthProInput,
+  AdminInput 
+} from "@services";
+import { 
+  checked, 
+  plusIcon, 
+  unchecked } from "@assets";
 
 
 interface NewUserDialogProps {
@@ -315,7 +323,7 @@ useEffect(() => {
                       <SelectValue placeholder="Estado" />
                     </SelectTrigger>
                     <SelectContent className="bg-white border border-[#8D8BC1] text-[#1A1847] font-semibold text-base">
-                      {stateOptions.map((state) => (
+                      {StatesOptions.map((state) => (
                         <SelectItem
                           key={state.value}
                           value={state.key}

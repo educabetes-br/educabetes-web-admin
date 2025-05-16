@@ -3,15 +3,21 @@
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { Layout } from 'components/sidebar/layout';
-import CardMenu from 'components/CardMenu';
-import { UsersMenu } from 'components/usersPage/usersMenu';
-import { Patient, getPatients } from '../../services/Users/GetPatients';
-import { HealthPro, getHealthPro } from 'services/Users/GetHealthPro';
-import { Admin, getAdmins } from 'services/Users/GetAdmin';
-import { PatientInput, postPatient } from 'services/Users/PostPatient';
-import { HealthProInput, postHealthPro } from 'services/Users/PostHealthPro';
-import { AdminInput, postAdmin } from 'services/Users/PostAdmin';
+import { Layout, CardMenu, UsersMenu } from '@components';
+import {
+  Admin,
+  getAdmins,
+  PatientInput,
+  postPatient,
+  HealthProInput,
+  postHealthPro,
+  AdminInput,
+  postAdmin, 
+  Patient, 
+  getPatients,  
+  HealthPro, 
+  getHealthPro 
+} from '@services';
 
 const UsersPage: React.FC = () => {
   const { status } = useSession();

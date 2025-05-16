@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import { signOut } from 'next-auth/react';
 import {
   Sidebar,
   SidebarContent,
@@ -9,8 +11,10 @@ import {
   SidebarMenuButton,
   SidebarMenu,
   useSidebar,
-  SidebarSeparator
-} from 'components/ui/sidebar';
+  SidebarSeparator,
+  ButtonSidebar, 
+  ModalLogout
+} from '@components';
 import {
   AlignJustify,
   CircleUser,
@@ -19,10 +23,6 @@ import {
   UserPlus,
   Cog
 } from 'lucide-react';
-import { ButtonSidebar } from './button-sidebar';
-import { ModalLogout } from './modal-logout';
-import { usePathname, useRouter } from 'next/navigation';
-import { signOut } from 'next-auth/react';
 
 const items = {
   sidebar: [

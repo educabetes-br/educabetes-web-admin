@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
-import { searchIcon } from "../../assets/index";
-import { UserCard } from "./userCard";
+import { searchIcon } from "@assets";
+import { UserCard } from "@components";
 
 interface Admin {
   id: number;

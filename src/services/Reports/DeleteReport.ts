@@ -1,4 +1,4 @@
-import api from "../api";
+import{ api } from "@services";
 
 export type Report = {
   id: number,

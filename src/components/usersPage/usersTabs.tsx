@@ -2,10 +2,12 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { searchIcon } from '../../assets/index';
-import { UserCard } from './userCard';
-import { User } from './usersMenu';
-import { ExportUsersDialog } from './exportReport';
+import { searchIcon } from '@assets';
+import { 
+  UserCard, 
+  User, 
+  ExportUsersDialog 
+} from '@components';
 
 interface UsersTabProps {
   users: User[];
