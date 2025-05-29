@@ -1,4 +1,4 @@
-import api from "../api";
+import{ api } from "@services";
 
 export type DiagnosisTime = "LESS_THAN_6MONTHS" | "BETWEEN_6MONTHS_AND_1YEAR" | "BETWEEN_1YEAR_AND_2YEARS" | "MORE_THAN_2YEARS";
 export type userState =

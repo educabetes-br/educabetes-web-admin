@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import Image from 'next/image';
-import { eye, unchecked, checked, pencil } from '../../assets/index';
-import { updateReport } from 'services/Reports/UpdateReport';
+import { eye, unchecked, checked, pencil } from '@assets';
+import { updateReport, Report } from '@services';
 import {
   Dialog,
   DialogContent,
@@ -11,8 +11,7 @@ import {
   DialogFooter,
   DialogTrigger,
   DialogClose
-} from '../ui/dialog';
-import { Report } from 'services/Reports/UpdateReport';
+} from '@components';
 
 interface EditModelDialogProps {
   reportId: number; // Recebe o ID do relatório que será editado

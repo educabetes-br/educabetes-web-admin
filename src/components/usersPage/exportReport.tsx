@@ -2,12 +2,24 @@
 
 import dynamic from "next/dynamic";
 import React from "react";
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogClose } from "../ui/dialog";
-import { Button } from "../ui/button";
-import { Upload, FileSpreadsheet } from "lucide-react";
-import StatesOptions from 'utils/stateOptions';
+import { 
+  Dialog, 
+  DialogTrigger, 
+  DialogContent, 
+  DialogHeader, 
+  DialogTitle, 
+  DialogFooter, 
+  DialogClose,
+  ShadButton,
+  User 
+} from "@components";
+import { 
+  Upload, 
+  FileSpreadsheet 
+} from "lucide-react";
 import * as XLSX from "xlsx";
-import { User } from "./usersMenu";
+import {StatesOptions} from '@utils';
+
 
 // Importação dinâmica (evita o erro)
 const UserPDFExport = dynamic(() => import('./userPdfExport').then(mod => mod.UserPDFExport), {
@@ -63,19 +75,18 @@ export const ExportUsersDialog: React.FC<ExportUsersDialogProps> = ({ allUsers }
 
         <div className="flex flex-col gap-4 py-4">
           <UserPDFExport allUsers={allUsers} />
-
-          <Button
+          <ShadButton
             onClick={handleExportExcel}
             className="flex gap-2 justify-start text-xl font-normal bg-transparent text-black hover:bg-[#d6cfe0] w-full"
           >
             <FileSpreadsheet size={18} />
             Exportar como Excel
-          </Button>
+          </ShadButton>
         </div>
 
         <DialogFooter className="flex gap-4 justify-end p-6 bg-[#ECE6F0]">
           <DialogClose asChild>
-            <Button className="bg-[#404AA0] text-[#DFE0FF] leading-5 font-medium text-[14px] px-4 py-2 rounded-[100px] transition-all hover:bg-[#303880]">Fechar</Button>
+            <ShadButton className="bg-[#404AA0] text-[#DFE0FF] leading-5 font-medium text-[14px] px-4 py-2 rounded-[100px] transition-all hover:bg-[#303880]">Fechar</ShadButton>
           </DialogClose>
         </DialogFooter>
       </DialogContent>

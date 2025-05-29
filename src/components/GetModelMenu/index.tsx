@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { reportIcon, eyeMenu, searchIcon } from '../../assets/index';
-import DeleteModelCard from '../ModelFunctions/DeleteModel';
-import EditModelDialog from '../ModelFunctions/EditModelDialog';
-import NewModelDialog from 'components/ModelFunctions/NewModelDialog';
-import { Report } from 'services/Reports/GetReport';
+import { reportIcon, eyeMenu, searchIcon } from '@assets';
+import { Report } from '@services';
 import {
+  DeleteModelCard,
+  EditModelDialog,
+  NewModelDialog,
   Pagination,
   PaginationContent,
   PaginationItem,
   PaginationPrevious,
   PaginationNext
-} from '../ui/pagination';
+} from "@components"
 
 interface GetReportsMenuProps {
   reports: Report[];

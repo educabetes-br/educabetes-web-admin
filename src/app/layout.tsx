@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-import NextAuthSessionProvider from '../providers/sessionProvider';
+import NextAuthSessionProvider from 'providers/sessionProvider';
 import 'styles/globals.css';
 
 export const metadata: Metadata = {
