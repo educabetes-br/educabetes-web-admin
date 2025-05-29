@@ -15,20 +15,9 @@ import {
 } from "@components";
 import { 
   Upload, 
-  FileText, 
   FileSpreadsheet 
 } from "lucide-react";
 import * as XLSX from "xlsx";
-import { 
-  PDFDownloadLink, 
-  Document, 
-  Page, 
-  Text, 
-  View, 
-  StyleSheet, 
-  Image as PDFImage 
-} from '@react-pdf/renderer';
-import { LogoTitleFile } from '@assets';
 import {StatesOptions} from '@utils';
 
 
@@ -85,18 +74,7 @@ export const ExportUsersDialog: React.FC<ExportUsersDialogProps> = ({ allUsers }
         </DialogHeader>
 
         <div className="flex flex-col gap-4 py-4">
-          <PDFDownloadLink
-            document={<UserPDFExport allUsers={allUsers} />}
-            fileName="EducaBetes_Usuários.pdf"
-            
-          >
-              <ShadButton className="flex gap-2 justify-start text-xl font-normal bg-transparent text-black hover:bg-[#d6cfe0] w-full">
-                <FileText size={18}/>
-                <span> Exportar como PDF</span>
-              </ShadButton>
-          </PDFDownloadLink>
-
-
+          <UserPDFExport allUsers={allUsers} />
           <ShadButton
             onClick={handleExportExcel}
             className="flex gap-2 justify-start text-xl font-normal bg-transparent text-black hover:bg-[#d6cfe0] w-full"
