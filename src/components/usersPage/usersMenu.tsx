@@ -52,7 +52,7 @@ export const UsersMenu: React.FC<UsersMenuProps> = ({
     onAddPatient,
     onAddHealthPro,
     onAddAdmin,
-    itensPerPage = 6
+    itensPerPage = 8
 }) => {
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -144,7 +144,7 @@ export const UsersMenu: React.FC<UsersMenuProps> = ({
 
             <Tabs 
             defaultValue='users' 
-            className="w-full h-[500px]" 
+            className="w-full flex flex-col" 
             onValueChange={(value) => {
                 setActiveTab(value as 'users' | 'admins');
                 setCurrentPage(1);
@@ -179,7 +179,7 @@ export const UsersMenu: React.FC<UsersMenuProps> = ({
                         Administradores
                     </TabsTrigger>
                 </TabsList>
-                <TabsContent value='users'>
+                <TabsContent className="h-full flex flex-col" value='users'>
                     <UsersTab 
                         users={paginatedItems.filter(item => item.userRole !== 'Administrador')}
                         allUsers={filteredItems.filter(item => item.userRole !== 'Administrador')}

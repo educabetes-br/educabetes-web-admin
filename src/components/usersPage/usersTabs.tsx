@@ -52,7 +52,7 @@ export const UsersTab: React.FC<UsersTabProps> = ({
       </div>
 
       {/* Lista de Usuários */}
-      <div className="flex flex-col overflow-y-auto mt-6 mb-6 flex-1 scrollbar-hide">
+      <div className="flex flex-col overflow-y-auto mt-4 mb-4 flex-1">
         {users.length === 0 ? (
           <div className="flex justify-center items-center h-full">
             <p className="text-black font-firaSans">

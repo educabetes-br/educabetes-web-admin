@@ -12,7 +12,7 @@ const CardMenu: React.FC<CardMenuProps> = ({ cardContent, titulo }) => {
         <h1 className="text-[24px] font-firaSans leading-8 text-[#1A1847]">{titulo}</h1>
       </header>
 
-      <div className="h-full flex overflow-y-auto overflow-x-hidden">{cardContent}</div>
+      <div className="h-full flex overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:hidden">{cardContent}</div>
 
     </div>
   );
