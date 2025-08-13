@@ -20,3 +20,4 @@ jobs:
         HOST: ${{ secrets.HOST }}
         PROJECT: client
         BRANCH: main
+        ARGS: "--force"
